@@ -1,10 +1,8 @@
 import MainFooter from '@/components/MainLayout/MainFooter';
 import MainHeader from '@/components/MainLayout/MainHeader';
+import { LayoutProps } from '@/interfaces/inretfaces';
 import React from 'react';
 
-type LayoutProps = {
-  children: React.ReactNode;
-};
 const MainLayout = ({ children }: LayoutProps) => {
   return (
     <div className="max-w-[1440px] w-full h-full flex flex-col">

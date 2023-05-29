@@ -1,2 +1,3 @@
-export * from '@/components/MainLayout';
-export * from '@/components/AdminLayout';
+export * from './MainLayout';
+export * from './AdminLayout';
+export * from './Products';

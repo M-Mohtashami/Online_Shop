@@ -2,12 +2,12 @@ import { NextPageWithLayout } from '@/interfaces/inretfaces';
 import MainLayout from '@/layout/MainLayout';
 import React, { ReactElement } from 'react';
 
-const Register: NextPageWithLayout = () => {
-  return <div>Register</div>;
+const Payment: NextPageWithLayout = () => {
+  return <div>Payment</div>;
 };
 
-export default Register;
+export default Payment;
 
-Register.getLayout = (page: ReactElement) => {
+Payment.getLayout = (page: ReactElement) => {
   return <MainLayout>{page}</MainLayout>;
 };

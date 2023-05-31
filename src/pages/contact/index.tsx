@@ -2,12 +2,12 @@ import { NextPageWithLayout } from '@/interfaces/inretfaces';
 import MainLayout from '@/layout/MainLayout';
 import React, { ReactElement } from 'react';
 
-const Register: NextPageWithLayout = () => {
-  return <div>Register</div>;
+const Contact: NextPageWithLayout = () => {
+  return <div>Contact</div>;
 };
 
-export default Register;
+export default Contact;
 
-Register.getLayout = (page: ReactElement) => {
+Contact.getLayout = (page: ReactElement) => {
   return <MainLayout>{page}</MainLayout>;
 };

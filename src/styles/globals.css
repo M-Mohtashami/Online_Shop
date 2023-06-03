@@ -2,6 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: IranSans;
+  src: url(../../public/assets/fonts/iran-sans/IRANSansWebUltraLight.woff);
+  font-weight: 100;
+}
+@font-face {
+  font-family: IranSans;
+  src: url(../../public/assets/fonts/iran-sans/IRANSansWebLight.woff);
+  font-weight: 200;
+}
+@font-face {
+  font-family: IranSans;
+  src: url(../../public/assets/fonts/iran-sans/IRANSansWebRegular.woff);
+  font-weight: 300;
+}
+@font-face {
+  font-family: IranSans;
+  src: url(../../public/assets/fonts/iran-sans/IRANSansWebMedium.woff);
+  font-weight: 400;
+}
+@font-face {
+  font-family: IranSans;
+  src: url(../../public/assets/fonts/iran-sans/IRANSansWebBlack.woff);
+  font-weight: 700;
+}
+@font-face {
+  font-family: IranSans;
+  src: url(../../public/assets/fonts/iran-sans/IRANSansWebBlack.woff);
+  font-weight: 900;
+}
+
 html,
 body,
 #__next {

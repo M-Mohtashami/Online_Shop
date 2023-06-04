@@ -5,7 +5,7 @@ import React from 'react';
 
 const AdminLayout = ({ children }: LayoutProps) => {
   return (
-    <div className="w-full h-full flex">
+    <div className="w-full h-full flex font-iran-sans">
       <Sidebar />
       <section className="w-full flex flex-col gap-3">
         <Header />

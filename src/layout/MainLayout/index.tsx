@@ -5,7 +5,7 @@ import React from 'react';
 
 const MainLayout = ({ children }: LayoutProps) => {
   return (
-    <div className="max-w-[1440px] w-full h-full flex flex-col">
+    <div className="max-w-[1440px] w-full h-full flex flex-col font-iran-sans">
       <MainHeader />
       <main className="flex-1 p-6">{children}</main>
       <MainFooter />

@@ -1,6 +1,6 @@
 import { CustomIcons } from '@/interfaces/inretfaces';
 import { FaUser, FaLock, FaShoppingCart } from 'react-icons/fa';
-import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
+import { BsArrowLeft, BsArrowRight, BsSearch } from 'react-icons/bs';
 
 export const icons: CustomIcons = {
   username: function (value) {
@@ -17,5 +17,8 @@ export const icons: CustomIcons = {
   },
   cart: function (value) {
     return <FaShoppingCart className={value} />;
+  },
+  search: function (value) {
+    return <BsSearch className={value} />;
   },
 };

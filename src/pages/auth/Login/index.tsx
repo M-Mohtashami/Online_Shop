@@ -8,28 +8,8 @@ import React, { ReactElement } from 'react';
 const Login: NextPageWithLayout = () => {
   return (
     <>
-      <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-        {/* <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
-            className="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-            alt="Workflow"
-          />
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <a
-              href="#"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              start your 14-day free trial
-            </a>
-          </p>
-        </div> */}
-
-        <div className=" sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 text-primary">
+        <div className=" sm:mx-auto sm:w-full sm:max-w-md ">
           <div className="relative bg-white border border-gray-200 py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <div className="absolute -top-16 right-0 w-full flex justify-center">
               <img
@@ -48,12 +28,9 @@ const Login: NextPageWithLayout = () => {
                     id="remember-me"
                     name="remember-me"
                     type="checkbox"
-                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-primary focus:ring-primary border-primary rounded"
                   />
-                  <label
-                    htmlFor="remember-me"
-                    className="ml-2 block text-sm text-gray-900"
-                  >
+                  <label htmlFor="remember-me" className="ml-2 block text-sm">
                     {'مرا بخاطر بسپار'}
                   </label>
                 </div>
@@ -64,7 +41,7 @@ const Login: NextPageWithLayout = () => {
                   icon="forward"
                   type="submit"
                   variant="contained"
-                  className="w-full "
+                  className="w-full bg-primary hover:bg-links"
                 >
                   {'ورود'}
                 </Button>
@@ -76,13 +53,15 @@ const Login: NextPageWithLayout = () => {
               type="button"
               icon="backward"
               variant="outlined"
-              className="w-20 mt-3 "
+              className="w-20 mt-3 border-secondery text-secondery"
             >
               {'خانه'}
             </Button>
             <div>
               <span>{'کاربر تازه هستم: '}</span>
-              <Link href="/auth/register">{'ثبت نام'}</Link>
+              <Link className="text-links font-semibold" href="/auth/register">
+                {'ثبت نام'}
+              </Link>
             </div>
           </div>
         </div>

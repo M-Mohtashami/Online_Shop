@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useRef } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { HiMenu } from 'react-icons/hi';
 import { BsChevronDown } from 'react-icons/bs';
@@ -74,15 +74,29 @@ const resources = [
     href: '#',
   },
 ];
-
+const timeoutDuration = 200;
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
 const MainHeader = () => {
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const timeOutRef = useRef<number | undefined | NodeJS.Timeout>(undefined);
+
+  const handleEnter = (isOpen: boolean) => {
+    clearTimeout(timeOutRef.current);
+    !isOpen && triggerRef.current?.click();
+  };
+
+  const handleLeave = (isOpen: boolean) => {
+    timeOutRef.current = setTimeout(() => {
+      isOpen && triggerRef.current?.click();
+    }, timeoutDuration);
+  };
+
   return (
     <Popover className="relative top-0 z-50 bg-white">
-      <div className="flex justify-between items-center px-4 py-6 sm:px-6 md:justify-start md:space-x-10">
+      <div className="flex justify-between items-center px-4 py-2 sm:px-6 md:justify-start md:space-x-10">
         <div className=" ml-5">
           <Link href="/" className="flex">
             <span className="sr-only">Workflow</span>
@@ -102,9 +116,13 @@ const MainHeader = () => {
         <div className="hidden md:flex-1 md:flex md:items-center md:justify-between">
           <Popover.Group as="nav" className="flex gap-10">
             <Popover className="relative">
-              {({ open }) => (
-                <div>
+              {({ open, close }) => (
+                <div
+                  onMouseEnter={() => handleEnter(open)}
+                  onMouseLeave={() => handleLeave(open)}
+                >
                   <Popover.Button
+                    ref={triggerRef}
                     className={classNames(
                       open ? 'text-gray-900' : 'text-gray-500',
                       'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
@@ -121,7 +139,7 @@ const MainHeader = () => {
                   </Popover.Button>
 
                   <Transition
-                    show={open}
+                    // show={open}
                     as={Fragment}
                     enter="transition ease-out duration-200"
                     enterFrom="opacity-0 translate-y-1"
@@ -181,8 +199,9 @@ const MainHeader = () => {
                 </div>
               )}
             </Popover>
+
             <Link
-              href="#"
+              href="/about"
               className="text-base font-medium text-gray-500 hover:text-gray-900"
             >
               {'درباره ما'}
@@ -247,9 +266,15 @@ const MainHeader = () => {
               )}
             </Popover> */}
           </Popover.Group>
-          <div className="flex items-center md:ml-12">
+          <div className="flex items-center md:ml-4">
             <Link
               href="#"
+              className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
+            >
+              {icons.search('')}
+            </Link>
+            <Link
+              href="/auth/login"
               className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
             >
               {icons.username('')}

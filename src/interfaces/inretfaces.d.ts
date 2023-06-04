@@ -20,4 +20,5 @@ interface CustomIcons {
   forward: (value: string) => ReactNode;
   backward: (value: string) => ReactNode;
   cart: (value: string) => ReactNode;
+  search: (value: string) => ReactNode;
 }

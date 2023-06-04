@@ -19,4 +19,5 @@ interface CustomIcons {
   password: (value: string) => ReactNode;
   forward: (value: string) => ReactNode;
   backward: (value: string) => ReactNode;
+  cart: (value: string) => ReactNode;
 }

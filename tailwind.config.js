@@ -7,14 +7,14 @@ module.exports = {
       fontFamily: {
         'iran-sans': ['IranSans', ...defaultTheme.fontFamily.sans],
       },
-    },
-    colors: {
-      primary: '#036773',
-      secondery: '#D83241',
-      'light-gray': '#EBEBEB',
-      'dark-gray': '#888888',
-      yellow: '#E2E900',
-      links: '#3B90A2',
+      colors: {
+        primary: '#036773',
+        secondery: '#D83241',
+        'light-gray': '#EBEBEB',
+        'dark-gray': '#888888',
+        yellow: '#E2E900',
+        links: '#3B90A2',
+      },
     },
   },
   plugins: [],

@@ -1,4 +1,3 @@
-import { icons } from '@/config/variable';
 import React, { ReactElement } from 'react';
 
 type Props = {
@@ -7,6 +6,7 @@ type Props = {
   type: string;
   error?: string | undefined;
   //   className: string;
+  [key: string]: any;
 };
 
 const TextField = ({
@@ -19,7 +19,7 @@ const TextField = ({
 }: Props) => {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+      <label htmlFor={name} className="block text-sm font-medium">
         {label}
       </label>
       <div className="mt-1">

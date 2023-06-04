@@ -1,7 +1,6 @@
 import { Fragment, useRef } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { HiMenu } from 'react-icons/hi';
-import { BsChevronDown } from 'react-icons/bs';
 import { TbCategory } from 'react-icons/tb';
 import { IoMdClose } from 'react-icons/io';
 import { RiMenu3Line } from 'react-icons/ri';
@@ -95,7 +94,7 @@ const MainHeader = () => {
   };
 
   return (
-    <Popover className="relative top-0 z-50 bg-white">
+    <Popover className="relative top-0 z-50 bg-white border-b shadow-sm">
       <div className="flex justify-between items-center px-4 py-2 sm:px-6 md:justify-start md:space-x-10">
         <div className=" ml-5">
           <Link href="/" className="flex">

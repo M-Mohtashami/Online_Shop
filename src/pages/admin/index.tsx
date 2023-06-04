@@ -3,7 +3,7 @@ import AdminLayout from '@/layout/AdminLayout';
 import { ReactElement } from 'react';
 
 const AdminPanel: NextPageWithLayout = () => {
-  return <div>Admin Panel</div>;
+  return <div></div>;
 };
 
 AdminPanel.getLayout = (page: ReactElement) => {

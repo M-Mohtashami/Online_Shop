@@ -11,14 +11,16 @@ import {
   UsersIcon,
   XIcon,
 } from '@heroicons/react/outline';
+import { BsArrowRight } from 'react-icons/bs';
+import Link from 'next/link';
 
 const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-  { name: 'Team', href: '#', icon: UsersIcon, current: false },
-  { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-  { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-  { name: 'Documents', href: '#', icon: InboxIcon, current: false },
-  { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
+  { name: 'داشبورد', href: '#', icon: HomeIcon, current: true },
+  { name: 'پروفایل', href: '#', icon: UsersIcon, current: false },
+  { name: 'محصولات', href: '#', icon: FolderIcon, current: false },
+  { name: 'دسته‌بندی', href: '#', icon: CalendarIcon, current: false },
+  { name: 'سفارشات', href: '#', icon: InboxIcon, current: false },
+  { name: 'خروج', href: '#', icon: BsArrowRight, current: false },
 ];
 
 const Sidebar = ({
@@ -47,7 +49,7 @@ const Sidebar = ({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0 bg-gray-600 bg-opacity-75" />
+              <Dialog.Overlay className="fixed inset-0 bg-links bg-opacity-75" />
             </Transition.Child>
             <Transition.Child
               as={Fragment}
@@ -58,7 +60,7 @@ const Sidebar = ({
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-gray-800">
+              <div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-primary">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -92,14 +94,14 @@ const Sidebar = ({
                 <div className="mt-5 flex-1 h-0 overflow-y-auto">
                   <nav className="px-2 space-y-1">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? 'bg-gray-900 text-white'
-                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                            ? 'bg-slate-700 text-white'
+                            : 'text-gray-300 hover:bg-links hover:text-white',
+                          'group flex items-center gap-3 px-2 py-2 text-base font-medium rounded-md'
                         )}
                       >
                         <item.icon
@@ -111,8 +113,8 @@ const Sidebar = ({
                           )}
                           aria-hidden="true"
                         />
-                        {item.name}
-                      </a>
+                        <span>{item.name}</span>
+                      </Link>
                     ))}
                   </nav>
                 </div>
@@ -125,8 +127,8 @@ const Sidebar = ({
         </Transition.Root>
         <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex-1 flex flex-col min-h-0 bg-gray-800">
-            <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
+          <div className="flex-1 flex flex-col min-h-0 bg-primary">
+            <div className="flex items-center h-16 flex-shrink-0 px-4 bg-slate-700">
               <img
                 className="h-8 w-auto"
                 src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
@@ -136,14 +138,14 @@ const Sidebar = ({
             <div className="flex-1 flex flex-col overflow-y-auto">
               <nav className="flex-1 px-2 py-4 space-y-1">
                 {navigation.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
                     href={item.href}
                     className={classNames(
                       item.current
-                        ? 'bg-gray-900 text-white'
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                        ? 'bg-gray-700 text-white'
+                        : 'text-gray-300 hover:bg-links hover:text-white',
+                      'group flex items-center gap-3 px-2 py-2 text-sm font-medium rounded-md'
                     )}
                   >
                     <item.icon
@@ -156,7 +158,7 @@ const Sidebar = ({
                       aria-hidden="true"
                     />
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
               </nav>
             </div>

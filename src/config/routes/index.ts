@@ -1,4 +1,4 @@
-const routes = {
+export const routes = {
   private: {
     Admin: '/admin',
     Product: '/admin/products',
@@ -7,8 +7,8 @@ const routes = {
     Logout: '/logout',
   },
   protected: {
-    Login: '/login',
-    Register: '/register',
+    Login: '/auth/login',
+    Register: '/auth/register',
   },
   public: {
     Home: '/',

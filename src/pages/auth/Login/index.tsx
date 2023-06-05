@@ -2,12 +2,13 @@ import Button from '@/components/shared_components/Button';
 import { LoginValues, NextPageWithLayout } from '@/interfaces/inretfaces';
 import MainLayout from '@/layout/MainLayout';
 import Link from 'next/link';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import useLogin from '@/hooks/useLogin';
 import { useRouter } from 'next/router';
+import { routes } from '@/config/routes';
 
 const schema = z.object({
   username: z.string().nonempty('نام کاربری نباید خالی باشد'),
@@ -27,10 +28,18 @@ const Login: NextPageWithLayout = () => {
     },
     resolver: zodResolver(schema),
   });
-  const { mutate: loginMutate } = useLogin({});
+  const { mutate: loginMutate, isSuccess } = useLogin({});
   const onSubmit: SubmitHandler<LoginValues> = (data) => {
     loginMutate(data);
+    reset();
   };
+  useEffect(() => {
+    console.log(isSuccess);
+
+    if (isSuccess) {
+      router.push(routes.private.Admin);
+    }
+  }, [isSuccess]);
   return (
     <>
       <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 text-primary">
@@ -107,13 +116,16 @@ const Login: NextPageWithLayout = () => {
               icon="backward"
               variant="outlined"
               className="w-20 mt-3 border-secondery text-secondery"
-              onClick={() => router.push('/')}
+              onClick={() => router.push(routes.public.Home)}
             >
               {'خانه'}
             </Button>
             <div>
               <span>{'کاربر تازه هستم: '}</span>
-              <Link className="text-links font-semibold" href="/auth/register">
+              <Link
+                className="text-links font-semibold"
+                href={routes.protected.Register}
+              >
                 {'ثبت نام'}
               </Link>
             </div>

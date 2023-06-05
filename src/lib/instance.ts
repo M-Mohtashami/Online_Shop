@@ -1,3 +1,4 @@
+import { routes } from '@/config/routes';
 import { baseURL } from '@/config/variable';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
@@ -43,7 +44,7 @@ instance.interceptors.response.use(
         cookie.remove('access_token');
         cookie.remove('refresh_token');
         localStorage.removeItem('user_info');
-        location.href = '/auth/login';
+        location.href = routes.protected.Login;
       }
     }
   }

@@ -1,8 +1,9 @@
 import { loginServices } from '@/api/services/loginServices';
 import { LoginValues } from '@/interfaces/inretfaces';
 import { UseMutationOptions, useMutation } from '@tanstack/react-query';
-import { setCookie } from 'cookies-next';
+import Cookies from 'universal-cookie';
 
+const cookie = new Cookies();
 const useLogin = (options: UseMutationOptions<any, any, any>) => {
   return useMutation({
     ...options,
@@ -11,8 +12,8 @@ const useLogin = (options: UseMutationOptions<any, any, any>) => {
     onSuccess(data: any) {
       if (data.status === 'success') {
         const token = data.token;
-        setCookie('access_token', token.accessToken);
-        setCookie('refresh_token', token.refreshToken);
+        cookie.set('access_token', token.accessToken);
+        cookie.set('refresh_token', token.refreshToken);
         localStorage.setItem('user_info', JSON.stringify(data.data.user));
       }
     },

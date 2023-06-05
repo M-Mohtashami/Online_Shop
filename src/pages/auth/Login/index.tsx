@@ -7,12 +7,14 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import useLogin from '@/hooks/useLogin';
+import { useRouter } from 'next/router';
 
 const schema = z.object({
   username: z.string().nonempty('نام کاربری نباید خالی باشد'),
   password: z.string().nonempty('رمز عبور نباید خالی باشد'),
 });
 const Login: NextPageWithLayout = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -105,6 +107,7 @@ const Login: NextPageWithLayout = () => {
               icon="backward"
               variant="outlined"
               className="w-20 mt-3 border-secondery text-secondery"
+              onClick={() => router.push('/')}
             >
               {'خانه'}
             </Button>

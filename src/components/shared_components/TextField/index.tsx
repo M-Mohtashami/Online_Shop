@@ -17,6 +17,8 @@ const TextField = ({
   //   className,
   ...inputProps
 }: Props) => {
+  console.log(error);
+
   return (
     <div>
       <label className="block text-sm font-medium">{label}</label>

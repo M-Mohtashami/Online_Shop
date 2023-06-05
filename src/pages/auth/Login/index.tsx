@@ -1,11 +1,34 @@
 import Button from '@/components/shared_components/Button';
-import TextField from '@/components/shared_components/TextField';
-import { NextPageWithLayout } from '@/interfaces/inretfaces';
+import { LoginValues, NextPageWithLayout } from '@/interfaces/inretfaces';
 import MainLayout from '@/layout/MainLayout';
 import Link from 'next/link';
 import React, { ReactElement } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import useLogin from '@/hooks/useLogin';
 
+const schema = z.object({
+  username: z.string().nonempty('نام کاربری نباید خالی باشد'),
+  password: z.string().nonempty('رمز عبور نباید خالی باشد'),
+});
 const Login: NextPageWithLayout = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+    resolver: zodResolver(schema),
+  });
+  const { mutate: loginMutate } = useLogin({});
+  const onSubmit: SubmitHandler<LoginValues> = (data) => {
+    loginMutate(data);
+  };
   return (
     <>
       <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 text-primary">
@@ -18,9 +41,37 @@ const Login: NextPageWithLayout = () => {
                 alt="logo"
               />
             </div>
-            <form className="space-y-6">
-              <TextField label="نام کابری" name="username" type="text" />
-              <TextField label="رمز عبور" name="password" type="password" />
+            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+              <div>
+                <label className="block text-sm font-medium">
+                  {'نام کابری'}
+                </label>
+                <div className="mt-1">
+                  <input
+                    type="text"
+                    {...register('username')}
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <small className="text-red-500">
+                  {errors.username?.message}
+                </small>
+              </div>
+              <div>
+                <label className="block text-sm font-medium">
+                  {'رمز عبور'}
+                </label>
+                <div className="mt-1">
+                  <input
+                    type="password"
+                    {...register('password')}
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <small className="text-red-500">
+                  {errors.password?.message}
+                </small>
+              </div>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">

@@ -22,3 +22,5 @@ export const icons: CustomIcons = {
     return <BsSearch className={value} />;
   },
 };
+
+export const baseURL = 'http://localhost:8000/api';

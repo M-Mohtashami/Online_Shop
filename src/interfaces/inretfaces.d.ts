@@ -22,3 +22,8 @@ interface CustomIcons {
   cart: (value: string) => ReactNode;
   search: (value: string) => ReactNode;
 }
+
+type LoginValues = {
+  username: string;
+  password: string;
+};

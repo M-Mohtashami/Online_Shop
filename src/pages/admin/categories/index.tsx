@@ -5,60 +5,31 @@ import { NextPageWithLayout } from '@/interfaces/inretfaces';
 import AdminLayout from '@/layout/AdminLayout';
 import Button from '@/components/shared_components/Button';
 import { useForm } from 'react-hook-form';
+import { useAddCategory } from '@/hooks/category/useAddCategory';
+import addCategoryService from '@/api/services/category/addCategoryService';
 
 const Categories: NextPageWithLayout = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
-  let [categories] = useState({
-    ['دسته‌بندی']: (
-      <form className="space-y-6">
-        <div>
-          <label className="block text-sm font-medium">{'نام دسته'}</label>
-          <div className="mt-1">
-            <input
-              type="text"
-              {...register('category', { required: 'نام دسته اجباری است' })}
-              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <small className="text-red-500">{errors.category?.message}</small>
-        </div>
-        <div>
-          <Button
-            icon="forward"
-            type="submit"
-            variant="contained"
-            className="w-full bg-primary hover:bg-links"
-          >
-            {'ذخیره'}
-          </Button>
-        </div>
-      </form>
-    ),
-    ['زیردسته']: (
-      <form className="space-y-6">
-        <div>
-          <Button
-            icon="forward"
-            type="submit"
-            variant="contained"
-            className="w-full bg-primary hover:bg-links"
-          >
-            {'ذخیره'}
-          </Button>
-        </div>
-      </form>
-    ),
-  });
+  const { mutate: addCategory } = useAddCategory({});
+  const onCategorySubmit = (data: { category: string }) => {
+    const formData = new FormData();
+    formData.append('name', data.category);
+    console.log(formData.has('name'));
+    addCategory(formData);
+    reset();
+  };
+  let [categories] = useState(['دسته‌بندی', 'زیردسته']);
 
   return (
     <div className="w-full max-w-md px-2 py-2 sm:px-0">
       <Tab.Group>
         <Tab.List className="flex space-x-1 rounded-xl bg-links/50 p-1">
-          {Object.keys(categories).map((category) => (
+          {categories.map((category) => (
             <Tab
               key={category}
               className={({ selected }) =>
@@ -76,17 +47,87 @@ const Categories: NextPageWithLayout = () => {
           ))}
         </Tab.List>
         <Tab.Panels className="mt-2">
-          {Object.values(categories).map((form, idx) => (
-            <Tab.Panel
-              key={idx}
-              className={classNames(
-                'rounded-xl bg-white p-3',
-                'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2'
-              )}
+          <Tab.Panel
+            key={0}
+            className={classNames(
+              'rounded-xl bg-white p-3',
+              'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2'
+            )}
+          >
+            <form
+              className="space-y-6"
+              onSubmit={handleSubmit(onCategorySubmit)}
             >
-              {form}
-            </Tab.Panel>
-          ))}
+              <div>
+                <label className="block text-sm font-medium">
+                  {'نام دسته'}
+                </label>
+                <div className="mt-1">
+                  <input
+                    type="text"
+                    {...register('category', {
+                      required: 'نام دسته اجباری است',
+                    })}
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <small className="text-red-500">
+                  {errors.category?.message}
+                </small>
+              </div>
+              <div>
+                <Button
+                  icon="forward"
+                  type="submit"
+                  variant="contained"
+                  className="w-full bg-primary hover:bg-links"
+                >
+                  {'ذخیره'}
+                </Button>
+              </div>
+            </form>
+          </Tab.Panel>
+          <Tab.Panel
+            key={1}
+            className={classNames(
+              'rounded-xl bg-white p-3',
+              'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2'
+            )}
+          >
+            <form
+              className="space-y-6"
+              onSubmit={handleSubmit(onCategorySubmit)}
+            >
+              <div>
+                <label className="block text-sm font-medium">
+                  {'نام زیردسته'}
+                </label>
+                <div className="mt-1">
+                  <input
+                    type="text"
+                    {...register('category', {
+                      required: 'نام دسته اجباری است',
+                    })}
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+                <small className="text-red-500">
+                  {errors.category?.message}
+                </small>
+              </div>
+              <div>
+                <Button
+                  icon="forward"
+                  type="submit"
+                  variant="contained"
+                  className="w-full bg-primary hover:bg-links"
+                >
+                  {'ذخیره'}
+                </Button>
+              </div>
+            </form>
+            {/* {form} */}
+          </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
     </div>

@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { routes } from './config/routes';
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('access_token')?.value;
+  const token = request.cookies.get('access_token');
   // console.log(token);
   // if (request.nextUrl.pathname === routes.protected.Logout) {
   //   if (token) {
@@ -22,5 +22,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin', '/auth/:path*'],
+  matcher: ['/admin/:path*', '/auth/:path*'],
 };

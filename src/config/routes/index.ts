@@ -9,6 +9,7 @@ export const routes = {
   protected: {
     Login: '/auth/login',
     Register: '/auth/register',
+    Logout: '/auth/logout',
   },
   public: {
     Home: '/',

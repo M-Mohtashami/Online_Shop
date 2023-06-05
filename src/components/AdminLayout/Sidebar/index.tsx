@@ -13,15 +13,45 @@ import {
 } from '@heroicons/react/outline';
 import { BsArrowRight } from 'react-icons/bs';
 import Link from 'next/link';
+import { routes } from '@/config/routes';
+import Cookies from 'universal-cookie';
+import { logoutServices } from '@/api/services/logoutServices';
+import { useRouter } from 'next/router';
 
 const navigation = [
-  { name: 'داشبورد', href: '#', icon: HomeIcon, current: true },
+  {
+    name: 'داشبورد',
+    href: routes.private.Admin,
+    icon: HomeIcon,
+    current: true,
+  },
   { name: 'پروفایل', href: '#', icon: UsersIcon, current: false },
-  { name: 'محصولات', href: '#', icon: FolderIcon, current: false },
-  { name: 'دسته‌بندی', href: '#', icon: CalendarIcon, current: false },
-  { name: 'سفارشات', href: '#', icon: InboxIcon, current: false },
-  { name: 'خروج', href: '#', icon: BsArrowRight, current: false },
+  {
+    name: 'محصولات',
+    href: routes.private.Product,
+    icon: FolderIcon,
+    current: false,
+  },
+  {
+    name: 'دسته‌بندی',
+    href: routes.private.Categories,
+    icon: CalendarIcon,
+    current: false,
+  },
+  {
+    name: 'سفارشات',
+    href: routes.private.Payment,
+    icon: InboxIcon,
+    current: false,
+  },
+  {
+    name: 'خروج',
+    href: routes.protected.Logout,
+    icon: BsArrowRight,
+    current: false,
+  },
 ];
+const cookie = new Cookies();
 
 const Sidebar = ({
   sidebarOpen,
@@ -30,6 +60,7 @@ const Sidebar = ({
   sidebarOpen: boolean;
   setSidebarOpen: (val: boolean) => void;
 }) => {
+  const router = useRouter();
   return (
     <>
       {' '}
@@ -97,6 +128,18 @@ const Sidebar = ({
                       <Link
                         key={item.name}
                         href={item.href}
+                        onClick={() => {
+                          console.log(item.href);
+
+                          if (item.href === routes.protected.Logout) {
+                            logoutServices().then((res) => {
+                              cookie.remove('access_token');
+                              cookie.remove('refresh_token');
+                              localStorage.removeItem('user_info');
+                              router.push('/');
+                            });
+                          }
+                        }}
                         className={classNames(
                           item.current
                             ? 'bg-slate-700 text-white'
@@ -141,6 +184,18 @@ const Sidebar = ({
                   <Link
                     key={item.name}
                     href={item.href}
+                    onClick={() => {
+                      console.log(item.href);
+
+                      if (item.href === routes.protected.Logout) {
+                        logoutServices().then((res) => {
+                          cookie.remove('access_token');
+                          cookie.remove('refresh_token');
+                          localStorage.removeItem('user_info');
+                          router.push('/');
+                        });
+                      }
+                    }}
                     className={classNames(
                       item.current
                         ? 'bg-gray-700 text-white'

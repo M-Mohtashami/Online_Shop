@@ -3,7 +3,7 @@ export const routes = {
     Admin: '/admin',
     Product: '/admin/products',
     Categories: '/admin/categories',
-    Payment: '/payment',
+    Payment: '/admin/payment',
     Logout: '/logout',
   },
   protected: {

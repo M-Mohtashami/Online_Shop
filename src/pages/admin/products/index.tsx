@@ -3,14 +3,15 @@ import { Tab } from '@headlessui/react';
 import { classNames } from '@/utils';
 import { NextPageWithLayout } from '@/interfaces/inretfaces';
 import AdminLayout from '@/layout/AdminLayout';
+import ProductTable from '@/components/Products/Tables/ProductTable';
 
 const Products: NextPageWithLayout = () => {
   let [categories] = useState(['محصولات', 'موجودی و قیمت‌ها']);
 
   return (
-    <div className="w-full max-w-md px-2 py-2 sm:px-0">
+    <div className="w-full px-2 py-2 sm:px-0 flex flex-col justify-start items-center">
       <Tab.Group>
-        <Tab.List className="flex space-x-1 rounded-xl bg-links/50 p-1">
+        <Tab.List className="w-full max-w-md flex space-x-1 rounded-xl bg-links/50 p-1">
           {categories.map((category) => (
             <Tab
               key={category}
@@ -36,7 +37,8 @@ const Products: NextPageWithLayout = () => {
               'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2'
             )}
           >
-            {'products'}
+            {/* product tabel */}
+            <ProductTable />
           </Tab.Panel>
           <Tab.Panel
             key={1}

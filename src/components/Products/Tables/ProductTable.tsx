@@ -22,7 +22,7 @@ type QueryType = {
   price: string;
 };
 
-const ProductTable = ({ products, categories, subcatecories }) => {
+const ProductTable = ({ products, categories }) => {
   const { page, per_page, total, total_pages } = products;
   const router = useRouter();
   const [selected, setSelected] = useState({
@@ -194,19 +194,10 @@ const ProductTable = ({ products, categories, subcatecories }) => {
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           <div className="text-gray-900">
-                            {
-                              categories.find(
-                                (category) => category._id === product.category
-                              ).name
-                            }
+                            {product.category.name}
                           </div>
                           <div className="text-gray-500">
-                            {
-                              subcatecories.find(
-                                (subcategory) =>
-                                  subcategory._id === product.subcategory
-                              ).name
-                            }
+                            {product.subcategory.name}
                           </div>
                         </td>
                         {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">

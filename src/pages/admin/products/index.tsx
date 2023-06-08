@@ -10,11 +10,7 @@ import getAllProductsSevices from '@/api/services/product/getAllProductsServices
 import getAllCategoryService from '@/api/services/category/getAllCategoryService';
 import getAllSubCategoryService from '@/api/services/category/getAllSubCategoryService';
 
-const Products: NextPageWithLayout = ({
-  products,
-  categoriesData,
-  subcatecories,
-}) => {
+const Products: NextPageWithLayout = ({ products, categoriesData }) => {
   let [categories] = useState(['محصولات', 'موجودی و قیمت‌ها']);
 
   return (
@@ -51,7 +47,6 @@ const Products: NextPageWithLayout = ({
               <ProductTable
                 products={products}
                 categories={categoriesData.data.categories}
-                subcatecories={subcatecories.data.subcategories}
               />
             )}
           </Tab.Panel>
@@ -90,13 +85,11 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         }`
   );
   const categories = await getAllCategoryService();
-  const subcategories = await getAllSubCategoryService();
 
   return {
     props: {
       products: products,
       categoriesData: categories,
-      subcatecories: subcategories,
     },
   };
 };

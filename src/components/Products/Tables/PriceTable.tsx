@@ -25,7 +25,6 @@ type QueryType = {
 const PriceTable = ({ products }) => {
   const { page, per_page, total, total_pages } = products;
   const router = useRouter();
-  const [query, setQuery] = useState('');
 
   useEffect(() => {
     router.push({
@@ -87,12 +86,11 @@ const PriceTable = ({ products }) => {
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <Combobox.Input
+                          <input
                             className="text-gray-900"
-                            defaultValue={Intl.NumberFormat('fa-IR').format(
+                            value={Intl.NumberFormat('fa-IR').format(
                               product.price
                             )}
-                            va
                             onChange={(e) => console.log(e.target.value)}
                           />
 

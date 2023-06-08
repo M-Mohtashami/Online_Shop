@@ -23,11 +23,11 @@ export default Orders;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const filterQuery = query.deliveryStatus
-    ? `?page=${query.page || 1}&limit=${query.limit || 4},${
-        query.createdAt || '-createdAt'
+    ? `?page=${query.page || 1}&limit=${query.limit || 4}&sort=${
+        query.sort || '-createdAt'
       }&deliveryStatus=${query.deliveryStatus}`
-    : `?page=${query.page || 1}&limit=${query.limit || 4},${
-        query.createdAt || '-createdAt'
+    : `?page=${query.page || 1}&limit=${query.limit || 4}&sort=${
+        query.sort || '-createdAt'
       }`;
   const orders = await getAllOrdersService(filterQuery);
   console.log(orders);

@@ -10,6 +10,7 @@ import {
   FiChevronsLeft,
   FiChevronsRight,
 } from 'react-icons/fi';
+import { FaSort } from 'react-icons/fa';
 
 const categories = [
   {
@@ -154,10 +155,24 @@ const OrdersTable = ({ orders }) => {
                         {'مجموع مبلغ'}
                       </th>
                       <th
+                        onClick={() => {
+                          console.log(router.query.sort);
+                          router.push({
+                            pathname: router.pathname,
+                            query: {
+                              ...router.query,
+                              sort:
+                                router.query?.sort === 'createdAt'
+                                  ? '-createdAt'
+                                  : 'createdAt',
+                            },
+                          });
+                        }}
                         scope="col"
-                        className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900"
+                        className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 flex gap-1 items-center cursor-pointer"
                       >
                         {'زمان ثبت سفارش'}
+                        <FaSort />
                       </th>
                       <th
                         scope="col"
@@ -188,8 +203,9 @@ const OrdersTable = ({ orders }) => {
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           <div className="text-gray-900">
-                            {Intl.DateTimeFormat('fa-IR').format(
-                              new Date(order.createdAt).getUTCDate()
+                            {new Date(order.createdAt).toLocaleDateString(
+                              'fa-IR',
+                              { year: 'numeric', month: 'long', day: 'numeric' }
                             )}
                           </div>
                         </td>

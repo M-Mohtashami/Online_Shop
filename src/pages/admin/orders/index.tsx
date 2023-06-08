@@ -2,17 +2,15 @@ import { ReactElement, useState } from 'react';
 import { NextPageWithLayout } from '@/interfaces/inretfaces';
 import AdminLayout from '@/layout/AdminLayout';
 import type { GetServerSideProps } from 'next';
-import getAllUsersService from '@/api/services/users/getAllUsersService';
-import instance from '@/lib/instance';
-import { useAllUsers } from '@/hooks/user/useAllUsers';
+import getAllOrdersService from '@/api/services/orders/getAllOrdersService';
+import OrdersTable from '@/components/orders/OrdersTable';
 
-const Orders: NextPageWithLayout = () => {
-  const { data, isSuccess } = useAllUsers({});
-  console.log(data);
+const Orders: NextPageWithLayout = ({ orders }) => {
+  console.log(orders);
 
   return (
-    <div className="w-full px-2 py-2 sm:px-0 flex flex-col justify-start items-start">
-      orders
+    <div className="w-full px-2 py-2 sm:px-0 flex flex-col justify-center items-center">
+      <OrdersTable orders={orders} />
     </div>
   );
 };
@@ -23,18 +21,17 @@ Orders.getLayout = (page: ReactElement) => {
 
 export default Orders;
 
-// export const getServerSideProps: GetServerSideProps = async ({
-//   query,
-//   req,
-// }) => {
-//   instance.defaults.headers.common[
-//     'Authorization'
-//   ] = `Bearer ${req.cookies.access_token}`;
-//   const users = await getAllUsersService();
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const orders = await getAllOrdersService(
+    `?page=${query.page || 1}&limit=${query.limit || 4},${
+      query.createdAt || '-createdAt'
+    }`
+  );
+  console.log(orders);
 
-//   return {
-//     props: {
-//       orders: users || null,
-//     },
-//   };
-// };
+  return {
+    props: {
+      orders: orders,
+    },
+  };
+};

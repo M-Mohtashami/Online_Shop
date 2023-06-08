@@ -1,6 +1,9 @@
+import { classNames } from '@/utils';
+import { Combobox } from '@headlessui/react';
+import { CheckIcon, SelectorIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -8,22 +11,128 @@ import {
   FiChevronsRight,
 } from 'react-icons/fi';
 
+const categories = [
+  {
+    _id: 'false',
+    name: 'سفارش های تحویل شده',
+  },
+  {
+    _id: 'true',
+    name: 'سفارش های در انتظار ارسال',
+  },
+];
+
 const OrdersTable = ({ orders }) => {
   const { page, per_page, total, total_pages } = orders;
   const router = useRouter();
+  const [selected, setSelected] = useState({
+    _id: '',
+    name: 'همه',
+  });
+  const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    router.push({
+      pathname: router.pathname,
+    });
+  }, []);
+
   return (
     <>
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="sm:flex sm:items-center sm:justify-between">
-          <div className="sm:flex-auto"></div>
-          <div className="mt-4 sm:mt-0 sm:flex-none">
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-            >
-              {'افزودن محصول'}
-            </button>
-          </div>
+        <div className="w-full sm:flex sm:items-center sm:justify-end">
+          <Combobox as="div" value={selected} onChange={setSelected}>
+            <div className="relative mt-1 flex gap-2 items-center">
+              <Combobox.Label className="w-full text-left">
+                {'فیلتر سفارش ها:'}
+              </Combobox.Label>
+              <Combobox.Input
+                className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+                onChange={(event) => setQuery(event.target.value)}
+                displayValue={(category) => category.name}
+              />
+              <Combobox.Button className="absolute inset-y-0 left-0 flex items-center rounded-r-md px-2 focus:outline-none">
+                <SelectorIcon
+                  className="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </Combobox.Button>
+
+              {categories.length > 0 && (
+                <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                  {[
+                    {
+                      _id: '',
+                      name: 'همه',
+                    },
+                    ...categories,
+                  ].map((category) => (
+                    <Combobox.Option
+                      key={category._id}
+                      value={category}
+                      onClick={(e) => {
+                        if (category._id === 'true') {
+                          router.push({
+                            pathname: router.pathname,
+                            query: {
+                              ...router.query,
+                              deliveryStatus: true,
+                            },
+                          });
+                        } else if (category._id === 'false') {
+                          router.push({
+                            pathname: router.pathname,
+                            query: {
+                              ...router.query,
+                              deliveryStatus: false,
+                            },
+                          });
+                        } else {
+                          router.push({
+                            pathname: router.pathname,
+                            query: '',
+                          });
+                        }
+                      }}
+                      className={({ active }) =>
+                        classNames(
+                          'relative cursor-default select-none py-2 pl-8 pr-4',
+                          active ? 'bg-indigo-600 text-white' : 'text-gray-900'
+                        )
+                      }
+                    >
+                      {({ active, selected }) => (
+                        <>
+                          <span
+                            className={classNames(
+                              'block truncate',
+                              selected ? 'font-semibold' : ''
+                            )}
+                          >
+                            {category.name}
+                          </span>
+
+                          {selected && (
+                            <span
+                              className={classNames(
+                                'absolute inset-y-0 left-0 flex items-center pl-1.5',
+                                active ? 'text-white' : 'text-indigo-600'
+                              )}
+                            >
+                              <CheckIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          )}
+                        </>
+                      )}
+                    </Combobox.Option>
+                  ))}
+                </Combobox.Options>
+              )}
+            </div>
+          </Combobox>
         </div>
         <div className="mt-8 flex flex-col">
           <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">

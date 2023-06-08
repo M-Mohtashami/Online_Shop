@@ -22,11 +22,14 @@ Orders.getLayout = (page: ReactElement) => {
 export default Orders;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const orders = await getAllOrdersService(
-    `?page=${query.page || 1}&limit=${query.limit || 4},${
-      query.createdAt || '-createdAt'
-    }`
-  );
+  const filterQuery = query.deliveryStatus
+    ? `?page=${query.page || 1}&limit=${query.limit || 4},${
+        query.createdAt || '-createdAt'
+      }&deliveryStatus=${query.deliveryStatus}`
+    : `?page=${query.page || 1}&limit=${query.limit || 4},${
+        query.createdAt || '-createdAt'
+      }`;
+  const orders = await getAllOrdersService(filterQuery);
   console.log(orders);
 
   return {

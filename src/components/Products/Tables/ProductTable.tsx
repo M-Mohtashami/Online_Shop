@@ -1,20 +1,42 @@
+import { thumbnails } from '@/config/variable';
+import { classNames } from '@/utils';
+import { Combobox, Transition } from '@headlessui/react';
+import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
+import { Fragment, useState, useEffect } from 'react';
 
-const people = [
-  {
-    name: 'Lindsay Walton',
-    title: 'Front-end Developer',
-    department: 'Optimization',
-    email: 'lindsay.walton@example.com',
-    role: 'Member',
-    image:
-      'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  // More people...
-];
-const ProductTable = () => {
+import {
+  FiChevronsLeft,
+  FiChevronsRight,
+  FiChevronLeft,
+  FiChevronRight,
+} from 'react-icons/fi';
+
+type QueryType = {
+  page: number;
+  per_page: number;
+  fields: string;
+  createdAt: string;
+  price: string;
+};
+
+const ProductTable = ({ products, categories, subcatecories }) => {
+  const { page, per_page, total, total_pages } = products;
+  const router = useRouter();
+  const [selected, setSelected] = useState({
+    _id: '',
+    name: 'دسته‌بندی',
+  });
+  const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    router.push({
+      pathname: router.pathname,
+    });
+  }, []);
+
   return (
     <>
       <div className="px-4 sm:px-6 lg:px-8">
@@ -32,10 +54,16 @@ const ProductTable = () => {
         <div className="mt-8 flex flex-col">
           <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-              <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+              <div className="overflow-hidden ring-1 ring-black ring-opacity-5 md:rounded-lg">
                 <table className="min-w-full divide-y divide-gray-300">
                   <thead className="bg-gray-50">
                     <tr>
+                      <th
+                        scope="col"
+                        className="py-3.5 pl-4 pr-3 text-right text-sm font-semibold text-gray-900 sm:pl-6"
+                      >
+                        {'تصویر'}
+                      </th>
                       <th
                         scope="col"
                         className="py-3.5 pl-4 pr-3 text-right text-sm font-semibold text-gray-900 sm:pl-6"
@@ -46,7 +74,89 @@ const ProductTable = () => {
                         scope="col"
                         className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900"
                       >
-                        {'دسته‌بندی'}
+                        <Combobox
+                          as="div"
+                          value={selected}
+                          onChange={setSelected}
+                        >
+                          <div className="relative mt-1">
+                            <Combobox.Input
+                              className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+                              onChange={(event) => setQuery(event.target.value)}
+                              displayValue={(category) => category.name}
+                            />
+                            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
+                              <SelectorIcon
+                                className="h-5 w-5 text-gray-400"
+                                aria-hidden="true"
+                              />
+                            </Combobox.Button>
+
+                            {categories.length > 0 && (
+                              <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                {[
+                                  {
+                                    _id: '',
+                                    name: 'دسته‌بندی',
+                                  },
+                                  ...categories,
+                                ].map((category) => (
+                                  <Combobox.Option
+                                    key={category._id}
+                                    value={category}
+                                    onClick={(e) => {
+                                      router.push({
+                                        pathname: router.pathname,
+                                        query: {
+                                          ...router.query,
+                                          category: category._id,
+                                        },
+                                      });
+                                    }}
+                                    className={({ active }) =>
+                                      classNames(
+                                        'relative cursor-default select-none py-2 pl-8 pr-4',
+                                        active
+                                          ? 'bg-indigo-600 text-white'
+                                          : 'text-gray-900'
+                                      )
+                                    }
+                                  >
+                                    {({ active, selected }) => (
+                                      <>
+                                        <span
+                                          className={classNames(
+                                            'block truncate',
+                                            selected && 'font-semibold'
+                                          )}
+                                        >
+                                          {category.name}
+                                        </span>
+
+                                        {selected && (
+                                          <span
+                                            className={classNames(
+                                              'absolute inset-y-0 left-0 flex items-center pl-1.5',
+                                              active
+                                                ? 'text-white'
+                                                : 'text-indigo-600'
+                                            )}
+                                          >
+                                            <CheckIcon
+                                              className="h-5 w-5"
+                                              aria-hidden="true"
+                                            />
+                                          </span>
+                                        )}
+                                      </>
+                                    )}
+                                  </Combobox.Option>
+                                ))}
+                              </Combobox.Options>
+                            )}
+                          </div>
+                        </Combobox>
+                        {/* {'دسته‌بندی'} */}
                       </th>
                       <th
                         scope="col"
@@ -57,31 +167,46 @@ const ProductTable = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {people.map((person) => (
-                      <tr key={person.email}>
+                    {products.data.products.map((product) => (
+                      <tr key={product._id}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                           <div className="flex items-center">
                             <div className="h-10 w-10 flex-shrink-0">
                               <img
-                                className="h-10 w-10 rounded-full"
-                                src={person.image}
+                                className="h-10 w-10 rounded-md"
+                                src={thumbnails + product.thumbnail}
                                 alt=""
                               />
                             </div>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                          <div className="flex items-center">
                             <div className="ml-4">
                               <div className="font-medium text-gray-900">
-                                {person.name}
+                                {product.name}
                               </div>
-                              <div className="text-gray-500">
+                              {/* <div className="text-gray-500">
                                 {person.email}
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <div className="text-gray-900">{person.title}</div>
+                          <div className="text-gray-900">
+                            {
+                              categories.find(
+                                (category) => category._id === product.category
+                              ).name
+                            }
+                          </div>
                           <div className="text-gray-500">
-                            {person.department}
+                            {
+                              subcatecories.find(
+                                (subcategory) =>
+                                  subcategory._id === product.subcategory
+                              ).name
+                            }
                           </div>
                         </td>
                         {/* <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
@@ -120,86 +245,104 @@ const ProductTable = () => {
         </div>
       </div>
       {/* pagination section */}
-      <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-        <div className="flex-1 flex justify-between sm:hidden">
-          <a
-            href="#"
-            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-          >
-            Previous
-          </a>
-          <a
-            href="#"
-            className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-          >
-            Next
-          </a>
-        </div>
-        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-          <div>
-            <nav
-              className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
-              aria-label="Pagination"
-            >
-              <a
-                href="#"
-                className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-              >
-                <span className="sr-only">Previous</span>
-                <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-              </a>
-              {/* Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" */}
-              <a
-                href="#"
-                aria-current="page"
-                className="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-              >
-                1
-              </a>
-              <a
-                href="#"
-                className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-              >
-                2
-              </a>
-              <a
-                href="#"
-                className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"
-              >
-                3
-              </a>
-              <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-                ...
-              </span>
-              <a
-                href="#"
-                className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"
-              >
-                8
-              </a>
-              <a
-                href="#"
-                className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-              >
-                9
-              </a>
-              <a
-                href="#"
-                className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-              >
-                10
-              </a>
-              <a
-                href="#"
-                className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-              >
-                <span className="sr-only">Next</span>
+      <div className="mt-4 flex items-center gap-2">
+        <button
+          className="border rounded p-1"
+          onClick={(e) => {
+            router.push({
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                page: 1,
+              },
+            });
+          }}
+        >
+          <FiChevronsRight />
+        </button>
+        <button
+          className="border rounded p-1"
+          onClick={(e) => {
+            if (page - 1 >= 1) {
+              router.push({
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  page: page - 1,
+                },
+              });
+            }
+          }}
+        >
+          <FiChevronRight />
+        </button>
+        <span className="flex items-center gap-1">
+          <input
+            value={page}
+            type="number"
+            className="border px-1 rounded w-10 text-center"
+            onChange={(e) => {
+              if (+e.target.value <= total_pages && +e.target.value >= 1) {
+                router.push({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    page: +e.target.value,
+                  },
+                });
+              }
+            }}
+          />
+        </span>
+        <button
+          className="border rounded p-1"
+          onClick={(e) => {
+            if (page + 1 <= total_pages) {
+              router.push({
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  page: page + 1,
+                },
+              });
+            }
+          }}
+        >
+          <FiChevronLeft />
+        </button>
+        <button
+          className="border rounded p-1"
+          onClick={(e) => {
+            router.push({
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                page: total_pages,
+              },
+            });
+          }}
+        >
+          <FiChevronsLeft />
+        </button>
 
-                <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-              </a>
-            </nav>
-          </div>
-        </div>
+        <select
+          onChange={(e) => {
+            router.push({
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                page: 1,
+                limit: +e.target.value,
+              },
+            });
+          }}
+        >
+          {[5, 10, 20, 50].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              {'تعداد:'} {pageSize}
+            </option>
+          ))}
+        </select>
       </div>
     </>
   );

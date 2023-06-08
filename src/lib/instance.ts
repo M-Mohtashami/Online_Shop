@@ -31,9 +31,15 @@ instance.interceptors.response.use(
     // console.log("config", config);
     if (error.response.status === 401 && !config.sent) {
       config.sent = true;
-      if (config.url !== '/auth/token' && config.url !== '/auth/login') {
+      if (
+        config.url !== '/auth/token' &&
+        config.url !== '/auth/login' &&
+        config.url !== '/auth/logout'
+      ) {
         const refreshToken = cookie.get('refresh_token');
         instance.post('/auth/token', { refreshToken }).then((res) => {
+          console.log(res);
+
           const accessToken = res.data.token.accessToken;
           cookie.set('access_token', accessToken);
           // cookie.set("refreshToken", res.data.refreshToken);

@@ -1,13 +1,15 @@
 import { ReactElement, useState } from 'react';
-import { Tab } from '@headlessui/react';
-import { classNames } from '@/utils';
 import { NextPageWithLayout } from '@/interfaces/inretfaces';
 import AdminLayout from '@/layout/AdminLayout';
-import ProductTable from '@/components/Products/Tables/ProductTable';
-import PriceTable from '@/components/Products/Tables/PriceTable';
 import type { GetServerSideProps } from 'next';
+import getAllUsersService from '@/api/services/users/getAllUsersService';
+import instance from '@/lib/instance';
+import { useAllUsers } from '@/hooks/user/useAllUsers';
 
 const Orders: NextPageWithLayout = () => {
+  const { data, isSuccess } = useAllUsers({});
+  console.log(data);
+
   return (
     <div className="w-full px-2 py-2 sm:px-0 flex flex-col justify-start items-start">
       orders
@@ -21,26 +23,18 @@ Orders.getLayout = (page: ReactElement) => {
 
 export default Orders;
 
-// export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-//   console.log(query);
-
-//   const products = await getAllProductsSevices(
-//     query.category
-//       ? `?page=${query.page || 1}&limit=${query.limit || 5}&sort=${
-//           query.sort || ''
-//         }&category=${query.category}`
-//       : `?page=${query.page || 1}&limit=${query.limit || 5}&sort=${
-//           query.sort || ''
-//         }`
-//   );
-//   const categories = await getAllCategoryService();
-//   const subcategories = await getAllSubCategoryService();
+// export const getServerSideProps: GetServerSideProps = async ({
+//   query,
+//   req,
+// }) => {
+//   instance.defaults.headers.common[
+//     'Authorization'
+//   ] = `Bearer ${req.cookies.access_token}`;
+//   const users = await getAllUsersService();
 
 //   return {
 //     props: {
-//       products: products,
-//       categoriesData: categories,
-//       subcatecories: subcategories,
+//       orders: users || null,
 //     },
 //   };
 // };

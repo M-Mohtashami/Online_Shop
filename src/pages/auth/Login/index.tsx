@@ -9,6 +9,10 @@ import { z } from 'zod';
 import useLogin from '@/hooks/useLogin';
 import { useRouter } from 'next/router';
 import { routes } from '@/config/routes';
+import getAllCategoryService from '@/api/services/category/getAllCategoryService';
+import getAllSubCategoryService from '@/api/services/category/getAllSubCategoryService';
+import { GetServerSideProps } from 'next';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const schema = z.object({
   username: z.string().nonempty('نام کاربری نباید خالی باشد'),
@@ -31,6 +35,7 @@ const Login: NextPageWithLayout = () => {
   const { mutate: loginMutate, isSuccess } = useLogin({});
   const onSubmit: SubmitHandler<LoginValues> = (data) => {
     loginMutate(data);
+    router.push(routes.private.Admin);
     reset();
   };
   useEffect(() => {
@@ -137,7 +142,25 @@ const Login: NextPageWithLayout = () => {
 };
 
 export default Login;
-
+const queryClient = new QueryClient();
 Login.getLayout = (page: ReactElement) => {
-  return <MainLayout>{page}</MainLayout>;
+  const { props } = page;
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <MainLayout {...props} />
+    </QueryClientProvider>
+  );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const categories = await getAllCategoryService();
+  const subCategories = await getAllSubCategoryService();
+
+  return {
+    props: {
+      categories: categories,
+      subcategories: subCategories,
+    },
+  };
 };

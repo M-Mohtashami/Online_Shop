@@ -53,5 +53,6 @@ instance.interceptors.response.use(
         location.href = routes.protected.Login;
       }
     }
+    return error.response;
   }
 );

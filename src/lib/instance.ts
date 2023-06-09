@@ -46,7 +46,7 @@ instance.interceptors.response.use(
           config.headers.Authorization = 'Bearer ' + accessToken;
           return instance(config);
         });
-      } else if (config.url === '/auth/token') {
+      } else if (config.url === '/auth/token' && config.url !== '/auth/login') {
         cookie.remove('access_token');
         cookie.remove('refresh_token');
         localStorage.removeItem('user_info');

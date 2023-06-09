@@ -137,7 +137,13 @@ const Sidebar = ({
                               cookie.remove('refresh_token');
                               localStorage.removeItem('user_info');
                               console.log('logout');
-                              // router.push('/');
+                              router.push('/');
+                            }).catch(err=>{
+                              console.log(err)
+                              cookie.remove('access_token');
+                              cookie.remove('refresh_token');
+                              localStorage.removeItem('user_info');
+                              router.push('/');
                             });
                           }
                         }}

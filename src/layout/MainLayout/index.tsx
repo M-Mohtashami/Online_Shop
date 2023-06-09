@@ -1,7 +1,6 @@
 import MainFooter from '@/components/MainLayout/MainFooter';
 import MainHeader from '@/components/MainLayout/MainHeader';
 import { LayoutProps } from '@/interfaces/inretfaces';
-import { ToastContainer } from 'react-toastify';
 import React from 'react';
 
 const MainLayout = ({ children }: LayoutProps) => {
@@ -18,20 +17,6 @@ const MainLayout = ({ children }: LayoutProps) => {
         categories={props.categories}
         subcategories={props.subcategories}
       />
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-      {/* Same as */}
-      <ToastContainer />
     </div>
   );
 };

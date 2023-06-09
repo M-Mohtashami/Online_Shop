@@ -1,5 +1,5 @@
 import { classNames } from '@/utils';
-import React from 'react';
+import React, { useState } from 'react';
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import {
@@ -60,6 +60,7 @@ const Sidebar = ({
   sidebarOpen: boolean;
   setSidebarOpen: (val: boolean) => void;
 }) => {
+  const [activeTab, setActiveTab] = useState(navigation[0].name);
   const router = useRouter();
   return (
     <>
@@ -130,25 +131,19 @@ const Sidebar = ({
                         href={item.href}
                         onClick={() => {
                           console.log(item.href);
+                          setActiveTab(item.name);
+                          item.current = true;
 
                           if (item.href === routes.protected.Logout) {
-                            logoutServices().then((res) => {
-                              cookie.remove('access_token');
-                              cookie.remove('refresh_token');
-                              localStorage.removeItem('user_info');
-                              console.log('logout');
-                              router.push('/');
-                            }).catch(err=>{
-                              console.log(err)
-                              cookie.remove('access_token');
-                              cookie.remove('refresh_token');
-                              localStorage.removeItem('user_info');
-                              router.push('/');
-                            });
+                            logoutServices();
+                            cookie.remove('access_token');
+                            cookie.remove('refresh_token');
+                            localStorage.removeItem('user_info');
+                            router.push('/');
                           }
                         }}
                         className={classNames(
-                          item.current
+                          activeTab === item.name
                             ? 'bg-slate-700 text-white'
                             : 'text-gray-300 hover:bg-links hover:text-white',
                           'group flex items-center gap-3 px-2 py-2 text-base font-medium rounded-md'

@@ -37,7 +37,7 @@ const MainHeader = ({ categories, subcategories }) => {
           <Link href="/" className="flex">
             <span className="sr-only">Workflow</span>
             <img
-              className="h-12 w-auto sm:h-16"
+              className="h-8 w-auto sm:h-10"
               src="/assets/images/site_icon.png"
               alt=""
             />
@@ -50,7 +50,7 @@ const MainHeader = ({ categories, subcategories }) => {
           </Popover.Button>
         </div>
         <div className="hidden md:flex-1 md:flex md:items-center md:justify-between">
-          <Popover.Group as="nav" className="flex gap-10">
+          <Popover.Group as="nav" className="flex self-end gap-10">
             <Popover>
               {({ open }) => (
                 <div

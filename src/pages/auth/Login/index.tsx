@@ -13,6 +13,10 @@ import getAllCategoryService from '@/api/services/category/getAllCategoryService
 import getAllSubCategoryService from '@/api/services/category/getAllSubCategoryService';
 import { GetServerSideProps } from 'next';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Cookies from 'universal-cookie';
+import { toast } from 'react-toastify';
+
+const cookie = new Cookies();
 
 const schema = z.object({
   username: z.string().nonempty('نام کاربری نباید خالی باشد'),
@@ -25,6 +29,8 @@ const Login: NextPageWithLayout = () => {
     handleSubmit,
     reset,
     formState: { errors },
+    setError,
+    clearErrors,
   } = useForm({
     defaultValues: {
       username: '',
@@ -32,19 +38,31 @@ const Login: NextPageWithLayout = () => {
     },
     resolver: zodResolver(schema),
   });
-  const { mutate: loginMutate, isSuccess } = useLogin({});
+  const { mutate: loginMutate, isSuccess } = useLogin({
+    onSuccess(data: any) {
+      console.log(data);
+      if (data.status === 'success') {
+        const token = data.token;
+        cookie.set('access_token', token.accessToken);
+        cookie.set('refresh_token', token.refreshToken);
+        localStorage.setItem('user_info', JSON.stringify(data.data.user));
+        router.push(routes.private.Admin);
+      } else if (data.status === 'fail') {
+        setError('root', { message: 'نام کاربری یا رمزعبور اشتباه است' });
+      }
+    },
+  });
   const onSubmit: SubmitHandler<LoginValues> = (data) => {
     loginMutate(data);
-    router.push(routes.private.Admin);
     reset();
   };
-  useEffect(() => {
-    console.log(isSuccess);
+  // useEffect(() => {
+  //   console.log(isSuccess);
 
-    if (isSuccess) {
-      router.push(routes.private.Admin);
-    }
-  }, [isSuccess]);
+  //   if (isSuccess) {
+  //     router.push(routes.private.Admin);
+  //   }
+  // }, [isSuccess]);
   return (
     <>
       <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 text-primary">
@@ -64,6 +82,7 @@ const Login: NextPageWithLayout = () => {
                 </label>
                 <div className="mt-1">
                   <input
+                    onClick={() => clearErrors('root')}
                     type="text"
                     {...register('username')}
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -79,6 +98,7 @@ const Login: NextPageWithLayout = () => {
                 </label>
                 <div className="mt-1">
                   <input
+                    onClick={() => clearErrors('root')}
                     type="password"
                     {...register('password')}
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -113,6 +133,7 @@ const Login: NextPageWithLayout = () => {
                   {'ورود'}
                 </Button>
               </div>
+              <small className="text-red-500">{errors.root?.message}</small>
             </form>
           </div>
           <div className="flex items-center justify-between">

@@ -5,11 +5,11 @@ import { routes } from './config/routes';
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token');
   // console.log(token);
-  // if (request.nextUrl.pathname === routes.protected.Logout) {
-  //   if (token) {
-  //     return NextResponse.redirect(new URL('/', request.url));
-  //   }
-  // }
+  if (request.nextUrl.pathname === routes.protected.Logout) {
+    if (token) {
+      return NextResponse.next();
+    }
+  }
   if (request.nextUrl.pathname.startsWith('/auth')) {
     if (token) return NextResponse.redirect(new URL('/admin', request.url));
   }

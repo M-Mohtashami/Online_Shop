@@ -2,6 +2,8 @@ import React from 'react';
 import { MenuAlt2Icon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { icons } from '@/config/variable';
+import { FaSignOutAlt } from 'react-icons/fa';
+import { routes } from '@/config/routes';
 
 const Header = ({ sidebarOpen }: { sidebarOpen: (val: boolean) => void }) => {
   return (
@@ -31,10 +33,10 @@ const Header = ({ sidebarOpen }: { sidebarOpen: (val: boolean) => void }) => {
               {'دسته‌بندی جدید'}
             </Link>
             <Link
-              href="/"
+              href={routes.protected.Logout}
               className="ml-4 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
             >
-              {icons.forward('')}
+              <FaSignOutAlt className="rotate-180" />
             </Link>
           </div>
         </div>

@@ -32,12 +32,6 @@ const OrdersTable = ({ orders }) => {
   });
   const [query, setQuery] = useState('');
 
-  useEffect(() => {
-    router.push({
-      pathname: router.pathname,
-    });
-  }, []);
-
   return (
     <>
       <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -48,7 +42,7 @@ const OrdersTable = ({ orders }) => {
                 {'فیلتر سفارش ها:'}
               </Combobox.Label>
               <Combobox.Input
-                className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+                className="w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
                 onChange={(event) => setQuery(event.target.value)}
                 displayValue={(category) => category.name}
               />
@@ -210,14 +204,22 @@ const OrdersTable = ({ orders }) => {
                           </div>
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          <Link
-                            href="#"
-                            className="text-indigo-600 hover:text-indigo-900 "
-                          >
-                            <span className="inline-flex rounded-lg py-1 ml-2 bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-                              {'بررسی سفارش'}
+                          {order.deliveryStatus ? (
+                            <Link
+                              href="#"
+                              className="text-indigo-600 hover:text-indigo-900 "
+                            >
+                              <span className="inline-flex rounded-lg py-1 ml-2 bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
+                                {'بررسی سفارش'}
+                              </span>
+                            </Link>
+                          ) : (
+                            <span className="text-indigo-600 hover:text-indigo-900 ">
+                              <span className="inline-flex rounded-lg py-1 ml-2 bg-gray-200 px-2 text-xs font-semibold leading-5 text-gray-800">
+                                {'تحویل شده'}
+                              </span>
                             </span>
-                          </Link>
+                          )}
                         </td>
                       </tr>
                     ))}

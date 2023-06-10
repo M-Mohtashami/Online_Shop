@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useMemo, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import { classNames } from '@/utils';
 import { NextPageWithLayout } from '@/interfaces/inretfaces';
@@ -8,23 +8,34 @@ import PriceTable from '@/components/Products/Tables/PriceTable';
 import type { GetServerSideProps } from 'next';
 import getAllProductsSevices from '@/api/services/product/getAllProductsServices';
 import getAllCategoryService from '@/api/services/category/getAllCategoryService';
-import getAllSubCategoryService from '@/api/services/category/getAllSubCategoryService';
+import { useRouter } from 'next/router';
 
 const Products: NextPageWithLayout = ({ products, categoriesData }) => {
+  const router = useRouter();
   let [categories] = useState(['محصولات', 'موجودی و قیمت‌ها']);
+  const [currentTab, setCurrentTab] = useState(+router.query.tab! || 0);
 
   return (
     <div className="w-full px-2 py-2 sm:px-0 flex flex-col justify-start items-start">
-      <Tab.Group>
+      <Tab.Group
+        defaultIndex={currentTab}
+        onChange={(currentTab) => {
+          setCurrentTab(currentTab);
+          router.push({
+            pathname: router.pathname,
+            query: { tab: currentTab },
+          });
+        }}
+      >
         <Tab.List className="w-full self-center max-w-md flex space-x-1 rounded-xl bg-links/50 p-1">
-          {categories.map((category) => (
+          {categories.map((category, idx) => (
             <Tab
               key={category}
-              className={({ selected }) =>
+              className={() =>
                 classNames(
                   'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-primary',
                   'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-                  selected
+                  currentTab === idx
                     ? 'bg-white shadow'
                     : 'text-links hover:bg-white/[0.12] hover:text-secondery'
                 )

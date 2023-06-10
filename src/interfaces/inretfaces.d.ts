@@ -2,9 +2,13 @@ import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactNode } from 'react';
 
-type NextPageWithLayout = NextPage & {
-  getLayout?: (page: React.ReactElement) => React.ReactNode;
-};
+type NextPageWithLayout =
+  | (NextPage & {
+      getLayout?: (page: React.ReactElement) => React.ReactNode;
+    })
+  | {
+      [key: string]: any;
+    };
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;

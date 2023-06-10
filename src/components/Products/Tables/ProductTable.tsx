@@ -14,14 +14,6 @@ import {
   FiChevronRight,
 } from 'react-icons/fi';
 
-type QueryType = {
-  page: number;
-  per_page: number;
-  fields: string;
-  createdAt: string;
-  price: string;
-};
-
 const ProductTable = ({ products, categories }) => {
   const { page, per_page, total, total_pages } = products;
   const router = useRouter();
@@ -30,12 +22,6 @@ const ProductTable = ({ products, categories }) => {
     name: 'دسته‌بندی',
   });
   const [query, setQuery] = useState('');
-
-  useEffect(() => {
-    router.push({
-      pathname: router.pathname,
-    });
-  }, []);
 
   return (
     <>
@@ -105,13 +91,25 @@ const ProductTable = ({ products, categories }) => {
                                     key={category._id}
                                     value={category}
                                     onClick={(e) => {
-                                      router.push({
-                                        pathname: router.pathname,
-                                        query: {
-                                          ...router.query,
-                                          category: category._id,
-                                        },
-                                      });
+                                      if (category._id != '') {
+                                        router.push({
+                                          pathname: router.pathname,
+                                          query: {
+                                            ...router.query,
+                                            category: category._id,
+                                          },
+                                        });
+                                      } else {
+                                        const { pathname, query } = router;
+                                        const params = new URLSearchParams(
+                                          query
+                                        );
+                                        params.delete('category');
+                                        router.replace({
+                                          pathname: pathname,
+                                          query: params.toString(),
+                                        });
+                                      }
                                     }}
                                     className={({ active }) =>
                                       classNames(
@@ -309,6 +307,7 @@ const ProductTable = ({ products, categories }) => {
         </button>
 
         <select
+          value={per_page}
           onChange={(e) => {
             router.push({
               pathname: router.pathname,
@@ -320,11 +319,13 @@ const ProductTable = ({ products, categories }) => {
             });
           }}
         >
-          {[5, 10, 20, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              {'تعداد:'} {pageSize}
-            </option>
-          ))}
+          {Array.from(new Set([per_page, 5, 10, 20, 50]))
+            .sort((a, b) => a - b)
+            .map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                {'تعداد:'} {pageSize}
+              </option>
+            ))}
         </select>
       </div>
     </>

@@ -312,6 +312,7 @@ const OrdersTable = ({ orders }) => {
         </button>
 
         <select
+         value={per_page}
           onChange={(e) => {
             router.push({
               pathname: router.pathname,
@@ -323,7 +324,8 @@ const OrdersTable = ({ orders }) => {
             });
           }}
         >
-          {[5, 10, 20, 50].map((pageSize) => (
+          {Array.from(new Set([per_page, 5, 10, 20, 50]))
+            .sort((a, b) => a - b).map((pageSize) => (
             <option key={pageSize} value={pageSize}>
               {'تعداد:'} {pageSize}
             </option>

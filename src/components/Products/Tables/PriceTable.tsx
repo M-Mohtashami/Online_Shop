@@ -26,12 +26,6 @@ const PriceTable = ({ products }) => {
   const { page, per_page, total, total_pages } = products;
   const router = useRouter();
 
-  useEffect(() => {
-    router.push({
-      pathname: router.pathname,
-    });
-  }, []);
-
   return (
     <>
       <form className="px-4 sm:px-6 lg:px-8">
@@ -195,6 +189,7 @@ const PriceTable = ({ products }) => {
         </button>
 
         <select
+          value={per_page}
           onChange={(e) => {
             router.push({
               pathname: router.pathname,
@@ -206,11 +201,13 @@ const PriceTable = ({ products }) => {
             });
           }}
         >
-          {[5, 10, 20, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              {'تعداد:'} {pageSize}
-            </option>
-          ))}
+          {Array.from(new Set([per_page, 5, 10, 20, 50]))
+            .sort((a, b) => a - b)
+            .map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                {'تعداد:'} {pageSize}
+              </option>
+            ))}
         </select>
       </div>
     </>

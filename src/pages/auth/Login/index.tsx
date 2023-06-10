@@ -14,7 +14,6 @@ import getAllSubCategoryService from '@/api/services/category/getAllSubCategoryS
 import { GetServerSideProps } from 'next';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Cookies from 'universal-cookie';
-import { toast } from 'react-toastify';
 
 const cookie = new Cookies();
 
@@ -133,7 +132,11 @@ const Login: NextPageWithLayout = () => {
                   {'ورود'}
                 </Button>
               </div>
-              <small className="text-red-500">{errors.root?.message}</small>
+              {errors.root && (
+                <div className="text-red-500 w-full p-3 bg-red-500/20">
+                  <small>{errors.root?.message}</small>
+                </div>
+              )}
             </form>
           </div>
           <div className="flex items-center justify-between">

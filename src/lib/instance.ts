@@ -39,12 +39,18 @@ instance.interceptors.response.use(
         const refreshToken = cookie.get('refresh_token');
         instance.post('/auth/token', { refreshToken }).then((res) => {
           console.log(res);
-
-          const accessToken = res.data.token.accessToken;
-          cookie.set('access_token', accessToken);
-          // cookie.set("refreshToken", res.data.refreshToken);
-          config.headers.Authorization = 'Bearer ' + accessToken;
-          return instance(config);
+if (res.status === 200) {
+  const accessToken = res.data.token.accessToken;
+  cookie.set('access_token', accessToken);
+  // cookie.set("refreshToken", res.data.refreshToken);
+  config.headers.Authorization = 'Bearer ' + accessToken;
+  return instance(config);
+}else{
+  cookie.remove('access_token');
+  cookie.remove('refresh_token');
+  localStorage.removeItem('user_info');
+  location.href = routes.protected.Login;
+}
         });
       } else if (config.url === '/auth/token' && config.url !== '/auth/login') {
         cookie.remove('access_token');

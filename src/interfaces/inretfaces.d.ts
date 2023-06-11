@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactNode } from 'react';
+import { number } from 'zod';
 
 type NextPageWithLayout =
   | (NextPage & {
@@ -38,4 +39,70 @@ type CategoryType = {
 type SubCategoryType = {
   name: string;
   category: string;
+};
+
+type CategoryType = {
+  createdAt: string;
+  icon: string;
+  name: string;
+  slugname: string;
+  updatedAt: string;
+  __v: number;
+  _id: string;
+};
+
+type SubCategoryType = {
+  category: CategoryType;
+  createdAt: string;
+  name: string;
+  slugname: string;
+  updatedAt: string;
+  __v: number;
+  _id: string;
+};
+
+type RatingType = {
+  rate: number;
+  count: number;
+};
+
+type ProductType = {
+  _id: string;
+  category: CategoryType;
+  subcategory: SubCategoryType;
+  name: string;
+  price: number;
+  quantity: number;
+  brand: string;
+  description: string;
+  thumbnail: string;
+  images: string[];
+  rating: RatingTypes;
+  createdAt: string;
+  updatedAt: string;
+  slugname: string;
+  __v: number;
+};
+
+interface ProductProps {
+  products: {
+    status: string;
+    page: number;
+    per_page: number;
+    total: number;
+    total_pages: number;
+    data: {
+      products: ProductType[];
+    };
+  };
+  categoriesData: {
+    status: string;
+    page: number;
+    per_page: number;
+    total: number;
+    total_pages: number;
+    data: {
+      categories: CategoryType[];
+  };
+};
 };

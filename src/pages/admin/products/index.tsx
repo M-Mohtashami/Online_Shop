@@ -1,16 +1,19 @@
 import { ReactElement, useEffect, useMemo, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import { classNames } from '@/utils';
-import { NextPageWithLayout } from '@/interfaces/inretfaces';
+import { NextPageWithLayout, ProductProps } from '@/interfaces/inretfaces';
 import AdminLayout from '@/layout/AdminLayout';
-import ProductTable from '@/components/Products/Tables/ProductTable';
-import PriceTable from '@/components/Products/Tables/PriceTable';
+import ProductTable from '@/components/AdminPanel/Tables/ProductTable';
+import PriceTable from '@/components/AdminPanel/Tables/PriceTable';
 import type { GetServerSideProps } from 'next';
 import getAllProductsSevices from '@/api/services/product/getAllProductsServices';
 import getAllCategoryService from '@/api/services/category/getAllCategoryService';
 import { useRouter } from 'next/router';
 
-const Products: NextPageWithLayout = ({ products, categoriesData }) => {
+const Products: NextPageWithLayout = ({
+  products,
+  categoriesData,
+}: ProductProps) => {
   const router = useRouter();
   let [categories] = useState(['محصولات', 'موجودی و قیمت‌ها']);
   const [currentTab, setCurrentTab] = useState(+router.query.tab! || 0);

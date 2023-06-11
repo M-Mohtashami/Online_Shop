@@ -3,7 +3,7 @@ import { NextPageWithLayout } from '@/interfaces/inretfaces';
 import AdminLayout from '@/layout/AdminLayout';
 import type { GetServerSideProps } from 'next';
 import getAllOrdersService from '@/api/services/orders/getAllOrdersService';
-import OrdersTable from '@/components/orders/OrdersTable';
+import OrdersTable from '@/components/AdminPanel/Tables/OrdersTable';
 
 const Orders: NextPageWithLayout = ({ orders }) => {
   console.log(orders);

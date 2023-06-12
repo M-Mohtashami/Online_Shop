@@ -39,7 +39,10 @@ const ProductTable = ({ products, categories }: Props) => {
     name: 'دسته‌بندی',
   });
   const [query, setQuery] = useState('');
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<
+    ProductType | undefined
+  >();
 
   function closeModal() {
     setIsOpen(false);
@@ -233,23 +236,26 @@ const ProductTable = ({ products, categories }: Props) => {
                             </span>
                           </button>
                           <button
-                            onClick={openModal}
+                            onClick={() => {
+                              setSelectedProduct(product);
+                              openModal();
+                            }}
                             className="text-indigo-600 hover:text-indigo-900 "
                           >
                             <span className="inline-flex rounded-lg py-1 bg-red-100 px-2 text-xs font-semibold leading-5 text-secondery">
                               {'حذف'}
                             </span>
                           </button>
-                          <Delete
-                            product={product}
-                            closeModal={closeModal}
-                            open={isOpen}
-                          />
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
+                <Delete
+                  product={selectedProduct}
+                  closeModal={closeModal}
+                  open={isOpen}
+                />
               </div>
             </div>
           </div>

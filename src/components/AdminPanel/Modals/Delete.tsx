@@ -3,14 +3,17 @@ import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon, XIcon } from '@heroicons/react/outline';
 import { ProductType } from '@/interfaces/inretfaces';
 import deleteProductServices from '@/api/services/product/deleteProduct';
+import { useRouter } from 'next/router';
+import { routes } from '@/config/routes';
 
 type Props = {
-  product: ProductType;
+  product: ProductType | undefined;
   closeModal: () => void;
   open: boolean;
 };
 
 export default function Delete({ product, closeModal, open }: Props) {
+  const router = useRouter();
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -70,11 +73,12 @@ export default function Delete({ product, closeModal, open }: Props) {
                     as="h3"
                     className="text-lg leading-6 font-medium text-gray-900 truncate"
                   >
-                    {product.name}
+                    {product && product?.name}
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      {product.description.substring(0, 200) + '...'}
+                      {product &&
+                        product?.description.substring(0, 200) + '...'}
                     </p>
                   </div>
                 </div>
@@ -84,9 +88,17 @@ export default function Delete({ product, closeModal, open }: Props) {
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={() => {
-                    deleteProductServices(product._id).then((res) =>
-                      closeModal()
-                    );
+                    product &&
+                      deleteProductServices(product?._id).then((res) => {
+                        router.push({
+                          pathname: routes.private.Product,
+                          query: {
+                            tab: 0,
+                            ...router.query,
+                          },
+                        });
+                        closeModal();
+                      });
                   }}
                 >
                   {'حذف'}

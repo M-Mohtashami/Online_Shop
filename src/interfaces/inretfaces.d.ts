@@ -95,7 +95,7 @@ interface ProductProps {
       products: ProductType[];
     };
   };
-  categoriesData: {
+  categories: {
     status: string;
     page: number;
     per_page: number;
@@ -103,6 +103,16 @@ interface ProductProps {
     total_pages: number;
     data: {
       categories: CategoryType[];
+    };
   };
-};
+  subcategories: {
+    status: string;
+    page: number;
+    per_page: number;
+    total: number;
+    total_pages: number;
+    data: {
+      subcategories: SubCategoryType[];
+    };
+  };
 };

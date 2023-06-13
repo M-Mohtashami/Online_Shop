@@ -55,13 +55,7 @@ const Login: NextPageWithLayout = () => {
     loginMutate(data);
     reset();
   };
-  // useEffect(() => {
-  //   console.log(isSuccess);
 
-  //   if (isSuccess) {
-  //     router.push(routes.private.Admin);
-  //   }
-  // }, [isSuccess]);
   return (
     <>
       <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8 text-primary">

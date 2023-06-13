@@ -32,14 +32,14 @@ type LoginValues = {
   username: string;
   password: string;
 };
-type CategoryType = {
-  _id: string;
-  name: string;
-};
-type SubCategoryType = {
-  name: string;
-  category: string;
-};
+// type CategoryType = {
+//   _id: string;
+//   name: string;
+// };
+// type SubCategoryType = {
+//   name: string;
+//   category: string;
+// };
 
 type CategoryType = {
   createdAt: string;
@@ -52,7 +52,7 @@ type CategoryType = {
 };
 
 type SubCategoryType = {
-  category: CategoryType;
+  category: string;
   createdAt: string;
   name: string;
   slugname: string;

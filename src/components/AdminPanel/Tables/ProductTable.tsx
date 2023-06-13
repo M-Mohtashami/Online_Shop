@@ -68,8 +68,12 @@ const ProductTable = ({ products, categories }: Props) => {
           <div className="sm:flex-auto"></div>
           <div className="mt-4 sm:mt-0 sm:flex-none">
             <button
+              onClick={() => {
+                setSelectedProduct(undefined);
+                openAddModal();
+              }}
               type="button"
-              className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-links focus:outline-none focus:ring-2 focus:ring-links focus:ring-offset-2 sm:w-auto"
             >
               {'افزودن محصول'}
             </button>
@@ -103,9 +107,9 @@ const ProductTable = ({ products, categories }: Props) => {
                           value={selected}
                           onChange={setSelected}
                         >
-                          <div className="relative mt-1">
+                          <div className="relative mt-1 w-full max-w-52">
                             <Combobox.Input
-                              className="w-40 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+                              className="w-full max-w-52 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
                               onChange={(event) => setQuery(event.target.value)}
                               displayValue={(category: CategoryType) =>
                                 category.name
@@ -119,7 +123,7 @@ const ProductTable = ({ products, categories }: Props) => {
                             </Combobox.Button>
 
                             {categories.length > 0 && (
-                              <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                              <Combobox.Options className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                 {[
                                   {
                                     _id: '',

@@ -17,7 +17,9 @@ import getAllCategoryService from '@/api/services/category/getAllCategoryService
 import { useRouter } from 'next/router';
 import getAllSubCategoryService from '@/api/services/category/getAllSubCategoryService';
 
-export const ProductDataContext = createContext<ProductProps | null>(null);
+export const ProductDataContext = createContext<ProductProps | undefined>(
+  undefined
+);
 
 const Products: NextPageWithLayout = ({
   products,

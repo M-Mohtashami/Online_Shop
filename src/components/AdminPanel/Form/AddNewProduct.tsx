@@ -5,15 +5,24 @@ import { Combobox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon, XIcon } from '@heroicons/react/solid';
 import {
   CategoryType,
+  ProductFormType,
+  ProductProps,
   ProductType,
   SubCategoryType,
 } from '@/interfaces/inretfaces';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import dynamic from 'next/dynamic';
 import { modules } from '@/utils/QuillToolbar';
 import 'react-quill/dist/quill.snow.css';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useAddProduct } from '@/hooks/product/useAddProduct';
+import { useRouter } from 'next/router';
+import { useUpdateProduct } from '@/hooks/product/useUpdateProduct';
+import { TbEaseOutControlPoint } from 'react-icons/tb';
+import { on } from 'events';
 
 type Props = {
   product: ProductType | undefined;
@@ -21,19 +30,56 @@ type Props = {
   action: string;
 };
 
+const initProduct: ProductFormType = {
+  name: '',
+  brand: '',
+  price: 0,
+  quantity: 0,
+  category: '',
+  subcategory: '',
+  description: '',
+};
+
+const productSchema = z.object({
+  name: z
+    .string()
+    .min(5, { message: 'نام باید بیشتر از 5 حرف باشد' })
+    .nonempty({ message: 'لطفا نام محصول را وارد کنید' }),
+  brand: z
+    .string()
+    .min(3, { message: 'برند باید بیشتر از 3 حرف باشد' })
+    .max(10, { message: 'برند نباید بیشتر از 10 حرف باشد' })
+    .nonempty({ message: 'لطفا برند محصول را وارد کنید' }),
+  price: z.number().min(5000, { message: 'قیمت باید بیشتر از 5000 باشد' }),
+  quantity: z.number().min(1, { message: 'تعداد محصول را درست وارد کنید' }),
+  category: z.string().nonempty({ message: 'لطفا یک دسته‌انتخاب کنید' }),
+  subcategory: z.string().nonempty({ message: 'لطفا یک زیردسته‌انتخاب کنید' }),
+  description: z
+    .string()
+    .nonempty({ message: 'لطفا توضیحات محصول را وارد کنید' }),
+});
+
 const AddNewProduct = ({ action, product, closeModal }: Props) => {
   const ReactQuill = useMemo(
     () => dynamic(import('react-quill'), { ssr: false }),
     []
   );
   const { categories, subcategories } = useContext(ProductDataContext);
-
+  const router = useRouter();
+  // const [defaultProduct, setDefaultProduct] = useState(initProduct)
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+    setError,
+    clearErrors,
+    setValue,
+    control,
+  } = useForm<ProductFormType>({
+    defaultValues: initProduct,
+    resolver: zodResolver(productSchema),
+  });
 
   const [selectedCategory, setSelectedCategory] = useState(
     product
@@ -59,7 +105,7 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
       'image/png': ['.png'],
-      'image/webpe': ['.webpe'],
+      'image/webp': ['.webp'],
       'image/jpg': ['.jpg'],
       'image/jpeg': ['.jpeg'],
     },
@@ -74,13 +120,54 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
     },
   });
 
-  const [description, setDescription] = useState({ value: '' });
-  const handleDescription = (value: string) => {
-    setDescription({ value });
-  };
-
-  const onSubmit = (data) => {
+  const { mutate: addProduct } = useAddProduct({
+    onSuccess: (data) => {
+      closeModal();
+      router.push({
+        pathname: router.pathname,
+        query: router.query,
+      });
+      console.log(data);
+    },
+    onError: (err) => console.log(err),
+  });
+  const { mutate: updateProduct } = useUpdateProduct({
+    onSuccess: (data) => {
+      closeModal();
+      router.push({
+        pathname: router.pathname,
+        query: router.query,
+      });
+      console.log(data);
+    },
+    onError: (err) => console.log(err),
+  });
+  const onSubmit = (data: ProductFormType) => {
     console.log(data);
+    const categoryId = categories.data.categories.find(
+      (cat: CategoryType) => cat._id === selectedCategory._id
+    )._id;
+    const subcategoryId = subcategories.data.subcategories.find(
+      (subcat: SubCategoryType) => subcat._id === selectedSubCategory._id
+    )._id;
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('brand', data.brand);
+    formData.append('price', data.price.toString());
+    formData.append('quantity', data.quantity.toString());
+    formData.append('category', categoryId);
+    formData.append('subcategory', subcategoryId);
+    if (image.length > 0) {
+      for (const img of image) {
+        formData.append('images', img);
+      }
+      formData.append('thumbnail', image[0]);
+    }
+    formData.append('description', data.description);
+
+    action === 'ویرایش' && product
+      ? updateProduct({ id: product._id, data: formData })
+      : addProduct(formData);
   };
 
   useEffect(() => {
@@ -91,23 +178,50 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
     );
   }, [selectedCategory]);
 
+  useEffect(() => {
+    if (action === 'ویرایش' && product) {
+      setValue('name', product.name);
+      setValue('brand', product.brand);
+      setValue('price', product.price);
+      setValue('quantity', product.quantity);
+      setValue('category', product.category.name);
+      setValue('subcategory', product.subcategory.name);
+      setValue('description', product.description);
+    }
+  }, [action]);
+
   return (
-    <div className="mt-8">
+    <div className="mt-8 text-right">
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         {/* ورودی نام کالا */}
         <div>
-          <label className="block text-sm font-medium text-right">
-            {'نام کالا'}
-          </label>
+          <label className="block text-sm font-medium">{'نام کالا'}</label>
           <div className="mt-1">
             <input
               type="text"
-              value={product?.name}
-              {...register('productName', { required: true })}
+              {...register('name')}
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
-          {/* <small className="text-red-500">{errors?.productName?.message}</small> */}
+
+          <small className="text-red-500">
+            {errors?.name?.message?.toString()}
+          </small>
+        </div>
+        {/* ورودی برند کالا */}
+        <div>
+          <label className="block text-sm font-medium">{'برند کالا'}</label>
+          <div className="mt-1">
+            <input
+              type="text"
+              {...register('brand')}
+              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+
+          <small className="text-red-500">
+            {errors?.brand?.message?.toString()}
+          </small>
         </div>
         <div className="w-full flex gap-4 md:gap-8">
           {/* ورودی قیمت کالا */}
@@ -117,13 +231,14 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
             </label>
             <div className="mt-1">
               <input
-                value={product?.price}
                 type="text"
-                {...register('price', { required: true })}
+                {...register('price', { valueAsNumber: true })}
                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
-            {/* <small className="text-red-500">{errors?.price?.message}</small> */}
+            <small className="text-red-500">
+              {errors?.price?.message?.toString()}
+            </small>
           </div>
           {/* ورودی تعداد کالا */}
           <div className="w-1/2 ">
@@ -132,165 +247,167 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
             </label>
             <div className="mt-1">
               <input
-                value={product?.quantity}
                 type="number"
-                {...register('quantity', { required: true })}
+                {...register('quantity', { valueAsNumber: true })}
                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
-            {/* <small className="text-red-500">{errors?.quantity?.message}</small> */}
+            <small className="text-red-500">
+              {errors?.quantity?.message?.toString()}
+            </small>
           </div>
         </div>
         <div className="w-full flex justify-between gap-4">
           {/* ورودی دسته بندی کالا */}
-          <Combobox
-            as="div"
-            value={selectedCategory}
-            onChange={setSelectedCategory}
-          >
-            <div className="relative mt-1 w-full">
-              <Combobox.Input
-                className="w-full rounded-md border border-gray-300 bg-white py-2 pr-3 pl-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-                {...register('category')}
-                displayValue={(category: CategoryType) => category.name}
-              />
-              <Combobox.Button className="absolute inset-y-0 left-0 flex items-center rounded-r-md px-2 focus:outline-none">
-                <SelectorIcon
-                  className="h-5 w-5 text-gray-400"
-                  aria-hidden="true"
+          <div>
+            <Combobox
+              as="div"
+              value={selectedCategory}
+              onChange={setSelectedCategory}
+            >
+              <div className="relative mt-1 w-full">
+                <Combobox.Input
+                  className="w-full rounded-md border border-gray-300 bg-white py-2 pr-3 pl-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+                  {...register('category')}
+                  displayValue={(category: CategoryType) => category.name}
                 />
-              </Combobox.Button>
+                <Combobox.Button className="absolute inset-y-0 left-0 flex items-center rounded-r-md px-2 focus:outline-none">
+                  <SelectorIcon
+                    className="h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                </Combobox.Button>
 
-              {categories.data.categories.length > 0 && (
-                <Combobox.Options className="absolute z-10 mt-1 max-h-52 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm text-right">
-                  {categories.data.categories.map((category: CategoryType) => (
-                    <Combobox.Option
-                      key={category._id}
-                      value={category}
-                      // onClick={(e) => {
-                      //   if (category._id != '') {
-                      //     router.push({
-                      //       pathname: router.pathname,
-                      //       query: {
-                      //         ...router.query,
-                      //         category: category._id,
-                      //       },
-                      //     });
-                      //   } else {
-                      //     const { pathname, query } = router;
-                      //     const params = new URLSearchParams(query);
-                      //     params.delete('category');
-                      //     router.replace({
-                      //       pathname: pathname,
-                      //       query: params.toString(),
-                      //     });
-                      //   }
-                      // }}
-                      className={({ active }) =>
-                        classNames(
-                          'relative cursor-default select-none py-2 pl-8 pr-4',
-                          active ? 'bg-indigo-600 text-white' : 'text-gray-900'
-                        )
-                      }
-                    >
-                      {({ active, selected }) => (
-                        <>
-                          <span
-                            className={classNames(
-                              'block truncate',
-                              selected ? 'font-semibold' : ''
-                            )}
-                          >
-                            {category.name}
-                          </span>
+                {categories.data.categories.length > 0 && (
+                  <Combobox.Options className="absolute z-10 mt-1 max-h-52 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm text-right">
+                    {categories.data.categories.map(
+                      (category: CategoryType) => (
+                        <Combobox.Option
+                          key={category._id}
+                          value={category}
+                          className={({ active }) =>
+                            classNames(
+                              'relative cursor-default select-none py-2 pl-8 pr-4',
+                              active
+                                ? 'bg-indigo-600 text-white'
+                                : 'text-gray-900'
+                            )
+                          }
+                        >
+                          {({ active, selected }) => (
+                            <>
+                              <span
+                                className={classNames(
+                                  'block truncate',
+                                  selected ? 'font-semibold' : ''
+                                )}
+                              >
+                                {category.name}
+                              </span>
 
-                          {selected && (
-                            <span
-                              className={classNames(
-                                'absolute inset-y-0 left-0 flex items-center pl-1.5',
-                                active ? 'text-white' : 'text-indigo-600'
+                              {selected && (
+                                <span
+                                  className={classNames(
+                                    'absolute inset-y-0 left-0 flex items-center pl-1.5',
+                                    active ? 'text-white' : 'text-indigo-600'
+                                  )}
+                                >
+                                  <CheckIcon
+                                    className="h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                </span>
                               )}
-                            >
-                              <CheckIcon
-                                className="h-5 w-5"
-                                aria-hidden="true"
-                              />
-                            </span>
+                            </>
                           )}
-                        </>
-                      )}
-                    </Combobox.Option>
-                  ))}
-                </Combobox.Options>
-              )}
-            </div>
-          </Combobox>
+                        </Combobox.Option>
+                      )
+                    )}
+                  </Combobox.Options>
+                )}
+              </div>
+            </Combobox>
+            <small className="text-red-500">
+              {selectedCategory._id === '' &&
+                errors?.category?.message?.toString()}
+            </small>
+          </div>
+
           {/* ورودی زیردسته بندی کالا */}
-          <Combobox
-            as="div"
-            value={selectedSubCategory}
-            onChange={setSelectedSubCategory}
-          >
-            <div className="relative mt-1 w-full">
-              <Combobox.Input
-                className="w-full rounded-md border border-gray-300 bg-white py-2 pr-3 pl-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
-                {...register('category')}
-                displayValue={(subcategory: SubCategoryType) =>
-                  subcategory.name
-                }
-              />
-              <Combobox.Button className="absolute inset-y-0 left-0 flex items-center rounded-r-md px-2 focus:outline-none">
-                <SelectorIcon
-                  className="h-5 w-5 text-gray-400"
-                  aria-hidden="true"
+          <div>
+            <Combobox
+              as="div"
+              value={selectedSubCategory}
+              onChange={setSelectedSubCategory}
+            >
+              <div className="relative mt-1 w-full">
+                <Combobox.Input
+                  className="w-full rounded-md border border-gray-300 bg-white py-2 pr-3 pl-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+                  {...register('subcategory')}
+                  displayValue={(subcategory: SubCategoryType) =>
+                    subcategory.name
+                  }
                 />
-              </Combobox.Button>
+                <Combobox.Button className="absolute inset-y-0 left-0 flex items-center rounded-r-md px-2 focus:outline-none">
+                  <SelectorIcon
+                    className="h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                </Combobox.Button>
+                {
+                  <Combobox.Options className="absolute z-10 mt-1 max-h-52 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm text-right">
+                    {filteredSubCategories.map(
+                      (subcategory: SubCategoryType) => (
+                        <Combobox.Option
+                          key={subcategory._id}
+                          value={subcategory}
+                          className={({ active }) =>
+                            classNames(
+                              'relative cursor-default select-none py-2 pl-8 pr-4',
+                              active
+                                ? 'bg-indigo-600 text-white'
+                                : 'text-gray-900'
+                            )
+                          }
+                        >
+                          {({ active, selected }) => (
+                            <>
+                              <span
+                                className={classNames(
+                                  'block truncate',
+                                  selected ? 'font-semibold' : ''
+                                )}
+                              >
+                                {subcategory.name}
+                              </span>
 
-              {
-                <Combobox.Options className="absolute z-10 mt-1 max-h-52 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm text-right">
-                  {filteredSubCategories.map((subcategory: SubCategoryType) => (
-                    <Combobox.Option
-                      key={subcategory._id}
-                      value={subcategory}
-                      className={({ active }) =>
-                        classNames(
-                          'relative cursor-default select-none py-2 pl-8 pr-4',
-                          active ? 'bg-indigo-600 text-white' : 'text-gray-900'
-                        )
-                      }
-                    >
-                      {({ active, selected }) => (
-                        <>
-                          <span
-                            className={classNames(
-                              'block truncate',
-                              selected ? 'font-semibold' : ''
-                            )}
-                          >
-                            {subcategory.name}
-                          </span>
-
-                          {selected && (
-                            <span
-                              className={classNames(
-                                'absolute inset-y-0 left-0 flex items-center pl-1.5',
-                                active ? 'text-white' : 'text-indigo-600'
+                              {selected && (
+                                <span
+                                  className={classNames(
+                                    'absolute inset-y-0 left-0 flex items-center pl-1.5',
+                                    active ? 'text-white' : 'text-indigo-600'
+                                  )}
+                                >
+                                  <CheckIcon
+                                    className="h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                </span>
                               )}
-                            >
-                              <CheckIcon
-                                className="h-5 w-5"
-                                aria-hidden="true"
-                              />
-                            </span>
+                            </>
                           )}
-                        </>
-                      )}
-                    </Combobox.Option>
-                  ))}
-                </Combobox.Options>
-              }
-            </div>
-          </Combobox>
+                        </Combobox.Option>
+                      )
+                    )}
+                  </Combobox.Options>
+                }
+              </div>
+            </Combobox>
+            <small className="text-red-500">
+              {selectedSubCategory._id === '' &&
+                errors?.subcategory?.message?.toString()}
+            </small>
+          </div>
         </div>
         {/* قسمت دریافت تصاویر */}
         <div>
@@ -334,14 +451,24 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
           </div>
         </div>
         {/* قسمت دریافت توضیحات */}
-        <div className="text-left">
-          <ReactQuill
-            value={description.value}
-            onChange={handleDescription}
-            placeholder={'توضیحات...'}
-            modules={modules}
-            className="text-left"
+        <div className="text-right">
+          <Controller
+            control={control}
+            name="description"
+            render={({ field: { onChange, value } }) => (
+              <ReactQuill
+                value={value}
+                onChange={onChange}
+                placeholder={'توضیحات...'}
+                modules={modules}
+                className="text-left"
+              />
+            )}
           />
+
+          <small className="text-red-500">
+            {errors?.description?.message?.toString()}
+          </small>
         </div>
         <div>
           <Button

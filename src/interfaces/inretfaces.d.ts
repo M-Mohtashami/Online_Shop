@@ -116,3 +116,13 @@ interface ProductProps {
     };
   };
 };
+
+interface ProductFormType {
+  category: string;
+  name: string;
+  brand: string;
+  price: number;
+  quantity: number;
+  subcategory: string;
+  description: string;
+}

@@ -1,5 +1,6 @@
 import { thumbnails } from '@/config/variable';
-import { ProductType } from '@/interfaces/inretfaces';
+import useUpdatePrice from '@/hooks/product/useUpdatePrice';
+import { ProductPriceForm, ProductType } from '@/interfaces/inretfaces';
 import { classNames } from '@/utils';
 import { Combobox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
@@ -7,13 +8,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Fragment, useState, useEffect } from 'react';
-
+import { Controller, useForm } from 'react-hook-form';
 import {
   FiChevronsLeft,
   FiChevronsRight,
   FiChevronLeft,
   FiChevronRight,
 } from 'react-icons/fi';
+import UpdatePrice from '../Modals/UpdatePrice';
 
 type Props = {
   products: {
@@ -28,19 +30,64 @@ type Props = {
   };
 };
 
+const initPriceTableData: ProductPriceForm[] = [];
+
 const PriceTable = ({ products }: Props) => {
-  const { page, per_page, total, total_pages } = products;
+  const { page, per_page, total, total_pages, data } = products;
   const router = useRouter();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isDirty, dirtyFields },
+    setValue,
+    getValues,
+    reset,
+  } = useForm({
+    defaultValues: initPriceTableData,
+  });
+  // console.log(dirtyFields[0]?.price);
+  const { mutate: updatePrice } = useUpdatePrice({
+    onSuccess(date) {
+      // console.log(data);
+      reset();
+    },
+  });
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState({});
+  const openModal = () => {
+    setOpen(true);
+  };
+  const closeModal = () => {
+    setOpen(false);
+  };
+
+  const onSubmit = () => {
+    console.log(dirtyFields);
+
+    if (isDirty) {
+      updatePrice(Object.values(getValues()));
+    }
+  };
+
+  useEffect(() => {
+    const products = data.products;
+    products.map((product, idx) => {
+      setValue(`${idx}.id`, product._id);
+      setValue(`${idx}.name`, product.name);
+      setValue(`${idx}.price`, product.price);
+      setValue(`${idx}.quantity`, product.quantity);
+    });
+  }, [page]);
 
   return (
     <>
-      <form className="px-4 sm:px-6 lg:px-8">
+      <form className="px-4 sm:px-6 lg:px-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="sm:flex-auto"></div>
           <div className="mt-4 sm:mt-0 sm:flex-none">
             <button
               type="submit"
-              className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-links focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
             >
               {'ذخیره'}
             </button>
@@ -74,38 +121,69 @@ const PriceTable = ({ products }: Props) => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {products.data.products.map((product) => (
-                      <tr key={product._id}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-                          <div className="flex items-center">
-                            <div className="ml-4">
-                              <div className="font-medium text-gray-900">
-                                {product.name}
+                    {data.products.map((product, idx) => {
+                      return (
+                        <tr key={product._id}>
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                            <div className="flex items-center">
+                              <div className="ml-4">
+                                <div className="font-medium text-gray-900">
+                                  {product.name}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <input
-                            className="text-gray-900"
-                            value={Intl.NumberFormat('fa-IR').format(
-                              product.price
-                            )}
-                            onChange={(e) => console.log(e.target.value)}
-                          />
+                          </td>
+                          <td
+                            className={
+                              'whitespace-nowrap px-3 py-4 text-sm text-gray-500'
+                            }
+                          >
+                            <Controller
+                              control={control}
+                              name={`${idx}.price`}
+                              render={({
+                                field: { onChange, value, name },
+                              }) => (
+                                <input
+                                  className={classNames(
+                                    dirtyFields[idx]?.price
+                                      ? 'bg-green-300 rounded-md'
+                                      : '',
+                                    'text-gray-900 p-1'
+                                  )}
+                                  name={name}
+                                  value={value}
+                                  onChange={onChange}
+                                />
+                              )}
+                            />
 
-                          {/* </div> */}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <input
-                            className="text-gray-900"
-                            value={Intl.NumberFormat('fa-IR').format(
-                              product.quantity
-                            )}
-                          />
-                        </td>
-                      </tr>
-                    ))}
+                            {/* </div> */}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            <Controller
+                              control={control}
+                              name={`${idx}.quantity`}
+                              render={({
+                                field: { onChange, value, name },
+                              }) => (
+                                <input
+                                  className={classNames(
+                                    dirtyFields[idx]?.quantity
+                                      ? 'bg-green-300 rounded-md'
+                                      : '',
+                                    'text-gray-900 p-1'
+                                  )}
+                                  name={name}
+                                  value={value}
+                                  onChange={onChange}
+                                />
+                              )}
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -118,13 +196,24 @@ const PriceTable = ({ products }: Props) => {
         <button
           className="border rounded p-1"
           onClick={(e) => {
-            router.push({
-              pathname: router.pathname,
-              query: {
-                ...router.query,
-                page: 1,
-              },
-            });
+            if (isDirty) {
+              setOptions({
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  page: 1,
+                },
+              });
+              openModal();
+            } else {
+              router.push({
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  page: 1,
+                },
+              });
+            }
           }}
         >
           <FiChevronsRight />
@@ -133,13 +222,24 @@ const PriceTable = ({ products }: Props) => {
           className="border rounded p-1"
           onClick={(e) => {
             if (page - 1 >= 1) {
-              router.push({
-                pathname: router.pathname,
-                query: {
-                  ...router.query,
-                  page: page - 1,
-                },
-              });
+              if (isDirty) {
+                setOptions({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    page: page - 1,
+                  },
+                });
+                openModal();
+              } else {
+                router.push({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    page: page - 1,
+                  },
+                });
+              }
             }
           }}
         >
@@ -152,13 +252,24 @@ const PriceTable = ({ products }: Props) => {
             className="border px-1 rounded w-10 text-center"
             onChange={(e) => {
               if (+e.target.value <= total_pages && +e.target.value >= 1) {
-                router.push({
-                  pathname: router.pathname,
-                  query: {
-                    ...router.query,
-                    page: +e.target.value,
-                  },
-                });
+                if (isDirty) {
+                  setOptions({
+                    pathname: router.pathname,
+                    query: {
+                      ...router.query,
+                      page: +e.target.value,
+                    },
+                  });
+                  openModal();
+                } else {
+                  router.push({
+                    pathname: router.pathname,
+                    query: {
+                      ...router.query,
+                      page: +e.target.value,
+                    },
+                  });
+                }
               }
             }}
           />
@@ -167,13 +278,24 @@ const PriceTable = ({ products }: Props) => {
           className="border rounded p-1"
           onClick={(e) => {
             if (page + 1 <= total_pages) {
-              router.push({
-                pathname: router.pathname,
-                query: {
-                  ...router.query,
-                  page: page + 1,
-                },
-              });
+              if (isDirty) {
+                setOptions({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    page: page + 1,
+                  },
+                });
+                openModal();
+              } else {
+                router.push({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    page: page + 1,
+                  },
+                });
+              }
             }
           }}
         >
@@ -182,13 +304,24 @@ const PriceTable = ({ products }: Props) => {
         <button
           className="border rounded p-1"
           onClick={(e) => {
-            router.push({
-              pathname: router.pathname,
-              query: {
-                ...router.query,
-                page: total_pages,
-              },
-            });
+            if (isDirty) {
+              setOptions({
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  page: total_pages,
+                },
+              });
+              openModal();
+            } else {
+              router.push({
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  page: total_pages,
+                },
+              });
+            }
           }}
         >
           <FiChevronsLeft />
@@ -216,6 +349,12 @@ const PriceTable = ({ products }: Props) => {
             ))}
         </select>
       </div>
+      <UpdatePrice
+        reset={reset}
+        options={options}
+        open={open}
+        closeModal={closeModal}
+      />
     </>
   );
 };

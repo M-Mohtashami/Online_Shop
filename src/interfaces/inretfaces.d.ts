@@ -126,3 +126,10 @@ interface ProductFormType {
   subcategory: string;
   description: string;
 }
+
+interface ProductPriceForm {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}

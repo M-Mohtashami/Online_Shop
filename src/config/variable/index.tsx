@@ -26,3 +26,4 @@ export const icons: CustomIcons = {
 export const baseURL = 'http://localhost:8000/api';
 
 export const thumbnails = 'http://localhost:8000/images/products/thumbnails/';
+export const IMAGES = 'http://localhost:8000/images/products/images/';

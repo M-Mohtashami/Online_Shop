@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactNode } from 'react';
-import { number } from 'zod';
+import { boolean, number, string } from 'zod';
+import Orders from './../pages/admin/orders/index';
 
 type NextPageWithLayout =
   | (NextPage & {
@@ -115,7 +116,34 @@ interface ProductProps {
       subcategories: SubCategoryType[];
     };
   };
-};
+}
+
+interface OrdersType {
+  _id: string;
+  user: string;
+  products: {
+    product: string;
+    count: number;
+    _id: string;
+  }[];
+  totalPrice: number;
+  deliveryDate: string;
+  deliveryStatus: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+interface OrdersType {
+  status: string;
+  page: number;
+  per_page: number;
+  total: number;
+  total_pages: number;
+  data: {
+    orders: OrderType[];
+  };
+}
 
 interface ProductFormType {
   category: string;
@@ -133,3 +161,9 @@ interface ProductPriceForm {
   price: number;
   quantity: number;
 }
+
+type AddNewProductType = {
+  payload: any;
+  response: unknown;
+  error: unknown;
+};

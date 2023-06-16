@@ -11,6 +11,7 @@ import {
   FiChevronsRight,
 } from 'react-icons/fi';
 import { FaSort } from 'react-icons/fa';
+import { CategoryType, OrdersType } from '@/interfaces/inretfaces';
 
 const categories = [
   {
@@ -23,7 +24,11 @@ const categories = [
   },
 ];
 
-const OrdersTable = ({ orders }) => {
+type Props = {
+  orders: OrdersType;
+};
+
+const OrdersTable = ({ orders }: Props) => {
   const { page, per_page, total, total_pages } = orders;
   const router = useRouter();
   const [selected, setSelected] = useState({
@@ -44,7 +49,7 @@ const OrdersTable = ({ orders }) => {
               <Combobox.Input
                 className="w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
                 onChange={(event) => setQuery(event.target.value)}
-                displayValue={(category) => category.name}
+                displayValue={(category: CategoryType) => category.name}
               />
               <Combobox.Button className="absolute inset-y-0 left-0 flex items-center rounded-r-md px-2 focus:outline-none">
                 <SelectorIcon
@@ -312,7 +317,7 @@ const OrdersTable = ({ orders }) => {
         </button>
 
         <select
-         value={per_page}
+          value={per_page}
           onChange={(e) => {
             router.push({
               pathname: router.pathname,
@@ -325,11 +330,12 @@ const OrdersTable = ({ orders }) => {
           }}
         >
           {Array.from(new Set([per_page, 5, 10, 20, 50]))
-            .sort((a, b) => a - b).map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              {'تعداد:'} {pageSize}
-            </option>
-          ))}
+            .sort((a, b) => a - b)
+            .map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                {'تعداد:'} {pageSize}
+              </option>
+            ))}
         </select>
       </div>
     </>

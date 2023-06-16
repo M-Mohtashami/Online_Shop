@@ -1,5 +1,4 @@
 import Button from '@/components/shared_components/Button';
-import { ProductDataContext } from '@/pages/admin/products';
 import { classNames } from '@/utils';
 import { Combobox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon, XIcon } from '@heroicons/react/solid';
@@ -23,6 +22,7 @@ import { useRouter } from 'next/router';
 import { useUpdateProduct } from '@/hooks/product/useUpdateProduct';
 import { TbEaseOutControlPoint } from 'react-icons/tb';
 import { on } from 'events';
+import { ProductDataContext } from '@/context';
 
 type Props = {
   product: ProductType | undefined;
@@ -97,8 +97,9 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
           name: 'زیردسته',
         }
   );
-  const [filteredSubCategories, setFilteredSubCategories] = useState([]);
-  console.log(filteredSubCategories);
+  const [filteredSubCategories, setFilteredSubCategories] =
+    useState<SubCategoryType[]>();
+  // console.log(filteredSubCategories);
 
   const [image, setImage] = useState<(any & { preview: string })[]>([]);
 
@@ -143,20 +144,14 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
     onError: (err) => console.log(err),
   });
   const onSubmit = (data: ProductFormType) => {
-    console.log(data);
-    const categoryId = categories.data.categories.find(
-      (cat: CategoryType) => cat._id === selectedCategory._id
-    )._id;
-    const subcategoryId = subcategories.data.subcategories.find(
-      (subcat: SubCategoryType) => subcat._id === selectedSubCategory._id
-    )._id;
+    // console.log(data);
     const formData = new FormData();
     formData.append('name', data.name);
     formData.append('brand', data.brand);
     formData.append('price', data.price.toString());
     formData.append('quantity', data.quantity.toString());
-    formData.append('category', categoryId);
-    formData.append('subcategory', subcategoryId);
+    formData.append('category', selectedCategory._id);
+    formData.append('subcategory', selectedSubCategory._id);
     if (image.length > 0) {
       for (const img of image) {
         formData.append('images', img);
@@ -171,11 +166,10 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
   };
 
   useEffect(() => {
-    setFilteredSubCategories(
-      subcategories.data.subcategories.filter(
-        (sub: SubCategoryType) => sub.category === selectedCategory._id
-      )
-    );
+    const subcats = subcategories?.data?.subcategories.filter(
+      (sub: SubCategoryType) => sub.category === selectedCategory._id
+    )!;
+    setFilteredSubCategories(subcats);
   }, [selectedCategory]);
 
   useEffect(() => {
@@ -356,49 +350,50 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
                 </Combobox.Button>
                 {
                   <Combobox.Options className="absolute z-10 mt-1 max-h-52 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm text-right">
-                    {filteredSubCategories.map(
-                      (subcategory: SubCategoryType) => (
-                        <Combobox.Option
-                          key={subcategory._id}
-                          value={subcategory}
-                          className={({ active }) =>
-                            classNames(
-                              'relative cursor-default select-none py-2 pl-8 pr-4',
-                              active
-                                ? 'bg-indigo-600 text-white'
-                                : 'text-gray-900'
-                            )
-                          }
-                        >
-                          {({ active, selected }) => (
-                            <>
-                              <span
-                                className={classNames(
-                                  'block truncate',
-                                  selected ? 'font-semibold' : ''
-                                )}
-                              >
-                                {subcategory.name}
-                              </span>
-
-                              {selected && (
+                    {filteredSubCategories &&
+                      filteredSubCategories.map(
+                        (subcategory: SubCategoryType) => (
+                          <Combobox.Option
+                            key={subcategory._id}
+                            value={subcategory}
+                            className={({ active }) =>
+                              classNames(
+                                'relative cursor-default select-none py-2 pl-8 pr-4',
+                                active
+                                  ? 'bg-indigo-600 text-white'
+                                  : 'text-gray-900'
+                              )
+                            }
+                          >
+                            {({ active, selected }) => (
+                              <>
                                 <span
                                   className={classNames(
-                                    'absolute inset-y-0 left-0 flex items-center pl-1.5',
-                                    active ? 'text-white' : 'text-indigo-600'
+                                    'block truncate',
+                                    selected ? 'font-semibold' : ''
                                   )}
                                 >
-                                  <CheckIcon
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
+                                  {subcategory.name}
                                 </span>
-                              )}
-                            </>
-                          )}
-                        </Combobox.Option>
-                      )
-                    )}
+
+                                {selected && (
+                                  <span
+                                    className={classNames(
+                                      'absolute inset-y-0 left-0 flex items-center pl-1.5',
+                                      active ? 'text-white' : 'text-indigo-600'
+                                    )}
+                                  >
+                                    <CheckIcon
+                                      className="h-5 w-5"
+                                      aria-hidden="true"
+                                    />
+                                  </span>
+                                )}
+                              </>
+                            )}
+                          </Combobox.Option>
+                        )
+                      )}
                   </Combobox.Options>
                 }
               </div>

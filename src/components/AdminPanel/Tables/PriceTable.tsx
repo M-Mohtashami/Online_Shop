@@ -2,8 +2,6 @@ import { thumbnails } from '@/config/variable';
 import useUpdatePrice from '@/hooks/product/useUpdatePrice';
 import { ProductPriceForm, ProductType } from '@/interfaces/inretfaces';
 import { classNames } from '@/utils';
-import { Combobox, Transition } from '@headlessui/react';
-import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -65,7 +63,8 @@ const PriceTable = ({ products }: Props) => {
     console.log(dirtyFields);
 
     if (isDirty) {
-      updatePrice(Object.values(getValues()));
+      const data: ProductPriceForm[] = Object.values(getValues());
+      updatePrice(data);
     }
   };
 

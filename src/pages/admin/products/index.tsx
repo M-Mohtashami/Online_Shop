@@ -1,10 +1,4 @@
-import {
-  ReactElement,
-  createContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { ReactElement, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import { classNames } from '@/utils';
 import { NextPageWithLayout, ProductProps } from '@/interfaces/inretfaces';
@@ -16,10 +10,7 @@ import getAllProductsSevices from '@/api/services/product/getAllProductsServices
 import getAllCategoryService from '@/api/services/category/getAllCategoryService';
 import { useRouter } from 'next/router';
 import getAllSubCategoryService from '@/api/services/category/getAllSubCategoryService';
-
-export const ProductDataContext = createContext<ProductProps | undefined>(
-  undefined
-);
+import { ProductDataContext } from '@/context';
 
 const Products: NextPageWithLayout = ({
   products,
@@ -110,13 +101,9 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   console.log(query);
 
   const products = await getAllProductsSevices(
-    query.category
-      ? `?page=${query.page || 1}&limit=${query.limit || 5}&sort=${
-          query.sort || ''
-        }&category=${query.category}`
-      : `?page=${query.page || 1}&limit=${query.limit || 5}&sort=${
-          query.sort || ''
-        }`
+    `?page=${query.page || 1}&limit=${query.limit || 5}&sort=${
+      query.sort || ''
+    }${query.category !== '' ? '&category=' + query.category : ''}`
   );
   const categories = await getAllCategoryService();
   const subcategories = await getAllSubCategoryService();

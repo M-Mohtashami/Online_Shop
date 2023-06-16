@@ -1,11 +1,17 @@
 import updatePriceService from '@/api/services/product/updatePriceService';
-import { ProductPriceForm } from '@/interfaces/inretfaces';
+import { AddNewProductType, ProductPriceForm } from '@/interfaces/inretfaces';
 import { UseMutationOptions, useMutation } from '@tanstack/react-query';
 
-const useUpdatePrice = (options: UseMutationOptions) => {
+const useUpdatePrice = (
+  options: UseMutationOptions<
+    AddNewProductType['payload'],
+    AddNewProductType['error'],
+    AddNewProductType['response']
+  >
+) => {
   return useMutation({
     ...options,
-    mutationKey: 'updatePrice',
+    mutationKey: ['updatePrice'],
     mutationFn: (data: ProductPriceForm[]) => updatePriceService(data),
   });
 };

@@ -21,7 +21,7 @@ const SubCategory = ({ categories, updateCategory }: Props) => {
     },
   });
   const { mutate: addSubCategory } = useAddSubCategory({});
-  const onSubCategorySubmit = (data: SubCategoryType) => {
+  const onSubCategorySubmit = (data: { category: string; name: string }) => {
     addSubCategory(data);
     reset();
   };

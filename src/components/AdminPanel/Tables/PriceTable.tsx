@@ -5,7 +5,7 @@ import { classNames } from '@/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   FiChevronsLeft,
@@ -14,23 +14,14 @@ import {
   FiChevronRight,
 } from 'react-icons/fi';
 import UpdatePrice from '../Modals/UpdatePrice';
-
-type Props = {
-  products: {
-    status: string;
-    page: number;
-    per_page: number;
-    total: number;
-    total_pages: number;
-    data: {
-      products: ProductType[];
-    };
-  };
-};
+import { ProductDataContext } from '@/context';
 
 const initPriceTableData: ProductPriceForm[] = [];
 
-const PriceTable = ({ products }: Props) => {
+const PriceTable = () => {
+  const { products } = useContext(ProductDataContext);
+  console.log(products);
+
   const { page, per_page, total, total_pages, data } = products;
   const router = useRouter();
   const {

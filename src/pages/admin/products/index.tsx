@@ -67,12 +67,7 @@ const Products: NextPageWithLayout = ({
               )}
             >
               {/* product tabel */}
-              {products.status === 'success' && (
-                <ProductTable
-                  products={products}
-                  categories={categories?.data.categories}
-                />
-              )}
+              {products.status === 'success' && <ProductTable />}
             </Tab.Panel>
             <Tab.Panel
               key={1}
@@ -82,7 +77,7 @@ const Products: NextPageWithLayout = ({
               )}
             >
               {/* {'price and quantity'} */}
-              <PriceTable products={products} />
+              <PriceTable />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
@@ -99,12 +94,12 @@ export default Products;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   console.log(query);
+  const page = query.page ? '?page=' + query.page : '?page=1';
+  const limit = query.limit ? '&limit=' + query.limit : '&limit=5';
+  const category = query.category ? '&category=' + query.category : '';
+  const sort = query.sort ? '&sort=' + query.sort : '&sort=-createdAt';
 
-  const products = await getAllProductsSevices(
-    `?page=${query.page || 1}&limit=${query.limit || 5}&sort=${
-      query.sort || ''
-    }${query.category !== '' ? '&category=' + query.category : ''}`
-  );
+  const products = await getAllProductsSevices(page + limit + category + sort);
   const categories = await getAllCategoryService();
   const subcategories = await getAllSubCategoryService();
 

@@ -4,7 +4,7 @@ import { classNames } from '@/utils';
 import { Combobox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Fragment, useState, useEffect } from 'react';
 import {
   FiChevronsLeft,
@@ -14,6 +14,7 @@ import {
 } from 'react-icons/fi';
 import Delete from '../Modals/Delete';
 import AddModal from '../Modals/AddModal';
+import { ProductDataContext } from '@/context';
 
 type Props = {
   products: {
@@ -30,8 +31,9 @@ type Props = {
   categories: CategoryType[];
 };
 
-const ProductTable = ({ products, categories }: Props) => {
-  console.log(categories);
+const ProductTable = () => {
+  const { products, categories } = useContext(ProductDataContext);
+  console.log(products);
 
   const { page, per_page, total, total_pages } = products;
   const router = useRouter();
@@ -122,14 +124,14 @@ const ProductTable = ({ products, categories }: Props) => {
                               />
                             </Combobox.Button>
 
-                            {categories.length > 0 && (
+                            {categories?.data?.categories.length > 0 && (
                               <Combobox.Options className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                 {[
                                   {
                                     _id: '',
                                     name: 'دسته‌بندی',
                                   },
-                                  ...categories,
+                                  ...categories?.data?.categories,
                                 ].map((category) => (
                                   <Combobox.Option
                                     key={category._id}
@@ -145,6 +147,8 @@ const ProductTable = ({ products, categories }: Props) => {
                                         });
                                       } else {
                                         const { pathname, query } = router;
+                                        console.log(query);
+
                                         const params = new URLSearchParams(
                                           query
                                         );

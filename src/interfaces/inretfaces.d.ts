@@ -27,6 +27,7 @@ interface CustomIcons {
   backward: (value: string) => ReactNode;
   cart: (value: string) => ReactNode;
   search: (value: string) => ReactNode;
+  addtocart: (value: string) => ReactNode;
 }
 
 type LoginValues = {

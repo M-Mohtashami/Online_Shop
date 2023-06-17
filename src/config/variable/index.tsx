@@ -1,5 +1,5 @@
 import { CustomIcons } from '@/interfaces/inretfaces';
-import { FaUser, FaLock, FaShoppingCart } from 'react-icons/fa';
+import { FaUser, FaLock, FaShoppingCart, FaCartPlus } from 'react-icons/fa';
 import { BsArrowLeft, BsArrowRight, BsSearch } from 'react-icons/bs';
 
 export const icons: CustomIcons = {
@@ -20,6 +20,9 @@ export const icons: CustomIcons = {
   },
   search: function (value) {
     return <BsSearch className={value} />;
+  },
+  addtocart: function (value) {
+    return <FaCartPlus size={17} className={value} />;
   },
 };
 

@@ -150,7 +150,7 @@ const ProductTable = () => {
                                         console.log(query);
 
                                         const params = new URLSearchParams(
-                                          query
+                                          query as unknown as string
                                         );
                                         params.delete('category');
                                         router.replace({

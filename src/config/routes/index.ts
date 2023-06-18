@@ -14,8 +14,8 @@ export const routes = {
   public: {
     Home: '/',
     Products: '/products',
-    SingleProduct: '/products/:id',
-    Category: '/products/:category',
+    SingleProduct: '/products/[name]',
+    Category: '/products/[category]',
     Cart: '/cart',
     About: '/about',
     Contact: '/contact',

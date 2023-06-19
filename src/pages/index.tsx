@@ -76,7 +76,7 @@ const Home: NextPageWithLayout = ({ products }: Props) => {
           ref={sliderRef}
           {...swiperParams}
           observer={true}
-          className="mySwiper mx-10"
+          className="mx-10"
           onSlideChange={() => console.log('slide change')}
           onSwiper={(swiper) => console.log(swiper)}
         >

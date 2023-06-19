@@ -12,6 +12,7 @@ import 'swiper/css/navigation';
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs';
 import { Navigation } from 'swiper';
 import { MutableRefObject, useCallback, useRef } from 'react';
+import MainSlider from '@/components/Home/MainSlider';
 
 type Props = {
   products: {
@@ -65,6 +66,9 @@ const Home: NextPageWithLayout = ({ products }: Props) => {
 
   return (
     <>
+      <div className="mb-10">
+        <MainSlider slides={productsData} />
+      </div>
       <div className="flex items-center gap-5">
         <button
           onClick={() => handlePrev(sliderRef)}

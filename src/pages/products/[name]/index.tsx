@@ -33,17 +33,17 @@ import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs';
 import Card from '@/components/Products/Card';
 
 const swiperParams = {
-  slidesPerView: 1.5,
+  slidesPerView: 1,
   spaceBetween: 10,
   // using "ratio" endpoints
   breakpoints: {
     // when window width is >= 320px
-    [480]: {
+    [750]: {
       slidesPerView: 2,
       spaceBetween: 20,
     },
     // when window width is >= 480px
-    [1000]: {
+    [1200]: {
       slidesPerView: 3,
       spaceBetween: 30,
     },
@@ -101,7 +101,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
   return (
     <>
       <div className="grid grid-cols-12 gap-5 mt-20 mb-20">
-        <div className="max-w-sm col-span-10 col-start-2 md:col-span-5 md:col-start-2">
+        <div className="max-w-sm col-span-10  col-start-2 md:col-span-5 md:col-start-2">
           <Swiper
             spaceBetween={10}
             navigation={true}
@@ -110,7 +110,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
                 thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
             }}
             modules={[FreeMode, Thumbs]}
-            className="mySwiper2 border-b border-l border-gray-300 shadow-sm rounded-sm"
+            className="mySwiper2"
           >
             {productData.images.map((image) => (
               <SwiperSlide key={image}>
@@ -125,13 +125,10 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
             freeMode={true}
             watchSlidesProgress={true}
             modules={[FreeMode, Thumbs]}
-            className="mySwiper mt-2"
+            className="mySwiper border rounded-sm p-4 border-gray-100 shadow-md"
           >
             {productData.images.map((image) => (
-              <SwiperSlide
-                key={image}
-                className="border border-gray-200 shadow-sm p-1 rounded-md"
-              >
+              <SwiperSlide key={image} className="p-1 ">
                 <img src={IMAGES + image} />
               </SwiperSlide>
             ))}

@@ -69,33 +69,149 @@ const Home: NextPageWithLayout = ({ products }: Props) => {
       <div className="mb-10">
         <MainSlider slides={productsData} />
       </div>
-      <div className="flex items-center gap-5">
-        <button
-          onClick={() => handlePrev(sliderRef)}
-          className="hover:scale-125 hover:text-primary"
-        >
-          <BsArrowRightCircle size={25} />
-        </button>
-        <Swiper
-          ref={sliderRef}
-          {...swiperParams}
-          observer={true}
-          className="mx-10"
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
-        >
-          {productsData.map((product) => (
-            <SwiperSlide key={product._id}>
-              <Card product={product} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <button
-          onClick={() => handleNext(sliderRef)}
-          className="hover:scale-125 hover:text-primary"
-        >
-          <BsArrowLeftCircle size={25} />
-        </button>
+      <div className="space-y-3 mt-32">
+        <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 shadow-sm w-full flex items-center justify-between">
+          <span>{'جدیدترین محصولات :'}</span>
+          <button className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links">
+            {'بیشتر'}
+          </button>
+        </div>
+        <div className="flex items-center gap-5 bg-white p-4 rounded-md">
+          <button
+            onClick={() => handlePrev(sliderRef)}
+            className="hover:scale-125 hover:text-primary"
+          >
+            <BsArrowRightCircle size={25} />
+          </button>
+          <Swiper
+            ref={sliderRef}
+            {...swiperParams}
+            observer={true}
+            className="mx-10"
+            onSlideChange={() => console.log('slide change')}
+            onSwiper={(swiper) => console.log(swiper)}
+          >
+            {productsData.map((product) => (
+              <SwiperSlide key={product._id}>
+                <Card product={product} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <button
+            onClick={() => handleNext(sliderRef)}
+            className="hover:scale-125 hover:text-primary"
+          >
+            <BsArrowLeftCircle size={25} />
+          </button>
+        </div>
+      </div>
+      <div className="space-y-3 mt-32">
+        <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 shadow-sm w-full flex items-center justify-between">
+          <span>{'پیشنهادات ویژه:'}</span>
+          <button className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links">
+            {'بیشتر'}
+          </button>
+        </div>
+        <div className="flex items-center gap-5 bg-white p-4 rounded-md">
+          <button
+            onClick={() => handlePrev(sliderRef)}
+            className="hover:scale-125 hover:text-primary"
+          >
+            <BsArrowRightCircle size={25} />
+          </button>
+          <Swiper
+            ref={sliderRef}
+            {...swiperParams}
+            observer={true}
+            className="mx-10"
+            onSlideChange={() => console.log('slide change')}
+            onSwiper={(swiper) => console.log(swiper)}
+          >
+            {productsData.map((product) => (
+              <SwiperSlide key={product._id}>
+                <Card product={product} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <button
+            onClick={() => handleNext(sliderRef)}
+            className="hover:scale-125 hover:text-primary"
+          >
+            <BsArrowLeftCircle size={25} />
+          </button>
+        </div>
+      </div>
+      <div className="space-y-3 mt-32">
+        <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 shadow-sm w-full flex items-center justify-between">
+          <span>{'کالاهای محبوب :'}</span>
+          <button className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links">
+            {'بیشتر'}
+          </button>
+        </div>
+        <div className="flex items-center gap-5 bg-white p-4 rounded-md">
+          <button
+            onClick={() => handlePrev(sliderRef)}
+            className="hover:scale-125 hover:text-primary"
+          >
+            <BsArrowRightCircle size={25} />
+          </button>
+          <Swiper
+            ref={sliderRef}
+            {...swiperParams}
+            observer={true}
+            className="mx-10"
+            onSlideChange={() => console.log('slide change')}
+            onSwiper={(swiper) => console.log(swiper)}
+          >
+            {productsData.map((product) => (
+              <SwiperSlide key={product._id}>
+                <Card product={product} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <button
+            onClick={() => handleNext(sliderRef)}
+            className="hover:scale-125 hover:text-primary"
+          >
+            <BsArrowLeftCircle size={25} />
+          </button>
+        </div>
+      </div>
+      <div className="space-y-3 mt-32">
+        <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 shadow-sm w-full flex items-center justify-between">
+          <span>{'مقرون به صرفه :'}</span>
+          <button className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links">
+            {'بیشتر'}
+          </button>
+        </div>
+        <div className="flex items-center gap-5 bg-white p-4 rounded-md">
+          <button
+            onClick={() => handlePrev(sliderRef)}
+            className="hover:scale-125 hover:text-primary"
+          >
+            <BsArrowRightCircle size={25} />
+          </button>
+          <Swiper
+            ref={sliderRef}
+            {...swiperParams}
+            observer={true}
+            className="mx-10"
+            onSlideChange={() => console.log('slide change')}
+            onSwiper={(swiper) => console.log(swiper)}
+          >
+            {productsData.map((product) => (
+              <SwiperSlide key={product._id}>
+                <Card product={product} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <button
+            onClick={() => handleNext(sliderRef)}
+            className="hover:scale-125 hover:text-primary"
+          >
+            <BsArrowLeftCircle size={25} />
+          </button>
+        </div>
       </div>
     </>
   );

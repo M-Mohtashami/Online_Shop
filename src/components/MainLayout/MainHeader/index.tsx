@@ -1,20 +1,40 @@
 import { Fragment, useRef } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { HiMenu } from 'react-icons/hi';
-import { TbCategory } from 'react-icons/tb';
-import { IoMdClose } from 'react-icons/io';
 import { RiMenu3Line } from 'react-icons/ri';
 import Link from 'next/link';
 import { classNames } from '@/utils';
 import { icons } from '@/config/variable';
+import { CategoryType, SubCategoryType } from '@/interfaces/inretfaces';
 
+type Props = {
+  categories: {
+    status: string;
+    page: number;
+    per_page: number;
+    total: number;
+    total_pages: number;
+    data: {
+      categories: CategoryType[];
+    };
+  };
+  subcategories: {
+    status: string;
+    page: number;
+    per_page: number;
+    total: number;
+    total_pages: number;
+    data: {
+      subcategories: SubCategoryType[];
+    };
+  };
+};
 
 const timeoutDuration = 200;
 
-const MainHeader = ({ categories, subcategories }) => {
+const MainHeader = ({ categories, subcategories }: Props) => {
   const categoriesData = categories?.data.categories;
   const subcategoriesData = subcategories?.data.subcategories;
-  console.log(subcategoriesData);
 
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const timeOutRef = useRef<number | undefined | NodeJS.Timeout>(undefined);
@@ -31,7 +51,7 @@ const MainHeader = ({ categories, subcategories }) => {
   };
 
   return (
-    <Popover className="relative top-0 z-50 bg-white border-b shadow-sm font-light">
+    <Popover className="relative top-0 z-50 w-full bg-white border-b shadow-sm font-light">
       <div className="flex justify-between items-center px-4 py-2 sm:px-6 md:justify-start md:space-x-10">
         <div className=" ml-5">
           <Link href="/" className="flex">

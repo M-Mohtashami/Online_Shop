@@ -25,12 +25,12 @@ const Card = ({ product }: Props) => {
             className="w-full h-[50%] aspect-square"
           />
         </div>
-        <div className="p-5 space-y-5">
+        <div className="px-5 pb-5 space-y-5">
           <div className="w-full text-center truncate text-ellipsis">
             <h3>{product.name}</h3>
           </div>
           <div className="w-full text-center text-links ">
-            <h3>
+            <h3 className="text-xl">
               {Intl.NumberFormat('fa-IR').format(product.price) + ' تومان'}
             </h3>
           </div>

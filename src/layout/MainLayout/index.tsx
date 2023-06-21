@@ -9,6 +9,8 @@ type Props = {
 
 const MainLayout = ({ children }: Props) => {
   const { props } = children;
+  // console.log(children);
+  
 
   return (
     <div className="max-w-[1440px] w-full h-full flex flex-col font-iran-sans ">

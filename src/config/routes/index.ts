@@ -15,7 +15,7 @@ export const routes = {
     Home: '/',
     Products: '/products',
     SingleProduct: '/products/[name]',
-    Category: '/products/[category]',
+    Category: '/products/category/[category]',
     Cart: '/cart',
     About: '/about',
     Contact: '/contact',

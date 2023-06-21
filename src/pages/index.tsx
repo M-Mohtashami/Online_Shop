@@ -17,6 +17,7 @@ import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs';
 import { Navigation } from 'swiper';
 import { MutableRefObject, useCallback, useRef } from 'react';
 import MainSlider from '@/components/Home/MainSlider';
+import CategorySection from '@/components/Home/CategorySection';
 
 type Props = {
   categories: {
@@ -62,7 +63,11 @@ const swiperParams = {
 
 const Home: NextPageWithLayout = ({ products, categories }: Props) => {
   const { newests, specials, cheepests, populars } = products;
-  const sliderRef = useRef(null);
+  const categoriesData = categories?.data.categories;
+  const newestRef = useRef(null);
+  const specialRef = useRef(null);
+  const cheepestRef = useRef(null);
+  const popularRef = useRef(null);
 
   const handlePrev = useCallback((sliderRef: MutableRefObject<any>) => {
     if (!sliderRef.current) return;
@@ -79,6 +84,20 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
       <div className="mb-10">
         <MainSlider slides={newests} />
       </div>
+      <div className="space-y-3 mt-12  bg-white p-4 rounded-md">
+        <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 w-full flex items-center justify-center">
+          <span>{'دسته‌بندی ها'}</span>
+        </div>
+        <div className="grid grid-cols-12 gap-y-24 place-content-center place-items-center">
+          {categoriesData.map((category: CategoryType) => (
+            <CategorySection
+              key={category._id}
+              category={category}
+              classes="bg-red-200"
+            />
+          ))}
+        </div>
+      </div>
       <div className="space-y-3 mt-32">
         <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 shadow-sm w-full flex items-center justify-between">
           <span>{'جدیدترین محصولات :'}</span>
@@ -88,13 +107,13 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
         </div>
         <div className="flex items-center gap-5 bg-white p-4 rounded-md">
           <button
-            onClick={() => handlePrev(sliderRef)}
+            onClick={() => handlePrev(newestRef)}
             className="hover:scale-125 hover:text-primary"
           >
             <BsArrowRightCircle size={25} />
           </button>
           <Swiper
-            ref={sliderRef}
+            ref={newestRef}
             {...swiperParams}
             observer={true}
             className="mx-10"
@@ -108,7 +127,7 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
             ))}
           </Swiper>
           <button
-            onClick={() => handleNext(sliderRef)}
+            onClick={() => handleNext(newestRef)}
             className="hover:scale-125 hover:text-primary"
           >
             <BsArrowLeftCircle size={25} />
@@ -124,13 +143,13 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
         </div>
         <div className="flex items-center gap-5 bg-white p-4 rounded-md">
           <button
-            onClick={() => handlePrev(sliderRef)}
+            onClick={() => handlePrev(specialRef)}
             className="hover:scale-125 hover:text-primary"
           >
             <BsArrowRightCircle size={25} />
           </button>
           <Swiper
-            ref={sliderRef}
+            ref={specialRef}
             {...swiperParams}
             observer={true}
             className="mx-10"
@@ -144,7 +163,7 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
             ))}
           </Swiper>
           <button
-            onClick={() => handleNext(sliderRef)}
+            onClick={() => handleNext(specialRef)}
             className="hover:scale-125 hover:text-primary"
           >
             <BsArrowLeftCircle size={25} />
@@ -160,13 +179,13 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
         </div>
         <div className="flex items-center gap-5 bg-white p-4 rounded-md">
           <button
-            onClick={() => handlePrev(sliderRef)}
+            onClick={() => handlePrev(popularRef)}
             className="hover:scale-125 hover:text-primary"
           >
             <BsArrowRightCircle size={25} />
           </button>
           <Swiper
-            ref={sliderRef}
+            ref={popularRef}
             {...swiperParams}
             observer={true}
             className="mx-10"
@@ -180,7 +199,7 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
             ))}
           </Swiper>
           <button
-            onClick={() => handleNext(sliderRef)}
+            onClick={() => handleNext(popularRef)}
             className="hover:scale-125 hover:text-primary"
           >
             <BsArrowLeftCircle size={25} />
@@ -196,13 +215,13 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
         </div>
         <div className="flex items-center gap-5 bg-white p-4 rounded-md">
           <button
-            onClick={() => handlePrev(sliderRef)}
+            onClick={() => handlePrev(cheepestRef)}
             className="hover:scale-125 hover:text-primary"
           >
             <BsArrowRightCircle size={25} />
           </button>
           <Swiper
-            ref={sliderRef}
+            ref={cheepestRef}
             {...swiperParams}
             observer={true}
             className="mx-10"
@@ -216,7 +235,7 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
             ))}
           </Swiper>
           <button
-            onClick={() => handleNext(sliderRef)}
+            onClick={() => handleNext(cheepestRef)}
             className="hover:scale-125 hover:text-primary"
           >
             <BsArrowLeftCircle size={25} />
@@ -246,7 +265,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       products: {
         newests: newests.data.products,
-        spetials: specials.data.products,
+        specials: specials.data.products,
         cheepests: cheepests.data.products,
         populars: populars.data.products,
       },

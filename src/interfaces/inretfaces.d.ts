@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import { ReactNode } from 'react';
 import { boolean, number, string } from 'zod';
 import Orders from './../pages/admin/orders/index';
+import Filter from './../components/Products/Filter/index';
 
 type NextPageWithLayout =
   | (NextPage & {
@@ -168,3 +169,7 @@ type AddNewProductType = {
   response: unknown;
   error: unknown;
 };
+
+interface FilteredDataType {
+  subcategories: SubCategoryType[];
+}

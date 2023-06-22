@@ -17,7 +17,7 @@ const Card = ({ product }: Props) => {
         query: { name: product.name },
       }}
     >
-      <div className="max-w-[17rem] border border-slate-300 shadow-sm rounded-md col-span-3">
+      <div className="max-w-[17rem] shadow-sm hover:shadow-md rounded-md col-span-3 bg-white">
         <div className="w-full p-6 overflow-hidden flex items-center justify-center">
           <img
             src={IMAGES + product.images[0]}

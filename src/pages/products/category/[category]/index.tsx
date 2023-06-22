@@ -2,7 +2,12 @@ import getAllCategoryService from '@/api/services/category/getAllCategoryService
 import getAllSubCategoryService from '@/api/services/category/getAllSubCategoryService';
 import getAllProductsSevices from '@/api/services/product/getAllProductsServices';
 import Card from '@/components/Products/Card';
-import { NextPageWithLayout, ProductType } from '@/interfaces/inretfaces';
+import { FilterContext } from '@/context';
+import {
+  NextPageWithLayout,
+  ProductType,
+  SubCategoryType,
+} from '@/interfaces/inretfaces';
 import MainLayout from '@/layout/MainLayout';
 import ProductLayout from '@/layout/ProductLayout';
 import { GetServerSideProps } from 'next';
@@ -20,27 +25,33 @@ type Props = {
       products: ProductType[];
     };
   };
+  filteredSubCategory: SubCategoryType[];
 };
 
-const Category: NextPageWithLayout = ({ products }: Props) => {
-  console.log(products);
+const Category: NextPageWithLayout = ({
+  products,
+  filteredSubCategory,
+}: Props) => {
+  console.log(filteredSubCategory);
 
   const { page, per_page, total, total_pages, data } = products;
   const router = useRouter();
   return (
     <>
-      <ProductLayout>
-        <div className="grid grid-cols-12 gap-6 bg-white p-4 lg:col-span-3 place-items-center">
-          {data.products.map((product: ProductType) => (
-            <div
-              key={product._id}
-              className="col-span-12 md:col-span-6 xl:col-span-4"
-            >
-              <Card product={product} />
-            </div>
-          ))}
-        </div>
-      </ProductLayout>
+      <FilterContext.Provider value={{ subcategories: filteredSubCategory }}>
+        <ProductLayout>
+          <div className="grid grid-cols-12 gap-6  p-4 lg:col-span-3 place-items-center bg-white">
+            {data.products.map((product: ProductType) => (
+              <div
+                key={product._id}
+                className="col-span-12 md:col-span-6 xl:col-span-4"
+              >
+                <Card product={product} />
+              </div>
+            ))}
+          </div>
+        </ProductLayout>
+      </FilterContext.Provider>
     </>
   );
 };
@@ -55,13 +66,24 @@ Category.getLayout = (page: ReactElement) => {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const categories = await getAllCategoryService();
   const subCategories = await getAllSubCategoryService();
-  const products = await getAllProductsSevices(`?category=${query.category}`);
+  const products = await getAllProductsSevices(
+    `?category=${query.category}${
+      query.subcategory ? '&subcategory=' + query.subcategory + '&' : '&'
+    }${query.quantity ? 'quantity[gte]=' + query.quantity + '&' : '&'}sort=${
+      query.sort || '-rating.rate'
+    }`
+  );
+
+  const filteredSubCategory = subCategories.data.subcategories.filter(
+    (sub: SubCategoryType) => sub.category === query.category
+  );
 
   return {
     props: {
       products: products,
       categories: categories,
       subcategories: subCategories,
+      filteredSubCategory: filteredSubCategory,
     },
   };
 };

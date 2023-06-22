@@ -1,4 +1,4 @@
-import { ProductProps } from '@/interfaces/inretfaces';
+import { ProductProps, FilteredDataType } from '@/interfaces/inretfaces';
 import { createContext } from 'react';
 
 const initProduct = {
@@ -34,4 +34,9 @@ const initProduct = {
   },
 };
 
+const initFilter = {
+  subcategories: [],
+};
+
 export const ProductDataContext = createContext<ProductProps>(initProduct);
+export const FilterContext = createContext<FilteredDataType>(initFilter);

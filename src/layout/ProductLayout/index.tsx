@@ -15,6 +15,7 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { Fragment, useContext, useState } from 'react';
+import * as Slider from '@radix-ui/react-slider';
 
 const sortOptions = [
   { name: 'محبوب ترین', href: '-rating.rate' },
@@ -30,18 +31,6 @@ const filters = [
     options: [
       { value: '-1', label: 'همه' },
       { value: '0', label: 'موجود' },
-    ],
-  },
-  {
-    id: 'price',
-    name: 'قیمت',
-    options: [
-      // { value: '2l', label: '2L', checked: false },
-      // { value: '6l', label: '6L', checked: false },
-      // { value: '12l', label: '12L', checked: false },
-      // { value: '18l', label: '18L', checked: false },
-      // { value: '20l', label: '20L', checked: false },
-      // { value: '40l', label: '40L', checked: true },
     ],
   },
 ];
@@ -376,6 +365,48 @@ const ProductLayout = ({ children }: LayoutProps) => {
                     )}
                   </Disclosure>
                 ))}
+                <Disclosure as="div" className="border-b border-gray-200 py-6">
+                  {({ open }) => (
+                    <>
+                      <h3 className="-my-3 flow-root">
+                        <Disclosure.Button className="py-3 bg-white w-full flex items-center justify-between text-sm text-gray-400 hover:text-gray-500">
+                          <span className="mr-3 font-medium text-gray-900 ">
+                            {'قیمت'}
+                          </span>
+                          <span className="ml-1 flex items-center">
+                            {open ? (
+                              <MinusSmIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <PlusSmIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            )}
+                          </span>
+                        </Disclosure.Button>
+                      </h3>
+                      <Disclosure.Panel className="pt-6">
+                        <Slider.Root
+                          className="relative flex items-center select-none touch-none w-[200px] h-5"
+                          defaultValue={[25]}
+                          max={100}
+                          step={1}
+                        >
+                          <Slider.Track className="bg-primary/30 relative grow rounded-full h-[3px]">
+                            <Slider.Range className="absolute bg-primary rounded-full h-full" />
+                          </Slider.Track>
+                          <Slider.Thumb
+                            className="block w-5 h-5 bg-primary shadow-[0_2px_10px] shadow-gray-200 rounded-[10px] hover:bg-links focus:outline-none focus:shadow-[0_0_0_5px] focus:shadow-gray-200"
+                            aria-label="Volume"
+                          />
+                        </Slider.Root>
+                      </Disclosure.Panel>
+                    </>
+                  )}
+                </Disclosure>
               </form>
 
               {/* Product grid */}

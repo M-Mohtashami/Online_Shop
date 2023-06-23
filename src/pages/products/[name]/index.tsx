@@ -252,7 +252,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
           <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 shadow-sm w-full">
             <span>{'محصولات مشابه :'}</span>
           </div>
-          <div className="w-full flex items-center gap-5 overflow-x-hidden px-4 py-10">
+          <div className="w-full flex items-center gap-5 overflow-x-hidden bg-white px-4 py-10">
             <button
               onClick={() => handlePrev(relatedRef)}
               className="hover:scale-125 hover:text-primary"

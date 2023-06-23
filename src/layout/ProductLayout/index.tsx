@@ -49,7 +49,7 @@ const ProductLayout = ({ children }: LayoutProps) => {
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
           <Dialog
             as="div"
-            className="fixed inset-0 flex z-40 lg:hidden"
+            className="fixed inset-0 flex z-40 lg:hidden font-iran-sans"
             onClose={setMobileFiltersOpen}
           >
             <Transition.Child
@@ -114,16 +114,16 @@ const ProductLayout = ({ children }: LayoutProps) => {
                     <Disclosure
                       as="div"
                       key={section.id}
-                      className="border-t border-gray-200 px-4 py-6"
+                      className="border-b border-gray-200 py-6"
                     >
                       {({ open }) => (
                         <>
-                          <h3 className="-mx-2 -my-3 flow-root">
-                            <Disclosure.Button className="px-2 py-3 bg-white w-full flex items-center justify-between text-gray-400 hover:text-gray-500">
-                              <span className="font-medium text-gray-900">
+                          <h3 className="-my-3 flow-root">
+                            <Disclosure.Button className="py-3 bg-white w-full flex items-center justify-between text-sm text-gray-400 hover:text-gray-500">
+                              <span className="mr-3 font-medium text-gray-900 ">
                                 {section.name}
                               </span>
-                              <span className="mr-6 flex items-center">
+                              <span className="ml-1 flex items-center">
                                 {open ? (
                                   <MinusSmIcon
                                     className="h-5 w-5"
@@ -139,22 +139,36 @@ const ProductLayout = ({ children }: LayoutProps) => {
                             </Disclosure.Button>
                           </h3>
                           <Disclosure.Panel className="pt-6">
-                            <div className="space-y-6">
+                            <div className="space-y-4">
                               {section.options.map((option, optionIdx) => (
                                 <div
                                   key={option.value}
                                   className="flex items-center"
                                 >
                                   <input
-                                    id={`filter-mobile-${section.id}-${optionIdx}`}
-                                    name={`${section.id}[]`}
-                                    defaultValue={option.value}
-                                    type="checkbox"
-                                    className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+                                    name={`exist`}
+                                    checked={
+                                      router.query.quantity === option.value
+                                        ? true
+                                        : false
+                                    }
+                                    type="radio"
+                                    className="h-3 w-3 border-gray-300 rounded text-primary focus:ring-links"
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        router.push({
+                                          pathname: router.pathname,
+                                          query: {
+                                            ...router.query,
+                                            quantity: option.value,
+                                          },
+                                        });
+                                      }
+                                    }}
                                   />
                                   <label
-                                    htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                    className="mr-3 min-w-0 text-primary flex-1 text-gray-500"
+                                    htmlFor={`exist`}
+                                    className="mr-3 text-sm text-gray-600 text.primary"
                                   >
                                     {option.label}
                                   </label>
@@ -166,6 +180,51 @@ const ProductLayout = ({ children }: LayoutProps) => {
                       )}
                     </Disclosure>
                   ))}
+                  <Disclosure
+                    as="div"
+                    className="border-b border-gray-200 py-6"
+                  >
+                    {({ open }) => (
+                      <>
+                        <h3 className="-my-3 flow-root">
+                          <Disclosure.Button className="py-3 bg-white w-full flex items-center justify-between text-sm text-gray-400 hover:text-gray-500">
+                            <span className="mr-3 font-medium text-gray-900 ">
+                              {'قیمت'}
+                            </span>
+                            <span className="ml-1 flex items-center">
+                              {open ? (
+                                <MinusSmIcon
+                                  className="h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <PlusSmIcon
+                                  className="h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              )}
+                            </span>
+                          </Disclosure.Button>
+                        </h3>
+                        <Disclosure.Panel className="pt-6">
+                          <Slider.Root
+                            className="relative flex items-center select-none touch-none w-[200px] h-5"
+                            defaultValue={[25]}
+                            max={100}
+                            step={1}
+                          >
+                            <Slider.Track className="bg-primary/30 relative grow rounded-full h-[3px]">
+                              <Slider.Range className="absolute bg-primary rounded-full h-full" />
+                            </Slider.Track>
+                            <Slider.Thumb
+                              className="block w-5 h-5 bg-primary shadow-[0_2px_10px] shadow-gray-200 rounded-[10px] hover:bg-links focus:outline-none focus:shadow-[0_0_0_5px] focus:shadow-gray-200"
+                              aria-label="Volume"
+                            />
+                          </Slider.Root>
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
                 </form>
               </div>
             </Transition.Child>

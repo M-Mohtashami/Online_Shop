@@ -121,7 +121,7 @@ const Sidebar = ({
                     <Image
                       width={100}
                       height={100}
-                      src="/assets/images/site_logo_white.png"
+                      src="/assets/images/site_logo_whit.png"
                       alt="online-shop"
                     />
                   </Link>
@@ -184,7 +184,7 @@ const Sidebar = ({
                 <Image
                   width={100}
                   height={100}
-                  src="/assets/images/site_logo_white.png"
+                  src="/assets/images/site_logo_whit.png"
                   alt="online-shop"
                 />
               </Link>

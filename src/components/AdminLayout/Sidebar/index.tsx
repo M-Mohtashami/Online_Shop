@@ -113,12 +113,18 @@ const Sidebar = ({
                   </div>
                 </Transition.Child>
                 <div className="absolute top-0 w-full flex-shrink-0 flex items-center justify-center bg-slate-700 p-4">
-                  <Image
-                    width={100}
-                    height={100}
-                    src="/assets/images/site_logo_white.png"
-                    alt="Workflow"
-                  />
+                  <Link
+                    href={{
+                      pathname: routes.public.Home,
+                    }}
+                  >
+                    <Image
+                      width={100}
+                      height={100}
+                      src="/assets/images/site_logo_white.png"
+                      alt="online-shop"
+                    />
+                  </Link>
                 </div>
                 {/* <div className="w-full border-t border-slate-400"/> */}
                 <div className="mt-5 flex-1 h-0 overflow-y-auto">
@@ -170,12 +176,18 @@ const Sidebar = ({
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex-1 flex flex-col min-h-0 bg-primary pt-36 ">
             <div className="absolute top-0 w-full flex items-center justify-center flex-shrink-0 p-4 bg-slate-700">
-              <Image
-                width={100}
-                height={100}
-                src="/assets/images/site_logo_white.png"
-                alt="Workflow"
-              />
+              <Link
+                href={{
+                  pathname: routes.public.Home,
+                }}
+              >
+                <Image
+                  width={100}
+                  height={100}
+                  src="/assets/images/site_logo_white.png"
+                  alt="online-shop"
+                />
+              </Link>
             </div>
             {/* <div className="w-full border-t border-slate-400 mb-4"/> */}
             <div className="flex-1 flex flex-col overflow-y-auto">

@@ -93,7 +93,7 @@ const ProductLayout = ({ children }: LayoutProps) => {
                   </h3>
                   <ul
                     role="list"
-                    className="text-sm font-medium text-gray-900 space-y-4 pb-6 pr-4 border-b border-gray-200 overflow-y-auto max-h-[10rem]"
+                    className="text-sm font-medium text-gray-900 space-y-4 pb-6 border-b border-gray-200 overflow-y-auto max-h-[10rem]"
                   >
                     {subcategories.map((category) => (
                       <li
@@ -101,11 +101,27 @@ const ProductLayout = ({ children }: LayoutProps) => {
                         className="flex items-center gap-3 text-primary"
                       >
                         <input
-                          type="checkbox"
-                          name={category.name}
+                          type="radio"
+                          name="subcategory"
                           value={category._id}
+                          checked={
+                            router.query.subcategory === category._id
+                              ? true
+                              : false
+                          }
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              router.push({
+                                pathname: router.pathname,
+                                query: {
+                                  ...router.query,
+                                  subcategory: category._id,
+                                },
+                              });
+                            }
+                          }}
                         />
-                        <label htmlFor={category.name}>{category.name}</label>
+                        <label htmlFor="subcategory">{category.name}</label>
                       </li>
                     ))}
                   </ul>
@@ -138,7 +154,7 @@ const ProductLayout = ({ children }: LayoutProps) => {
                               </span>
                             </Disclosure.Button>
                           </h3>
-                          <Disclosure.Panel className="pt-6">
+                          <Disclosure.Panel className="pt-6 pr-6">
                             <div className="space-y-4">
                               {section.options.map((option, optionIdx) => (
                                 <div
@@ -206,7 +222,7 @@ const ProductLayout = ({ children }: LayoutProps) => {
                             </span>
                           </Disclosure.Button>
                         </h3>
-                        <Disclosure.Panel className="pt-6">
+                        <Disclosure.Panel className="pt-6 pr-6">
                           <Slider.Root
                             className="relative flex items-center select-none touch-none w-[200px] h-5"
                             defaultValue={[25]}

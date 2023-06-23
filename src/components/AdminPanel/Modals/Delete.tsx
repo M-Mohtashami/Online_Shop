@@ -76,10 +76,14 @@ export default function Delete({ product, closeModal, open }: Props) {
                     {product && product?.name}
                   </Dialog.Title>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      {product &&
-                        product?.description.substring(0, 200) + '...'}
-                    </p>
+                    {product && (
+                      <div
+                        className="text-sm text-gray-500 h-40 overflow-auto"
+                        dangerouslySetInnerHTML={{
+                          __html: product?.description,
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
               </div>

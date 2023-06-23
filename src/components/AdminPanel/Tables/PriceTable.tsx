@@ -27,6 +27,7 @@ const PriceTable = () => {
   const {
     control,
     handleSubmit,
+    resetField,
     formState: { errors, isDirty, dirtyFields },
     setValue,
     getValues,
@@ -53,7 +54,7 @@ const PriceTable = () => {
   const onSubmit = () => {
     console.log(dirtyFields);
 
-    if (isDirty) {
+    if (JSON.stringify(dirtyFields) === '{}') {
       const data: ProductPriceForm[] = Object.values(getValues());
       updatePrice(data);
     }
@@ -144,6 +145,12 @@ const PriceTable = () => {
                                   name={name}
                                   value={value}
                                   onChange={onChange}
+                                  onKeyUp={(e) => {
+                                    if (e.key === 'Escape') {
+                                      resetField(`${idx}.price`);
+                                      setValue(`${idx}.price`, product.price);
+                                    }
+                                  }}
                                 />
                               )}
                             />
@@ -167,6 +174,15 @@ const PriceTable = () => {
                                   name={name}
                                   value={value}
                                   onChange={onChange}
+                                  onKeyUp={(e) => {
+                                    if (e.key === 'Escape') {
+                                      resetField(`${idx}.quantity`);
+                                      setValue(
+                                        `${idx}.quantity`,
+                                        product.quantity
+                                      );
+                                    }
+                                  }}
                                 />
                               )}
                             />

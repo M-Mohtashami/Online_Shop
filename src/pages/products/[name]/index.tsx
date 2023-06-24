@@ -83,6 +83,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
   console.log(relatedProducts);
   const router = useRouter();
   const relatedRef = useRef(null);
+  const [quantity, setQuantity] = useState('1');
 
   const handlePrev = useCallback((relatedRef: MutableRefObject<any>) => {
     if (!relatedRef.current) return;
@@ -104,7 +105,6 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
         <div className="max-w-sm col-span-10  col-start-2 md:col-span-5 md:col-start-2">
           <Swiper
             spaceBetween={10}
-            navigation={true}
             thumbs={{
               swiper:
                 thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
@@ -114,7 +114,9 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
           >
             {productData.images.map((image) => (
               <SwiperSlide key={image}>
-                <img src={IMAGES + image} />
+                <div className="py-6 px-8">
+                  <img src={IMAGES + image} />
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -148,7 +150,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
               <span>{'برند: '}</span>
               <span>{productData.brand}</span>
             </div>
-            <div className="w-full flex items-center justify-between gap-1 border rounded-md border-gray-300 p-3 py-8 text-gray-400 font-light">
+            <div className="w-full flex items-center justify-between gap-1 bg-white border rounded-md border-gray-300 p-3 py-8 text-gray-400 font-light">
               <div>
                 <span>{'امتیازات :'}</span>
               </div>
@@ -159,7 +161,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
                   </span>
                   <span>{`(${productData.rating.count})`}</span>
                 </div>
-                {[1, 2, 3, 4, 5].map((star) => {
+                {[5, 4, 3, 2, 1].map((star) => {
                   return star <= productData.rating.rate ? (
                     <AiFillStar
                       key={star}
@@ -189,13 +191,22 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
                 <span>{' تومان'}</span>
               </div>
             </div>
-            <div className="w-full border-b border-gray-300 pb-3 text-primary text-xl flex items-center justify-center">
+            <div className="w-full border-b border-gray-300 pb-3 text-primary text-xl flex items-center justify-between">
+              <div>
+                <input
+                  type="number"
+                  min={1}
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  className="w-16 p-2 rounded-sm text-md shadow-sm text-center focus:border focus:border-primary"
+                />
+              </div>
               <Button
                 icon="addtocart"
                 type="button"
                 variant="contained"
                 iconClassName="w-5"
-                className="w-full max-w-sm bg-primary text-white hover:bg-white hover:border hover:border-primary hover:text-primary"
+                className="max-w-sm bg-primary text-white hover:bg-white hover:border hover:border-primary hover:text-primary"
               >
                 {'افزودن به سبد خرید'}
               </Button>

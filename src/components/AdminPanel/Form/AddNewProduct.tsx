@@ -23,6 +23,7 @@ import { useUpdateProduct } from '@/hooks/product/useUpdateProduct';
 import { TbEaseOutControlPoint } from 'react-icons/tb';
 import { on } from 'events';
 import { ProductDataContext } from '@/context';
+import { IMAGES } from '@/config/variable';
 
 type Props = {
   product: ProductType | undefined;
@@ -111,13 +112,14 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
       'image/jpeg': ['.jpeg'],
     },
     onDrop: (acceptedFiles) => {
-      setImage(
-        acceptedFiles.map((upFile) =>
+      setImage((prev) => [
+        ...prev,
+        ...acceptedFiles.map((upFile) =>
           Object.assign(upFile, {
             preview: URL.createObjectURL(upFile),
           })
-        )
-      );
+        ),
+      ]);
     },
   });
 
@@ -423,7 +425,7 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
               return (
                 <div
                   key={upFile.lastModified}
-                  className="relative w-16 h-16 overflow-hidden"
+                  className="relative h-16 overflow-hidden"
                 >
                   <img
                     src={upFile.preview}
@@ -440,6 +442,19 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
                   >
                     <XIcon className="h-6 w-6" aria-hidden="true" />
                   </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex gap-2 overflow-x-auto mt-2">
+            {product?.images.map((img) => {
+              return (
+                <div key={img} className="relative h-16 overflow-hidden">
+                  <img
+                    src={IMAGES + img}
+                    alt=""
+                    className="w-full h-full aspect-square"
+                  />
                 </div>
               );
             })}

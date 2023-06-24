@@ -11,18 +11,18 @@ type Props = {
 
 const Card = ({ product }: Props) => {
   return (
-    <Link
-      href={{
-        pathname: routes.public.SingleProduct,
-        query: { name: product.name },
-      }}
-    >
-      <div className="max-w-[17rem] shadow-sm border border-gray-100 hover:shadow-md rounded-md col-span-3 bg-white">
-        <div className="w-full p-6 overflow-hidden flex items-center justify-center">
+    <div className="max-w-[17rem] shadow-sm border border-gray-100 hover:shadow-md rounded-md col-span-3 bg-white">
+      <Link
+        href={{
+          pathname: routes.public.SingleProduct,
+          query: { name: product.name },
+        }}
+      >
+        <div className="flex p-6 items-center justify-center">
           <img
             src={IMAGES + product.images[0]}
             alt={product.name}
-            className="w-full h-[50%] aspect-square"
+            className=""
           />
         </div>
         <div className="px-5 pb-5 space-y-5">
@@ -44,8 +44,8 @@ const Card = ({ product }: Props) => {
             {'افزودن به سبد خرید'}
           </Button>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

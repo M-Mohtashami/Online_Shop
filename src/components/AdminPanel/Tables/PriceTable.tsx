@@ -15,6 +15,7 @@ import {
 } from 'react-icons/fi';
 import UpdatePrice from '../Modals/UpdatePrice';
 import { ProductDataContext } from '@/context';
+import _ from 'lodash';
 
 const initPriceTableData: ProductPriceForm[] = [];
 
@@ -54,7 +55,7 @@ const PriceTable = () => {
   const onSubmit = () => {
     console.log(dirtyFields);
 
-    if (JSON.stringify(dirtyFields) === '{}') {
+    if (!_.isEmpty(dirtyFields)) {
       const data: ProductPriceForm[] = Object.values(getValues());
       updatePrice(data);
     }
@@ -202,7 +203,7 @@ const PriceTable = () => {
         <button
           className="border rounded p-1"
           onClick={(e) => {
-            if (isDirty) {
+            if (!_.isEmpty(dirtyFields)) {
               setOptions({
                 pathname: router.pathname,
                 query: {
@@ -228,7 +229,7 @@ const PriceTable = () => {
           className="border rounded p-1"
           onClick={(e) => {
             if (page - 1 >= 1) {
-              if (isDirty) {
+              if (!_.isEmpty(dirtyFields)) {
                 setOptions({
                   pathname: router.pathname,
                   query: {
@@ -258,7 +259,7 @@ const PriceTable = () => {
             className="border px-1 rounded w-10 text-center"
             onChange={(e) => {
               if (+e.target.value <= total_pages && +e.target.value >= 1) {
-                if (isDirty) {
+                if (!_.isEmpty(dirtyFields)) {
                   setOptions({
                     pathname: router.pathname,
                     query: {
@@ -284,7 +285,7 @@ const PriceTable = () => {
           className="border rounded p-1"
           onClick={(e) => {
             if (page + 1 <= total_pages) {
-              if (isDirty) {
+              if (!_.isEmpty(dirtyFields)) {
                 setOptions({
                   pathname: router.pathname,
                   query: {
@@ -310,7 +311,7 @@ const PriceTable = () => {
         <button
           className="border rounded p-1"
           onClick={(e) => {
-            if (isDirty) {
+            if (!_.isEmpty(dirtyFields)) {
               setOptions({
                 pathname: router.pathname,
                 query: {

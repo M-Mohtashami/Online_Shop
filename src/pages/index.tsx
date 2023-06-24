@@ -18,6 +18,8 @@ import { Navigation } from 'swiper';
 import { MutableRefObject, useCallback, useRef } from 'react';
 import MainSlider from '@/components/Home/MainSlider';
 import CategorySection from '@/components/Home/CategorySection';
+import { useRouter } from 'next/router';
+import { routes } from '@/config/routes';
 
 type Props = {
   categories: {
@@ -68,6 +70,7 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
   const specialRef = useRef(null);
   const cheepestRef = useRef(null);
   const popularRef = useRef(null);
+  const router = useRouter();
 
   const handlePrev = useCallback((sliderRef: MutableRefObject<any>) => {
     if (!sliderRef.current) return;
@@ -101,7 +104,17 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
       <div className="space-y-3 mt-32">
         <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 shadow-sm w-full flex items-center justify-between">
           <span>{'جدیدترین محصولات :'}</span>
-          <button className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links">
+          <button
+            onClick={() =>
+              router.push({
+                pathname: routes.public.Products,
+                query: {
+                  sort: '-createdAt',
+                },
+              })
+            }
+            className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links"
+          >
             {'بیشتر'}
           </button>
         </div>
@@ -137,7 +150,17 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
       <div className="space-y-3 mt-32">
         <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 shadow-sm w-full flex items-center justify-between">
           <span>{'پیشنهادات ویژه:'}</span>
-          <button className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links">
+          <button
+            onClick={() =>
+              router.push({
+                pathname: routes.public.Products,
+                query: {
+                  sort: '-quantity',
+                },
+              })
+            }
+            className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links"
+          >
             {'بیشتر'}
           </button>
         </div>
@@ -173,7 +196,12 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
       <div className="space-y-3 mt-32">
         <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 shadow-sm w-full flex items-center justify-between">
           <span>{'کالاهای محبوب :'}</span>
-          <button className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links">
+          <button onClick={()=> router.push({
+            pathname:routes.public.Products,
+            query:{
+              sort:'-rating.rate'
+            }
+          })} className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links">
             {'بیشتر'}
           </button>
         </div>
@@ -209,7 +237,12 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
       <div className="space-y-3 mt-32">
         <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 shadow-sm w-full flex items-center justify-between">
           <span>{'مقرون به صرفه :'}</span>
-          <button className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links">
+          <button onClick={()=> router.push({
+            pathname:routes.public.Products,
+            query:{
+              sort:'price'
+            }
+          })} className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links">
             {'بیشتر'}
           </button>
         </div>

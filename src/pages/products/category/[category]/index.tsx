@@ -12,7 +12,7 @@ import MainLayout from '@/layout/MainLayout';
 import ProductLayout from '@/layout/ProductLayout';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 type Props = {
   products: {
@@ -35,18 +35,34 @@ const Category: NextPageWithLayout = ({
   console.log(filteredSubCategory);
 
   const { page, per_page, total, total_pages, data } = products;
+  const [nextPage, setNextPage] = useState(1);
   const router = useRouter();
+  useEffect(() => {
+    router.push({
+      pathname: router.pathname,
+      query: {
+        ...router.query,
+        page: nextPage,
+      },
+    });
+  }, [nextPage]);
   return (
     <>
       <FilterContext.Provider value={{ subcategories: filteredSubCategory }}>
         <ProductLayout>
           <div className="grid grid-cols-12 gap-6  p-4 lg:col-span-3 place-items-center bg-white">
-            {data.products.map((product: ProductType) => (
+            {data.products.map((product: ProductType, index) => (
               <div
                 key={product._id}
                 className="col-span-12 md:col-span-6 xl:col-span-4"
               >
-                <Card product={product} />
+                <Card
+                  product={product}
+                  isLast={index === data.products.length - 1}
+                  newLimit={() =>
+                    setNextPage(page + 1 < total_pages ? page + 1 : total_pages)
+                  }
+                />
               </div>
             ))}
           </div>

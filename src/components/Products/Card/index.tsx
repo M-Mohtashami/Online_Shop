@@ -3,15 +3,35 @@ import { routes } from '@/config/routes';
 import { IMAGES } from '@/config/variable';
 import { ProductType } from '@/interfaces/inretfaces';
 import Link from 'next/link';
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 type Props = {
   product: ProductType;
+  isLast?: boolean;
+  newLimit?: () => void;
 };
 
-const Card = ({ product }: Props) => {
+const Card = ({ product, isLast, newLimit }: Props) => {
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    if (!cardRef?.current) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (isLast && entry.isIntersecting && newLimit) {
+        newLimit();
+        observer.unobserve(entry.target);
+      }
+    });
+
+    observer.observe(cardRef.current);
+  }, [isLast]);
+
   return (
-    <div className="max-w-[17rem] shadow-sm border border-gray-100 hover:shadow-md rounded-md col-span-3 bg-white">
+    <div
+      ref={cardRef}
+      className="max-w-[17rem] shadow-sm border border-gray-100 hover:shadow-md rounded-md col-span-3 bg-white"
+    >
       <Link
         href={{
           pathname: routes.public.SingleProduct,

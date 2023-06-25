@@ -95,9 +95,8 @@ export default function Delete({ product, closeModal, open }: Props) {
                     product &&
                       deleteProductServices(product?._id).then((res) => {
                         router.push({
-                          pathname: routes.private.Product,
+                          pathname: router.pathname,
                           query: {
-                            tab: 0,
                             ...router.query,
                           },
                         });

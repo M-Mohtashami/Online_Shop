@@ -33,9 +33,8 @@ type Props = {
 
 const ProductTable = () => {
   const { products, categories } = useContext(ProductDataContext);
-  console.log(products);
 
-  const { page, per_page, total, total_pages } = products;
+  const { page, per_page, total, total_pages, data } = products;
   const router = useRouter();
   const [selected, setSelected] = useState({
     _id: '',
@@ -62,6 +61,21 @@ const ProductTable = () => {
   function openAddModal() {
     setIsAddOpen(true);
   }
+
+  useEffect(() => {
+    console.log(data.products);
+
+    if (data.products.length <= 0) {
+      console.log(page, total_pages);
+      router.replace({
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          page: page - 1,
+        },
+      });
+    }
+  });
 
   return (
     <>
@@ -102,14 +116,14 @@ const ProductTable = () => {
                       </th>
                       <th
                         scope="col"
-                        className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900"
+                        className="w-52 px-3 py-3.5 text-right text-sm font-semibold text-gray-900"
                       >
                         <Combobox
                           as="div"
                           value={selected}
                           onChange={setSelected}
                         >
-                          <div className="relative mt-1 w-full max-w-52">
+                          <div className="relative mt-1 w-48">
                             <Combobox.Input
                               className="w-full max-w-52 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
                               onChange={(event) => setQuery(event.target.value)}
@@ -213,7 +227,7 @@ const ProductTable = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {products.data.products.map((product: ProductType) => (
+                    {data.products.map((product: ProductType) => (
                       <tr key={product._id}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                           <div className="flex items-center">

@@ -97,7 +97,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const page = query.page ? '?page=' + query.page : '?page=1';
   const limit = query.limit ? '&limit=' + query.limit : '&limit=5';
   const category = query.category ? '&category=' + query.category : '';
-  const sort = query.sort ? '&sort=' + query.sort : '&sort=-createdAt';
+  const sort = query.sort ? '&sort=' + query.sort : '&sort=createdAt';
 
   const products = await getAllProductsSevices(page + limit + category + sort);
   const categories = await getAllCategoryService();

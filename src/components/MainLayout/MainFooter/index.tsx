@@ -104,7 +104,7 @@ const MainFooter = ({ categories, subcategories }: Props) => {
             {/* footer links */}
 
             {/* header */}
-            {categoriesData.map((category) => {
+            {/* {categoriesData.map((category) => {
               return (
                 subcategoriesData.find(
                   (sub) => sub.category === category._id
@@ -136,7 +136,7 @@ const MainFooter = ({ categories, subcategories }: Props) => {
                   </li>
                 )
               );
-            })}
+            })} */}
           </ul>
           {/* <div className="mt-8 xl:mt-0">
             <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">

@@ -173,3 +173,17 @@ type AddNewProductType = {
 interface FilteredDataType {
   subcategories: SubCategoryType[];
 }
+
+interface CartItemType {
+  product: ProductType;
+  count: number;
+}
+
+interface CartStateType {
+  cart: CartItemType[];
+}
+
+type CartActionType = {
+  payload: CartItemType;
+  type: string;
+};

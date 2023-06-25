@@ -38,13 +38,17 @@ const Products: NextPageWithLayout = ({
   const [nextPage, setNextPage] = useState(1);
   const router = useRouter();
   useEffect(() => {
-    router.push({
-      pathname: router.pathname,
-      query: {
-        ...router.query,
-        page: nextPage,
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          page: nextPage,
+        },
       },
-    });
+      undefined,
+      { scroll: false }
+    );
   }, [nextPage]);
 
   return (

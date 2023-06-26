@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { boolean, number, string } from 'zod';
 import Orders from './../pages/admin/orders/index';
 import Filter from './../components/Products/Filter/index';
+import store from '@/redux/store';
 
 type NextPageWithLayout =
   | (NextPage & {
@@ -177,13 +178,17 @@ interface FilteredDataType {
 interface CartItemType {
   product: ProductType;
   count: number;
+  productPrice: number;
 }
 
 interface CartStateType {
   cart: CartItemType[];
+  totalprice?: number;
 }
 
 type CartActionType = {
   payload: CartItemType;
   type: string;
 };
+
+type RootState = ReturnType<typeof store.getState>;

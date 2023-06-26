@@ -31,6 +31,8 @@ import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs';
 import Card from '@/components/Products/Card';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '@/redux/slice';
 
 const swiperParams = {
   slidesPerView: 1,
@@ -84,6 +86,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
   const router = useRouter();
   const relatedRef = useRef(null);
   const [quantity, setQuantity] = useState('1');
+  const dispatch = useDispatch();
 
   const handlePrev = useCallback((relatedRef: MutableRefObject<any>) => {
     if (!relatedRef.current) return;
@@ -102,7 +105,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
   return (
     <>
       <div className="grid grid-cols-12 gap-5 mt-20 mb-20">
-        <div className="max-w-sm col-span-10  col-start-2 md:col-span-5 md:col-start-2">
+        <div className="max-w-md col-span-10 col-start-2 md:col-span-5 md:col-start-2">
           <Swiper
             spaceBetween={10}
             thumbs={{
@@ -136,7 +139,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
             ))}
           </Swiper>
         </div>
-        <div className="col-span-10 col-start-2 md:col-span-5">
+        <div className="col-span-10 col-start-2 md:col-span-5 bg-white rounded-md shadow-md p-6">
           <div className="flex flex-col items-start justify-start gap-5">
             <div>
               <span className="text-primary text-sm">
@@ -198,7 +201,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
                   min={1}
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
-                  className="w-16 p-2 rounded-sm text-md shadow-sm text-center focus:border focus:border-primary"
+                  className="w-16 p-2 bg-gray-100 rounded-sm text-md shadow-sm text-center focus:border focus:border-primary"
                 />
               </div>
               <Button
@@ -207,6 +210,16 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
                 variant="contained"
                 iconClassName="w-5"
                 className="max-w-sm bg-primary text-white hover:bg-white hover:border hover:border-primary hover:text-primary"
+                onClick={() => {
+                  dispatch(
+                    addProduct({
+                      product: productData,
+                      count: +quantity,
+                      productPrice: productData.price * +quantity,
+                    })
+                  );
+                  setQuantity('1');
+                }}
               >
                 {'افزودن به سبد خرید'}
               </Button>

@@ -1,11 +1,17 @@
-import { Fragment, useRef } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { HiMenu } from 'react-icons/hi';
 import { RiMenu3Line } from 'react-icons/ri';
 import Link from 'next/link';
 import { classNames } from '@/utils';
 import { icons } from '@/config/variable';
-import { CategoryType, SubCategoryType } from '@/interfaces/inretfaces';
+import {
+  CartStateType,
+  CategoryType,
+  RootState,
+  SubCategoryType,
+} from '@/interfaces/inretfaces';
+import { useSelector } from 'react-redux';
 
 type Props = {
   categories: {
@@ -36,6 +42,9 @@ const MainHeader = ({ categories, subcategories }: Props) => {
   const categoriesData = categories?.data.categories;
   const subcategoriesData = subcategories?.data.subcategories;
 
+  const { cart } = useSelector((state: RootState) => state.cart);
+  console.log(cart);
+  const [cartAmount, setCartAmount] = useState<number>();
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const timeOutRef = useRef<number | undefined | NodeJS.Timeout>(undefined);
 
@@ -50,8 +59,11 @@ const MainHeader = ({ categories, subcategories }: Props) => {
     }, timeoutDuration);
   };
 
+  useEffect(() => {
+    cart.length > 0 && setCartAmount(cart.length);
+  });
   return (
-    <Popover className="relative top-0 z-50 w-full bg-white border-b shadow-sm font-light">
+    <Popover className="fixed top-0 z-50 w-full bg-white border-b shadow-sm font-light">
       <div className="flex justify-between items-center px-4 py-2 sm:px-6 md:justify-start md:space-x-10">
         <div className=" ml-5">
           <Link href="/" className="flex">
@@ -231,12 +243,20 @@ const MainHeader = ({ categories, subcategories }: Props) => {
             >
               {icons.username('')}
             </Link>
-            <Link
-              href="#"
-              className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
-            >
-              {icons.cart('')}
-            </Link>
+            <div>
+              <Link
+                href="#"
+                className="relative ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
+              >
+                {icons.cart('')}
+
+                {cartAmount && (
+                  <div className="absolute -top-2 -left-2 flex items-center justify-center bg-red-500 rounded-full text-white text-xs font-light w-5 h-5 p-2">
+                    <span className="">{cartAmount}</span>
+                  </div>
+                )}
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -297,12 +317,20 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                 >
                   {icons.username('')}
                 </Link>
-                <Link
-                  href="#"
-                  className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
-                >
-                  {icons.cart('')}
-                </Link>
+                <div>
+                  <Link
+                    href="#"
+                    className="relative ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
+                  >
+                    {icons.cart('')}
+
+                    {cartAmount && (
+                      <div className="absolute -top-2 -left-2 flex items-center justify-center bg-red-500 rounded-full text-white text-xs font-light w-5 h-5 p-2">
+                        <span className="">{cartAmount}</span>
+                      </div>
+                    )}
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -313,4 +341,3 @@ const MainHeader = ({ categories, subcategories }: Props) => {
 };
 
 export default MainHeader;
-

@@ -14,7 +14,8 @@ const cartSlice = createSlice({
       if (cartItem) {
         state.cart.forEach((item) => {
           if (item.product._id === cartItem.product._id) {
-            item.count += cartItem.count;
+            item.count += action.payload.count;
+            item.productPrice = item.count * item.product.price;
           }
         });
       } else {

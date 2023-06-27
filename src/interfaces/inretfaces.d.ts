@@ -30,6 +30,7 @@ interface CustomIcons {
   cart: (value: string) => ReactNode;
   search: (value: string) => ReactNode;
   addtocart: (value: string) => ReactNode;
+  deletefromcart: (value: string) => ReactNode;
 }
 
 type LoginValues = {

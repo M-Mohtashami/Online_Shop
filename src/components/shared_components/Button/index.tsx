@@ -2,7 +2,7 @@ import { icons } from '@/config/variable';
 import React, { ReactElement } from 'react';
 
 type Props = {
-  icon: 'forward' | 'backward' | 'addtocart';
+  icon?: 'forward' | 'backward' | 'addtocart' | 'deletefromcart';
   type: 'button' | 'submit' | 'reset';
   variant: 'contained' | 'outlined';
   className: string;
@@ -18,7 +18,7 @@ const variants = {
 };
 
 const Button = ({
-  icon = 'forward',
+  icon,
   type = 'button',
   variant = 'contained',
   children,
@@ -32,7 +32,7 @@ const Button = ({
       className={variants[variant] + ' ' + className}
       {...btnProps}
     >
-      {icons[icon](iconClassName)}
+      {icon && icons[icon](iconClassName)}
       {children}
     </button>
   );

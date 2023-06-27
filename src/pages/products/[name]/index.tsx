@@ -4,7 +4,11 @@ import getAllProductsSevices from '@/api/services/product/getAllProductsServices
 import Button from '@/components/shared_components/Button';
 import { routes } from '@/config/routes';
 import { IMAGES } from '@/config/variable';
-import { NextPageWithLayout, ProductType } from '@/interfaces/inretfaces';
+import {
+  NextPageWithLayout,
+  ProductType,
+  RootState,
+} from '@/interfaces/inretfaces';
 import MainLayout from '@/layout/MainLayout';
 import { classNames } from '@/utils';
 import { Tab } from '@headlessui/react';
@@ -31,7 +35,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs';
 import Card from '@/components/Products/Card';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addProduct } from '@/redux/slice';
 
 const swiperParams = {
@@ -87,6 +91,8 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
   const relatedRef = useRef(null);
   const [quantity, setQuantity] = useState('1');
   const dispatch = useDispatch();
+  const { cart } = useSelector((state: RootState) => state.cart);
+  const [inCart, setInCart] = useState<ProductType>();
 
   const handlePrev = useCallback((relatedRef: MutableRefObject<any>) => {
     if (!relatedRef.current) return;
@@ -101,6 +107,13 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
   let [tabcategories] = useState(['معرفی']);
   const [currentTab, setCurrentTab] = useState(0);
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperRef>();
+
+  useEffect(() => {
+    const findProduct = cart.find(
+      (item) => item.product._id === productData._id
+    );
+    findProduct && setInCart(findProduct.product);
+  }, [cart]);
 
   return (
     <>
@@ -196,13 +209,15 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
             </div>
             <div className="w-full border-b border-gray-300 pb-3 text-primary text-xl flex items-center justify-between">
               <div>
-                <input
-                  type="number"
-                  min={1}
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                  className="w-16 p-2 bg-gray-100 rounded-sm text-md shadow-sm text-center focus:border focus:border-primary"
-                />
+                {inCart && (
+                  <input
+                    type="number"
+                    min={1}
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    className="w-16 p-2 bg-gray-100 rounded-sm text-md shadow-sm text-center focus:border focus:border-primary"
+                  />
+                )}
               </div>
               <Button
                 icon="addtocart"

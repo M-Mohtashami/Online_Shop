@@ -21,11 +21,16 @@ const cartSlice = createSlice({
       } else {
         state.cart = [action.payload, ...state.cart];
       }
+      state.totalprice = state.cart.reduce((sum, item) => sum + item.productPrice, 0);
     },
     deleteProduct: (state: CartStateType, action: CartActionType) => {
       state.cart = state.cart.filter(
         (item) => item.product._id !== action.payload.product._id
-      );
+        );
+        state.totalprice = state.cart.reduce(
+          (sum, item) => sum + item.productPrice,
+          0
+        );
     },
     updateProduct: (state: CartStateType, action: CartActionType) => {
       state.cart.forEach((item) => {
@@ -34,6 +39,7 @@ const cartSlice = createSlice({
           item.productPrice = item.count * item.product.price;
         }
       });
+      state.totalprice = state.cart.reduce((sum, item) => sum + item.productPrice, 0);
     },
   },
 });

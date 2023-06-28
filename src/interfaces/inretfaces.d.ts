@@ -193,3 +193,18 @@ type CartActionType = {
 };
 
 type RootState = ReturnType<typeof store.getState>;
+
+interface UserType {
+  address: string;
+  createdAt?: string;
+  firstname: string;
+  lastname: string;
+  password?: string;
+  phoneNumber: string;
+  refreshToken?: string;
+  role?: string;
+  updatedAt?: string;
+  username?: string;
+  __v?: number;
+  _id?: string;
+}

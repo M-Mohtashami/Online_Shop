@@ -2,34 +2,39 @@ import getAllCategoryService from '@/api/services/category/getAllCategoryService
 import getAllSubCategoryService from '@/api/services/category/getAllSubCategoryService';
 import CartItem from '@/components/Cart/CartItem';
 import Button from '@/components/shared_components/Button';
+import { routes } from '@/config/routes';
 import { NextPageWithLayout, RootState } from '@/interfaces/inretfaces';
 import MainLayout from '@/layout/MainLayout';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const Cart: NextPageWithLayout = () => {
-  const { cart } = useSelector((state: RootState) => state.cart);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const { cart, totalprice } = useSelector((state: RootState) => state.cart);
+  // const [totalPrice, setTotalPrice] = useState(0);
+  const router = useRouter();
 
-  useEffect(() => {
-    const price = cart.reduce((sum, item) => sum + item.productPrice, 0);
-    setTotalPrice(price);
-  }, [cart]);
+  // useEffect(() => {
+  //   const price = cart.reduce((sum, item) => sum + item.productPrice, 0);
+  //   setTotalPrice(price);
+  // }, [cart]);
   return (
-    <div className="grid grid-cols-12 gap-3">
-      <div className="col-span-12 md:col-span-8 lg:col-span-6 flex flex-col gap-3">
+    <div className="relative grid grid-cols-12 gap-3 lg:gap-6">
+      <div className="col-span-12 md:col-span-8 lg:col-span-6 lg:col-start-2 flex flex-col gap-3">
         {cart.map((item) => (
           <CartItem key={item.product._id} item={item} />
         ))}
       </div>
-      <div className="h-72 p-6 col-span-12 md:col-span-4 lg:col-end-1 flex flex-col justify-between gap-3 bg-white rounded-md border border-gray-300 ">
+      <div className="md:max-w-sm h-72 p-6 col-span-12 md:col-span-4 flex flex-col justify-between gap-3 bg-white rounded-md border border-gray-300 ">
         <div className="w-full border-gray-300  pb-3 text-primary flex items-center justify-between gap-3 border-b">
           <div>
             <span>{'قیمت نهایی :'}</span>
           </div>
           <div>
-            <span>{Intl.NumberFormat('fa-IR').format(totalPrice)}</span>
+            {totalprice && (
+              <span>{Intl.NumberFormat('fa-IR').format(totalprice)}</span>
+            )}
             <span>{' تومان'}</span>
           </div>
         </div>
@@ -39,9 +44,22 @@ const Cart: NextPageWithLayout = () => {
             variant="contained"
             iconClassName="w-5"
             className="w-full self-center sm:self-end justify-self-end bg-primary text-white hover:bg-links "
-            onClick={() => {}}
+            onClick={() => {
+              router.push({
+                pathname: routes.public.Checkout,
+              });
+            }}
           >
             {'نهایی کردن خرید'}
+          </Button>
+          <Button
+            type="button"
+            variant="contained"
+            iconClassName="w-5"
+            className="w-full mt-3 self-center sm:self-end justify-self-end bg-red-600 text-white hover:bg-red-400 "
+            onClick={() => {}}
+          >
+            {'پاک کردن سبد خرید'}
           </Button>
         </div>
       </div>

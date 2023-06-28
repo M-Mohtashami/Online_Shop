@@ -19,5 +19,7 @@ export const routes = {
     Cart: '/cart',
     About: '/about',
     Contact: '/contact',
+    Checkout: '/checkout',
+    Payment: '/payment',
   },
 };

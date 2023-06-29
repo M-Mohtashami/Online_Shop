@@ -5,6 +5,7 @@ import Button from '@/components/shared_components/Button';
 import { routes } from '@/config/routes';
 import { IMAGES } from '@/config/variable';
 import {
+  CartItemType,
   NextPageWithLayout,
   ProductType,
   RootState,
@@ -92,7 +93,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
   const [quantity, setQuantity] = useState('1');
   const dispatch = useDispatch();
   const { cart } = useSelector((state: RootState) => state.cart);
-  const [inCart, setInCart] = useState<ProductType>();
+  const [inCart, setInCart] = useState<CartItemType>();
 
   const handlePrev = useCallback((relatedRef: MutableRefObject<any>) => {
     if (!relatedRef.current) return;
@@ -112,7 +113,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
     const findProduct = cart.find(
       (item) => item.product._id === productData._id
     );
-    findProduct && setInCart(findProduct.product);
+    setInCart(findProduct);
   }, [cart]);
 
   return (
@@ -209,15 +210,31 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
             </div>
             <div className="w-full border-b border-gray-300 pb-3 text-primary text-xl flex items-center justify-between">
               <div>
-                {inCart && (
+                {
                   <input
                     type="number"
                     min={1}
                     value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
+                    onChange={(e) => {
+                      if (inCart) {
+                        setQuantity(
+                          +e.target.value + inCart.count < productData.quantity
+                            ? e.target.value
+                            : Math.abs(
+                                productData.quantity - inCart.count
+                              ).toString()
+                        );
+                      } else {
+                        setQuantity(
+                          +e.target.value < productData.quantity
+                            ? e.target.value
+                            : productData.quantity.toString()
+                        );
+                      }
+                    }}
                     className="w-16 p-2 bg-gray-100 rounded-sm text-md shadow-sm text-center focus:border focus:border-primary"
                   />
-                )}
+                }
               </div>
               <Button
                 icon="addtocart"

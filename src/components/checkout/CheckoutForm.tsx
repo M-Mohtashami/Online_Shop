@@ -14,19 +14,24 @@ import {
 } from '@/interfaces/inretfaces';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useDropzone } from 'react-dropzone';
-import dynamic from 'next/dynamic';
-import { modules } from '@/utils/QuillToolbar';
 import 'react-quill/dist/quill.snow.css';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
+import DatePicker, { Value } from 'react-multi-date-picker';
+import persian from 'react-date-object/calendars/persian';
+import persian_fa from 'react-date-object/locales/persian_fa';
+import { DateObject } from 'react-multi-date-picker';
+import { routes } from '@/config/routes';
 
 type Props = {
   user: UserType;
 };
 
+interface DateType {
+  unix: number;
+}
 const initInfo = {
   firstname: '',
   lastname: '',
@@ -53,13 +58,13 @@ const productSchema = z.object({
 });
 
 const CheckoutForm = ({ user }: Props) => {
-  console.log(user);
   const { cart, totalprice } = useSelector((state: RootState) => state.cart);
 
   const router = useRouter();
   const [isUser, setIsUser] = useState(false);
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
     getValues,
@@ -78,8 +83,9 @@ const CheckoutForm = ({ user }: Props) => {
           count: item.count,
         };
       }),
-      deliveryDate: getValues().deliveryDate,
+      deliveryDate: +getValues().deliveryDate * 1000,
     };
+
     localStorage.setItem('order', JSON.stringify(order));
     router.push({
       pathname: 'http://localhost:3030',
@@ -98,6 +104,9 @@ const CheckoutForm = ({ user }: Props) => {
       setValue('lastname', user.lastname);
       setValue('address', user.address);
       setValue('phonenumber', user.phoneNumber);
+    }
+    if (cart.length <= 0) {
+      router.push(routes.public.Cart);
     }
   }, []);
 
@@ -162,12 +171,38 @@ const CheckoutForm = ({ user }: Props) => {
         <div className="sm:w-52 w-full">
           <label className="block text-sm font-medium">{'تاریخ تحویل'}</label>
           <div className="mt-1">
-            <input
+            <Controller
+              control={control}
+              name="deliveryDate"
+              rules={{ required: true }} //optional
+              render={() => (
+                <>
+                  <DatePicker
+                    calendar={persian}
+                    locale={persian_fa}
+                    inputClass="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:text-gray-500"
+                    minDate={
+                      new DateObject({
+                        // calender: persian,
+                        date: new Date(),
+                      })
+                    }
+                    onChange={(date) => {
+                      setValue(
+                        'deliveryDate',
+                        (date as DateType).unix.toString()
+                      );
+                    }}
+                  />
+                </>
+              )}
+            />
+            {/* <input
               type="date"
               min={new Date().toISOString().split('T')[0]}
               {...register('deliveryDate')}
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
+            /> */}
           </div>
 
           <small className="text-red-500">

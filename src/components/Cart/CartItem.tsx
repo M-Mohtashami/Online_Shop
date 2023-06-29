@@ -6,6 +6,7 @@ import { addProduct, deleteProduct, updateProduct } from '@/redux/slice';
 import Button from '../shared_components/Button';
 import Link from 'next/link';
 import { routes } from '@/config/routes';
+import { toast } from 'react-toastify';
 
 type Props = {
   item: CartItemType;
@@ -74,11 +75,10 @@ const CartItem = ({ item }: Props) => {
               min={1}
               value={quantity}
               onChange={(e) =>
-                setQuantity(
-                  +e.target.value < item.product.quantity
-                    ? +e.target.value
-                    : item.product.quantity
-                )
+                +e.target.value < item.product.quantity
+                  ? setQuantity(+e.target.value)
+                  : (setQuantity(item.product.quantity),
+                    toast.error('بیشترین مقدار ممکن انتخاب شده است'))
               }
               className="w-16 p-2 bg-gray-100 rounded-sm text-md shadow-sm text-center focus:border focus:border-primary"
             />

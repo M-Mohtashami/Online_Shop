@@ -1,11 +1,11 @@
 import Button from '@/components/shared_components/Button';
 import { routes } from '@/config/routes';
 import { IMAGES } from '@/config/variable';
-import { ProductType } from '@/interfaces/inretfaces';
+import { CartItemType, ProductType, RootState } from '@/interfaces/inretfaces';
 import { addProduct } from '@/redux/slice';
 import Link from 'next/link';
-import React, { useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useRef, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 type Props = {
   product: ProductType;
@@ -16,6 +16,8 @@ type Props = {
 const Card = ({ product, isLast, newLimit }: Props) => {
   const cardRef = useRef(null);
   const dispatch = useDispatch();
+  const { cart, totalprice } = useSelector((state: RootState) => state.cart);
+  const [inCart, setInCart] = useState<CartItemType>();
 
   useEffect(() => {
     if (!cardRef?.current) return;
@@ -29,6 +31,11 @@ const Card = ({ product, isLast, newLimit }: Props) => {
 
     observer.observe(cardRef.current);
   }, [isLast]);
+
+  useEffect(() => {
+    const findProduct = cart.find((item) => item.product._id === product._id);
+    setInCart(findProduct);
+  }, [cart]);
 
   return (
     <div
@@ -66,11 +73,21 @@ const Card = ({ product, isLast, newLimit }: Props) => {
           variant="contained"
           iconClassName="w-5"
           className="w-full bg-primary text-white hover:bg-white hover:border hover:border-primary hover:text-primary"
-          onClick={() =>
-            dispatch(
-              addProduct({ product, count: 1, productPrice: product.price })
-            )
-          }
+          onClick={() => {
+            if (inCart) {
+              dispatch(
+                addProduct({
+                  product,
+                  count: inCart.count < product.quantity ? 1 : 0,
+                  productPrice: product.price,
+                })
+              );
+            } else {
+              dispatch(
+                addProduct({ product, count: 1, productPrice: product.price })
+              );
+            }
+          }}
         >
           {'افزودن به سبد خرید'}
         </Button>

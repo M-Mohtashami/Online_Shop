@@ -125,7 +125,7 @@ interface ProductProps {
 interface AdminOrderType {
   _id: string;
   user: UserType;
-  delivaryDate: string;
+  deliveryDate: string;
   products: {
     _id: string;
     product: ProductType;

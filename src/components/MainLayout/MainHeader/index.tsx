@@ -12,6 +12,7 @@ import {
   SubCategoryType,
 } from '@/interfaces/inretfaces';
 import { useSelector } from 'react-redux';
+import { routes } from '@/config/routes';
 
 type Props = {
   categories: {
@@ -60,7 +61,7 @@ const MainHeader = ({ categories, subcategories }: Props) => {
   };
 
   useEffect(() => {
-    cart.length > 0 && setCartAmount(cart.length);
+    setCartAmount(cart.length);
   });
   return (
     <Popover className="fixed top-0 z-50 w-full bg-white border-b shadow-sm font-light">
@@ -238,22 +239,28 @@ const MainHeader = ({ categories, subcategories }: Props) => {
               {icons.search('')}
             </Link>
             <Link
-              href="/auth/login"
+              href={{
+                pathname: routes.protected.Login,
+              }}
               className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
             >
               {icons.username('')}
             </Link>
             <div>
               <Link
-                href="#"
+                href={{
+                  pathname: routes.public.Cart,
+                }}
                 className="relative ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
               >
                 {icons.cart('')}
 
-                {cartAmount && (
+                {cartAmount ? (
                   <div className="absolute -top-2 -left-2 flex items-center justify-center bg-red-500 rounded-full text-white text-xs font-light w-5 h-5 p-2">
                     <span className="">{cartAmount}</span>
                   </div>
+                ) : (
+                  ''
                 )}
               </Link>
             </div>
@@ -312,22 +319,28 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                   {icons.search('')}
                 </Link>
                 <Link
-                  href="/auth/login"
+                  href={{
+                    pathname: routes.protected.Login,
+                  }}
                   className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
                 >
                   {icons.username('')}
                 </Link>
                 <div>
                   <Link
-                    href="#"
+                    href={{
+                      pathname: routes.public.Cart,
+                    }}
                     className="relative ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
                   >
                     {icons.cart('')}
 
-                    {cartAmount && (
+                    {cartAmount ? (
                       <div className="absolute -top-2 -left-2 flex items-center justify-center bg-red-500 rounded-full text-white text-xs font-light w-5 h-5 p-2">
                         <span className="">{cartAmount}</span>
                       </div>
+                    ) : (
+                      ''
                     )}
                   </Link>
                 </div>

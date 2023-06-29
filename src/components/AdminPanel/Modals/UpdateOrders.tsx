@@ -79,59 +79,61 @@ export default function UpdateOrders({ order, closeModal, open }: Props) {
               </div>
               {/* محتوای سفارش */}
               <div className="mt-8 text-right">
-                <div className="space-y-6">
+                <div className="">
                   {/* نام مشتری*/}
-                  <div>
-                    <span className=" text-sm font-medium">
-                      {'نام مشتری : '}
-                    </span>
-                    <span className=" text-sm font-medium">
-                      {order?.user.firstname + ' ' + order?.user.lastname}
-                    </span>
-                  </div>
-                  <div>
-                    <span className=" text-sm font-medium">
-                      {'آدرس مشتری : '}
-                    </span>
-                    <span className=" text-sm font-medium">
-                      {order?.user.address}
-                    </span>
-                  </div>
-                  <div>
-                    <span className=" text-sm font-medium">
-                      {'شماره تماس : '}
-                    </span>
-                    <span className=" text-sm font-medium">
-                      {order?.user.phoneNumber}
-                    </span>
-                  </div>
-                  <div>
-                    <span className=" text-sm font-medium">
-                      {'زمان سفارش : '}
-                    </span>
-                    <span className=" text-sm font-medium">
-                      {new Date(
-                        order ? order?.createdAt : ''
-                      ).toLocaleDateString('fa-IR', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </span>
-                  </div>
-                  <div>
-                    <span className=" text-sm font-medium">
-                      {'زمان تحویل : '}
-                    </span>
-                    <span className=" text-sm font-medium">
-                      {new Date(
-                        order ? order?.delivaryDate : ''
-                      ).toLocaleDateString('fa-IR', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </span>
+                  <div className="max-w-sm py-5 space-y-3">
+                    <div className="space-x-3">
+                      <span className=" text-sm font-medium">
+                        {'نام مشتری : '}
+                      </span>
+                      <span className=" text-sm font-medium">
+                        {order?.user.firstname + ' ' + order?.user.lastname}
+                      </span>
+                    </div>
+                    <div className="space-x-3">
+                      <span className=" text-sm font-medium">
+                        {'آدرس مشتری : '}
+                      </span>
+                      <span className=" text-sm font-medium">
+                        {order?.user.address}
+                      </span>
+                    </div>
+                    <div className="space-x-3">
+                      <span className=" text-sm font-medium">
+                        {'شماره تماس : '}
+                      </span>
+                      <span className=" text-sm font-medium">
+                        {order?.user.phoneNumber}
+                      </span>
+                    </div>
+                    <div className="space-x-3">
+                      <span className=" text-sm font-medium">
+                        {'زمان سفارش : '}
+                      </span>
+                      <span className=" text-sm font-medium">
+                        {new Date(
+                          order ? order?.createdAt : ''
+                        ).toLocaleDateString('fa-IR', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </span>
+                    </div>
+                    <div className="space-x-3">
+                      <span className=" text-sm font-medium">
+                        {'زمان تحویل : '}
+                      </span>
+                      <span className=" text-sm font-medium">
+                        {new Date(
+                          order ? order?.deliveryDate : ''
+                        ).toLocaleDateString('fa-IR', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </span>
+                    </div>
                   </div>
                   <ul className="w-full h-44 overflow-y-auto space-y-3">
                     {order?.products.map((product) => (
@@ -162,7 +164,7 @@ export default function UpdateOrders({ order, closeModal, open }: Props) {
                                 },
                               }));
                       }}
-                      className="w-52 bg-primary hover:bg-links"
+                      className="w-52 mt-5 bg-primary hover:bg-links"
                     >
                       {order?.deliveryStatus ? 'بستن' : 'تحویل شد'}
                     </Button>

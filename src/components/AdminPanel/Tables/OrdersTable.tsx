@@ -11,7 +11,13 @@ import {
   FiChevronsRight,
 } from 'react-icons/fi';
 import { FaSort } from 'react-icons/fa';
-import { CategoryType, OrdersType } from '@/interfaces/inretfaces';
+import {
+  AdminOrderType,
+  CategoryType,
+  OrdersType,
+} from '@/interfaces/inretfaces';
+import UpdateOrders from '../Modals/UpdateOrders';
+import { set } from 'lodash';
 
 const categories = [
   {
@@ -29,13 +35,15 @@ type Props = {
 };
 
 const OrdersTable = ({ orders }: Props) => {
-  const { page, per_page, total, total_pages } = orders;
+  const { page, per_page, total, total_pages, data } = orders;
   const router = useRouter();
   const [selected, setSelected] = useState({
     _id: '',
     name: 'همه',
   });
   const [query, setQuery] = useState('');
+  const [selectedOrder, setSelectedOrder] = useState<AdminOrderType>();
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -182,7 +190,7 @@ const OrdersTable = ({ orders }: Props) => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {orders.data.orders.map((order) => (
+                    {data.orders.map((order: AdminOrderType) => (
                       <tr key={order._id}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                           <div className="flex items-center">
@@ -209,22 +217,23 @@ const OrdersTable = ({ orders }: Props) => {
                           </div>
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          {order.deliveryStatus ? (
-                            <Link
-                              href="#"
-                              className="text-indigo-600 hover:text-indigo-900 "
-                            >
+                          <button
+                            onClick={() => {
+                              setSelectedOrder(order);
+                              setOpen(true);
+                            }}
+                            className="text-indigo-600 hover:text-indigo-900 "
+                          >
+                            {order.deliveryStatus ? (
+                              <span className="inline-flex rounded-lg py-1 ml-2 bg-gray-200 px-2 text-xs font-semibold leading-5 text-gray-800">
+                                {'مشاهده'}
+                              </span>
+                            ) : (
                               <span className="inline-flex rounded-lg py-1 ml-2 bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
                                 {'بررسی سفارش'}
                               </span>
-                            </Link>
-                          ) : (
-                            <span className="text-indigo-600 hover:text-indigo-900 ">
-                              <span className="inline-flex rounded-lg py-1 ml-2 bg-gray-200 px-2 text-xs font-semibold leading-5 text-gray-800">
-                                {'تحویل شده'}
-                              </span>
-                            </span>
-                          )}
+                            )}
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -338,6 +347,11 @@ const OrdersTable = ({ orders }: Props) => {
             ))}
         </select>
       </div>
+      <UpdateOrders
+        order={selectedOrder}
+        closeModal={() => setOpen(false)}
+        open={open}
+      />
     </>
   );
 };

@@ -5,10 +5,11 @@ import { CategoryType, SubCategoryType } from '@/interfaces/inretfaces';
 import { useAddSubCategory } from '@/hooks/category/useAddSubCategory';
 
 type Props = {
-  categories: CategoryType[];
+  categories: any;
   updateCategory: () => void;
 };
 const SubCategory = ({ categories, updateCategory }: Props) => {
+  const { data } = categories;
   const {
     register,
     handleSubmit,
@@ -47,7 +48,7 @@ const SubCategory = ({ categories, updateCategory }: Props) => {
               {...register('category')}
               className="focus:ring-0 focus:border-indigo-500 h-full py-2 pr-3 pl-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
             >
-              {categories.map((category) => (
+              {data?.categories.map((category: CategoryType) => (
                 <option key={category._id} value={category._id}>
                   {category.name}
                 </option>

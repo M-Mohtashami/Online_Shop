@@ -104,10 +104,7 @@ const Categories: NextPageWithLayout = () => {
             )}
           >
             {isSuccess && (
-              <SubCategory
-                categories={data?.data.categories}
-                updateCategory={updateCategory}
-              />
+              <SubCategory categories={data} updateCategory={updateCategory} />
             )}
             {/* {form} */}
           </Tab.Panel>

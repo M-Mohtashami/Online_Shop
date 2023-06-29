@@ -1,7 +1,9 @@
 import getAllCategoryService from '@/api/services/category/getAllCategoryService';
-import { UseQueryOptions, useQuery } from '@tanstack/react-query';
+import { QueryKey, UseQueryOptions, useQuery } from '@tanstack/react-query';
 
-export const useGetCategories = (options: UseQueryOptions) => {
+export const useGetCategories = (
+  options: UseQueryOptions<any, unknown, unknown, QueryKey>
+) => {
   return useQuery({
     ...options,
     // queryKey: ['categories'],

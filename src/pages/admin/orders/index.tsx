@@ -1,11 +1,15 @@
 import { ReactElement, useState } from 'react';
-import { NextPageWithLayout } from '@/interfaces/inretfaces';
+import { NextPageWithLayout, OrdersType } from '@/interfaces/inretfaces';
 import AdminLayout from '@/layout/AdminLayout';
 import type { GetServerSideProps } from 'next';
 import getAllOrdersService from '@/api/services/orders/getAllOrdersService';
 import OrdersTable from '@/components/AdminPanel/Tables/OrdersTable';
 
-const Orders: NextPageWithLayout = ({ orders }) => {
+type Props = {
+  orders: OrdersType;
+};
+
+const Orders: NextPageWithLayout = ({ orders }: Props) => {
   console.log(orders);
 
   return (

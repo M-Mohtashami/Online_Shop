@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import persistStore from 'redux-persist/lib/persistStore';
 import { PersistGate } from 'redux-persist/integration/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ToastContainer } from 'react-toastify';
 
 type Props = {
   children: React.ReactElement;
@@ -35,6 +36,20 @@ const MainLayout = ({ children }: Props) => {
               subcategories={props.subcategories}
             />
           </div>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+          {/* Same as */}
+          <ToastContainer />
         </PersistGate>
       </Provider>
     </QueryClientProvider>

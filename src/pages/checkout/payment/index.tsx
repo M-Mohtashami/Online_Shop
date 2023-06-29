@@ -19,19 +19,19 @@ const Payment: NextPageWithLayout = () => {
   const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
 
-  const { mutate: sendOrder } = useSendOrder({
+  const { mutate: sendOrder, isLoading } = useSendOrder({
     onSuccess: (data) => {
       console.log(data);
+      localStorage.removeItem('order');
+      dispatch(deleteCart());
     },
   });
 
   useEffect(() => {
-    if (router.query.status === 'success' && order) {
+    if (router.query.status === 'success' && order && !isLoading) {
       sendOrder(order);
-      localStorage.removeItem('order');
-      dispatch(deleteCart());
     }
-  }, [order]);
+  }, []);
   return (
     <div className="flex items-center justify-center mb-20">
       <Message

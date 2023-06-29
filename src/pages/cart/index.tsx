@@ -5,20 +5,17 @@ import Button from '@/components/shared_components/Button';
 import { routes } from '@/config/routes';
 import { NextPageWithLayout, RootState } from '@/interfaces/inretfaces';
 import MainLayout from '@/layout/MainLayout';
+import { deleteCart } from '@/redux/slice';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { ReactElement, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Cart: NextPageWithLayout = () => {
   const { cart, totalprice } = useSelector((state: RootState) => state.cart);
-  // const [totalPrice, setTotalPrice] = useState(0);
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const price = cart.reduce((sum, item) => sum + item.productPrice, 0);
-  //   setTotalPrice(price);
-  // }, [cart]);
   return (
     <div className="relative grid grid-cols-12 gap-3 lg:gap-6">
       <div className="col-span-12 md:col-span-8 lg:col-span-6 lg:col-start-2 flex flex-col gap-3">
@@ -57,7 +54,9 @@ const Cart: NextPageWithLayout = () => {
             variant="contained"
             iconClassName="w-5"
             className="w-full mt-3 self-center sm:self-end justify-self-end bg-red-600 text-white hover:bg-red-400 "
-            onClick={() => {}}
+            onClick={() => {
+              dispatch(deleteCart());
+            }}
           >
             {'پاک کردن سبد خرید'}
           </Button>

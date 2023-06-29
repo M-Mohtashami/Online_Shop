@@ -122,16 +122,16 @@ interface ProductProps {
   };
 }
 
-interface OrdersType {
+interface AdminOrderType {
   _id: string;
-  user: string;
+  user: UserType;
+  delivaryDate: string;
   products: {
-    product: string;
-    count: number;
     _id: string;
+    product: ProductType;
+    count: number;
   }[];
   totalPrice: number;
-  deliveryDate: string;
   deliveryStatus: boolean;
   createdAt: string;
   updatedAt: string;
@@ -145,7 +145,7 @@ interface OrdersType {
   total: number;
   total_pages: number;
   data: {
-    orders: OrderType[];
+    orders: AdminOrderType[];
   };
 }
 
@@ -210,8 +210,10 @@ interface UserType {
 }
 
 interface OrderType {
-  user: string;
-  delivaryDate: string;
+  id?: string;
+  user?: string;
+  delivaryDate?: string;
+  deliveryStatus?: boolean;
   products: {
     product: string;
     count: number;

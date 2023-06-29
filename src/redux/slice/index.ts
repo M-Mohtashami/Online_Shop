@@ -48,7 +48,8 @@ const cartSlice = createSlice({
       );
     },
     deleteCart: (state: CartStateType) => {
-      state = initCartState;
+      state.cart = [];
+      state.totalprice = 0;
     },
   },
 });

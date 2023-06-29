@@ -8,6 +8,7 @@ import persistStore from 'redux-persist/lib/persistStore';
 import { PersistGate } from 'redux-persist/integration/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type Props = {
   children: React.ReactElement;
@@ -30,7 +31,9 @@ const MainLayout = ({ children }: Props) => {
               categories={props.categories}
               subcategories={props.subcategories}
             />
-            <main className="flex-1 p-6 w-full mt-16 ">{children}</main>
+            <main className="flex-1 p-6 w-full mt-16 bg-gray-100 ">
+              {children}
+            </main>
             <MainFooter
               categories={props.categories}
               subcategories={props.subcategories}

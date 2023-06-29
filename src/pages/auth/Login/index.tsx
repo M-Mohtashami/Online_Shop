@@ -1,5 +1,9 @@
 import Button from '@/components/shared_components/Button';
-import { LoginValues, NextPageWithLayout } from '@/interfaces/inretfaces';
+import {
+  LoginValues,
+  NextPageWithLayout,
+  RootState,
+} from '@/interfaces/inretfaces';
 import MainLayout from '@/layout/MainLayout';
 import Link from 'next/link';
 import React, { ReactElement, useEffect } from 'react';
@@ -14,6 +18,8 @@ import getAllSubCategoryService from '@/api/services/category/getAllSubCategoryS
 import { GetServerSideProps } from 'next';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Cookies from 'universal-cookie';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const cookie = new Cookies();
 
@@ -37,6 +43,8 @@ const Login: NextPageWithLayout = () => {
     },
     resolver: zodResolver(schema),
   });
+
+  const { cart } = useSelector((state: RootState) => state.cart);
   const { mutate: loginMutate, isSuccess } = useLogin({
     onSuccess(data: any) {
       console.log(data);
@@ -44,8 +52,14 @@ const Login: NextPageWithLayout = () => {
         const token = data.token;
         cookie.set('access_token', token.accessToken);
         cookie.set('refresh_token', token.refreshToken);
+        cookie.set('user_role', data.data.user.role);
         localStorage.setItem('user_info', JSON.stringify(data.data.user));
-        router.push(routes.private.Admin);
+        toast.success('ورود موفقیت آمیز بود');
+        if (cart && cart.length > 0) {
+          router.push(routes.public.Cart);
+        } else {
+          router.push(routes.private.Admin);
+        }
       } else if (data.status === 'fail') {
         setError('root', { message: 'نام کاربری یا رمزعبور اشتباه است' });
       }

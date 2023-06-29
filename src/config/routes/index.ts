@@ -20,6 +20,6 @@ export const routes = {
     About: '/about',
     Contact: '/contact',
     Checkout: '/checkout',
-    Payment: '/payment',
+    Payment: '/checkout/payment',
   },
 };

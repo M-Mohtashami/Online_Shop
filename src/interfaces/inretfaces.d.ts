@@ -208,3 +208,12 @@ interface UserType {
   __v?: number;
   _id?: string;
 }
+
+interface OrderType {
+  user: string;
+  delivaryDate: string;
+  products: {
+    product: string;
+    count: number;
+  }[];
+}

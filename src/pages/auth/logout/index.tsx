@@ -14,7 +14,7 @@ const Logout = () => {
     localStorage.removeItem('user_info');
     router.push('/');
   }, []);
-  return <div>Logout</div>;
+  return <div>Redirecting...</div>;
 };
 
 export default Logout;

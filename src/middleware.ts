@@ -26,7 +26,10 @@ export function middleware(request: NextRequest) {
 
   if (request.nextUrl.pathname.startsWith('/admin')) {
     // This logic is only applied to /dashboard
-    if (!token || user !== 'ADMIN') {
+    if (!token) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    if (user === 'USER') {
       return NextResponse.redirect(new URL('/', request.url));
     }
   }

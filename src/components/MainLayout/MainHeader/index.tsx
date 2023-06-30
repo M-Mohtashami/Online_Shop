@@ -116,14 +116,19 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                     leaveFrom="opacity-100 translate-y-0"
                     leaveTo="opacity-0 -translate-y-1"
                   >
-                    <Popover.Panel className="hidden md:block absolute z-10 top-full inset-x-0 transform shadow-lg bg-white">
-                      <ul className="max-w-7xl mx-auto grid gap-y-6 px-4 py-6 sm:grid-cols-2 sm:gap-8 sm:px-6 sm:py-8 lg:grid-cols-4 lg:px-8 lg:py-12 xl:py-16">
+                    <Popover.Panel className="hidden md:block absolute z-10 top-full inset-x-0 transform ">
+                      <ul className="max-w-7xl bg-white border border-gray-200 rounded-md shadow-md mx-auto grid gap-y-3 px-4 py-2 sm:grid-cols-2 sm:gap-4 sm:px-3 sm:py-4 md:grid-cols-4 md:px-4 md:py-6 lg:py-8">
                         {/* header */}
                         {categoriesData.map((category) => {
                           return (
                             <li key={category._id}>
                               <Link
-                                href="#"
+                                href={{
+                                  pathname: routes.public.Category,
+                                  query: {
+                                    category: category._id,
+                                  },
+                                }}
                                 className="border-b border-gray-500"
                               >
                                 <h3 className="text-sm font-normal tracking-wide text-gray-900 uppercase border-b border-gray-300 pb-2">
@@ -139,7 +144,13 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                                     return (
                                       <li key={item._id} className="flow-root">
                                         <Link
-                                          href="#"
+                                          href={{
+                                            pathname: routes.public.Category,
+                                            query: {
+                                              category: category._id,
+                                              subcategory: item._id,
+                                            },
+                                          }}
                                           className="-m-3 p-3 flex items-center rounded-md text-base font-normal text-gray-500 transition ease-in-out duration-150"
                                         >
                                           <span className="w-full ml-4 p-1 rounded-md hover:bg-gray-50">
@@ -154,11 +165,6 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                           );
                         })}
                       </ul>
-                      <div className="bg-gray-50">
-                        <div className="max-w-7xl mx-auto space-y-6 px-4 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-6 lg:px-8">
-                          {/* header footer */}
-                        </div>
-                      </div>
                     </Popover.Panel>
                   </Transition>
                 </div>
@@ -278,13 +284,21 @@ const MainHeader = ({ categories, subcategories }: Props) => {
         leaveTo="opacity-0 -translate-y-1"
       >
         <Popover.Panel className="absolute z-10 inset-x-0 transform shadow-lg bg-white">
-          <ul className="max-w-7xl mx-auto grid gap-y-6 px-4 py-6 sm:grid-cols-2 sm:gap-8 sm:px-6 sm:py-8 lg:grid-cols-4 lg:px-8 lg:py-12 xl:py-16">
+          <ul className="max-w-7xl max-h-screen overflow-h-auto mx-auto grid gap-y-3 px-4 py-3 grid-cols-2 sm:gap-4 sm:px-3 sm:py-4 lg:grid-cols-4 lg:px-4 lg:py-6 xl:py-8">
             {/* header */}
             {categoriesData.map((category) => {
               return (
                 <li key={category._id}>
-                  <Link href="#" className="border-b border-gray-500">
-                    <h3 className="text-sm font-medium tracking-wide text-gray-900 uppercase border-b border-gray-300 pb-2">
+                  <Link
+                    href={{
+                      pathname: routes.public.Category,
+                      query: {
+                        category: category._id,
+                      },
+                    }}
+                    className="border-b border-gray-500"
+                  >
+                    <h3 className="text-base font-medium tracking-wide text-gray-900 uppercase border-b border-gray-300 pb-2">
                       {category.name}
                     </h3>
                   </Link>
@@ -295,8 +309,14 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                         return (
                           <li key={item._id} className="flow-root">
                             <Link
-                              href="#"
-                              className="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-500 hover:bg-gray-50 transition ease-in-out duration-150"
+                              href={{
+                                pathname: routes.public.Category,
+                                query: {
+                                  category: category._id,
+                                  subcategory: item._id,
+                                },
+                              }}
+                              className="-m-3 p-3 flex items-center rounded-md text-sm font-medium text-gray-500 hover:bg-gray-50 transition ease-in-out duration-150"
                             >
                               <span className="ml-4">{item.name}</span>
                             </Link>

@@ -31,6 +31,7 @@ interface CustomIcons {
   search: (value: string) => ReactNode;
   addtocart: (value: string) => ReactNode;
   deletefromcart: (value: string) => ReactNode;
+  logout: (value: string) => ReactNode;
 }
 
 type LoginValues = {

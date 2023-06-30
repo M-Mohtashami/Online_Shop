@@ -13,6 +13,7 @@ import {
 } from '@/interfaces/inretfaces';
 import { useSelector } from 'react-redux';
 import { routes } from '@/config/routes';
+import Cookies from 'universal-cookie';
 
 type Props = {
   categories: {
@@ -38,13 +39,15 @@ type Props = {
 };
 
 const timeoutDuration = 200;
-
+const cookie = new Cookies();
 const MainHeader = ({ categories, subcategories }: Props) => {
   const categoriesData = categories?.data.categories;
   const subcategoriesData = subcategories?.data.subcategories;
 
   const { cart } = useSelector((state: RootState) => state.cart);
-  console.log(cart);
+  const role = cookie.get('user_role');
+  console.log(role);
+
   const [cartAmount, setCartAmount] = useState<number>();
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const timeOutRef = useRef<number | undefined | NodeJS.Timeout>(undefined);
@@ -244,14 +247,25 @@ const MainHeader = ({ categories, subcategories }: Props) => {
             >
               {icons.search('')}
             </Link>
-            <Link
-              href={{
-                pathname: routes.protected.Login,
-              }}
-              className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
-            >
-              {icons.username('')}
-            </Link>
+            {role && role !== 'ADMIN' ? (
+              <Link
+                href={{
+                  pathname: routes.protected.Logout,
+                }}
+                className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
+              >
+                {icons.logout('rotate-180')}
+              </Link>
+            ) : (
+              <Link
+                href={{
+                  pathname: routes.protected.Login,
+                }}
+                className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
+              >
+                {icons.username('')}
+              </Link>
+            )}
             <div>
               <Link
                 href={{
@@ -338,14 +352,25 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                 >
                   {icons.search('')}
                 </Link>
-                <Link
-                  href={{
-                    pathname: routes.protected.Login,
-                  }}
-                  className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
-                >
-                  {icons.username('')}
-                </Link>
+                {role && role !== 'ADMIN' ? (
+                  <Link
+                    href={{
+                      pathname: routes.protected.Logout,
+                    }}
+                    className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
+                  >
+                    {icons.logout('rotate-180')}
+                  </Link>
+                ) : (
+                  <Link
+                    href={{
+                      pathname: routes.protected.Login,
+                    }}
+                    className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
+                  >
+                    {icons.username('')}
+                  </Link>
+                )}
                 <div>
                   <Link
                     href={{

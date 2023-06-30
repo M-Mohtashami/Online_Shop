@@ -1,7 +1,7 @@
 import { CustomIcons } from '@/interfaces/inretfaces';
 import { FaUser, FaLock, FaShoppingCart, FaCartPlus } from 'react-icons/fa';
 import { BsArrowLeft, BsArrowRight, BsSearch } from 'react-icons/bs';
-import { MdDelete } from 'react-icons/md';
+import { MdDelete, MdLogout } from 'react-icons/md';
 
 export const icons: CustomIcons = {
   username: function (value) {
@@ -27,6 +27,9 @@ export const icons: CustomIcons = {
   },
   deletefromcart: function (value) {
     return <MdDelete size={17} className={value} />;
+  },
+  logout: function (value) {
+    return <MdLogout size={17} className={value} />;
   },
 };
 

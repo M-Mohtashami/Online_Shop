@@ -10,6 +10,7 @@ const Logout = () => {
     logoutServices();
     cookie.remove('access_token');
     cookie.remove('refresh_token');
+    cookie.remove('user_role');
     localStorage.removeItem('user_info');
     router.push('/');
   }, []);

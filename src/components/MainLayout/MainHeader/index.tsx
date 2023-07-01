@@ -14,6 +14,8 @@ import {
 import { useSelector } from 'react-redux';
 import { routes } from '@/config/routes';
 import Cookies from 'universal-cookie';
+import { logoutServices } from '@/api/services/logoutServices';
+import { useRouter } from 'next/router';
 
 type Props = {
   categories: {
@@ -44,6 +46,7 @@ const MainHeader = ({ categories, subcategories }: Props) => {
   const categoriesData = categories?.data.categories;
   const subcategoriesData = subcategories?.data.subcategories;
 
+  const router = useRouter();
   const { cart } = useSelector((state: RootState) => state.cart);
   const role = cookie.get('user_role');
   console.log(role);
@@ -249,8 +252,15 @@ const MainHeader = ({ categories, subcategories }: Props) => {
             </Link>
             {role && role !== 'ADMIN' ? (
               <Link
+                onClick={() => {
+                  logoutServices();
+                  cookie.remove('access_token');
+                  cookie.remove('refresh_token');
+                  cookie.remove('user_role');
+                  localStorage.removeItem('user_info');
+                }}
                 href={{
-                  pathname: routes.protected.Logout,
+                  pathname: routes.public.Home,
                 }}
                 className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
               >
@@ -354,8 +364,15 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                 </Link>
                 {role && role !== 'ADMIN' ? (
                   <Link
+                    onClick={() => {
+                      logoutServices();
+                      cookie.remove('access_token');
+                      cookie.remove('refresh_token');
+                      cookie.remove('user_role');
+                      localStorage.removeItem('user_info');
+                    }}
                     href={{
-                      pathname: routes.protected.Logout,
+                      pathname: routes.public.Home,
                     }}
                     className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
                   >

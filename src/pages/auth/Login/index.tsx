@@ -44,19 +44,23 @@ const Login: NextPageWithLayout = () => {
     resolver: zodResolver(schema),
   });
 
-  const { cart } = useSelector((state: RootState) => state.cart);
+  // const { cart } = useSelector((state: RootState) => state.cart);
   const { mutate: loginMutate, isSuccess } = useLogin({
     onSuccess(data: any) {
       console.log(data);
       if (data.status === 'success') {
         const token = data.token;
+        const user = data?.data.user;
         cookie.set('access_token', token.accessToken);
         cookie.set('refresh_token', token.refreshToken);
-        cookie.set('user_role', data.data.user.role);
-        localStorage.setItem('user_info', JSON.stringify(data.data.user));
+        cookie.set('user_role', user.role);
+        localStorage.setItem('user_info', JSON.stringify(user));
         toast.success('ورود موفقیت آمیز بود');
-        if (cart && cart.length > 0) {
-          router.push(routes.public.Cart);
+        if (router.query.checkout === 'pending' && user.role !== 'ADMIN') {
+          router.push({
+            pathname: routes.public.Cart,
+            query: router.query,
+          });
         } else {
           router.push(routes.private.Admin);
         }

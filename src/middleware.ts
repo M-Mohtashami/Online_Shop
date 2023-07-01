@@ -37,7 +37,12 @@ export function middleware(request: NextRequest) {
 
   if (request.nextUrl.pathname.startsWith('/admin')) {
     //
-    if (!token || user !== 'ADMIN') {
+    if (!token) {
+      return NextResponse.redirect(
+        new URL(routes.protected.Login, request.url)
+      );
+    }
+    if (token && user !== 'ADMIN') {
       return NextResponse.redirect(new URL(routes.public.Home, request.url));
     }
   }

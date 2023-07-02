@@ -54,7 +54,13 @@ const productSchema = z.object({
     .min(5, { message: 'آدرس باید بیشتر از 5 حرف باشد' })
     .nonempty({ message: 'لطفا آدرس را وارد کنید' }),
   deliveryDate: z.string().nonempty({ message: 'لطفا تاریخ را وارد کنید' }),
-  phonenumber: z.string().nonempty({ message: 'لطفا شماره تماس را وارد کنید' }),
+  phonenumber: z
+    .string()
+    .nonempty({ message: 'لطفا شماره تماس را وارد کنید' })
+    .regex(
+      new RegExp(/09[0-9][0-9]-?[0-9]{3}-?[0-9]{4}/),
+      'لطفا یک شماره تماس معتبر وارد کنید'
+    ),
 });
 
 const CheckoutForm = ({ user }: Props) => {

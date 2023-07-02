@@ -20,11 +20,7 @@ export function middleware(request: NextRequest) {
   //   return NextResponse.redirect(new URL(routes.protected.Login, request.url));
   // }
   if (request.nextUrl.pathname.startsWith('/auth')) {
-    if (
-      token &&
-      user === 'ADMIN' &&
-      request.nextUrl.pathname !== routes.protected.Logout
-    )
+    if (token && user === 'ADMIN')
       return NextResponse.redirect(new URL(routes.private.Admin, request.url));
 
     if (token && request.nextUrl.href.includes('checkout=pending'))

@@ -7,10 +7,10 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token')?.value;
   const user = request.cookies.get('user_role')?.value;
 
-  console.log(
-    'pppppppppppppppaaaaaaaaaaaaaaaaaattttttttttttttttttthhhhhhhhhhhhhhhhh',
-    request.nextUrl.pathname
-  );
+  // console.log(
+  //   'pppppppppppppppaaaaaaaaaaaaaaaaaattttttttttttttttttthhhhhhhhhhhhhhhhh',
+  //   request.nextUrl.pathname
+  // );
   // if (request.nextUrl.pathname === routes.protected.Logout) {
   //   if (token) {
   //     return NextResponse.next();

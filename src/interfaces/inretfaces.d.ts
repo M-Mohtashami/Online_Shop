@@ -38,6 +38,14 @@ type LoginValues = {
   username: string;
   password: string;
 };
+type RegisterValues = {
+  firstname: string;
+  lastname: string;
+  username: string;
+  password: string;
+  phoneNumber: string;
+  address: string;
+};
 // type CategoryType = {
 //   _id: string;
 //   name: string;

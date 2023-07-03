@@ -20,12 +20,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Cookies from 'universal-cookie';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
 
 const cookie = new Cookies();
 
 const schema = z.object({
-  username: z.string().nonempty('نام کاربری نباید خالی باشد'),
-  password: z.string().nonempty('رمز عبور نباید خالی باشد'),
+  username: z.string().nonempty('لطفا نام کاربری را وارد کنید'),
+  password: z.string().nonempty('لطفا رمز عبور را وارد کنید'),
 });
 const Login: NextPageWithLayout = () => {
   const router = useRouter();
@@ -80,8 +81,9 @@ const Login: NextPageWithLayout = () => {
         <div className=" sm:mx-auto sm:w-full sm:max-w-md ">
           <div className="relative bg-white border border-gray-200 py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <div className="absolute -top-16 right-0 w-full flex justify-center">
-              <img
-                className="w-24"
+              <Image
+                width={96}
+                height={96}
                 src="/assets/images/site_logo.png"
                 alt="logo"
               />
@@ -178,15 +180,11 @@ const Login: NextPageWithLayout = () => {
 };
 
 export default Login;
-const queryClient = new QueryClient();
+
 Login.getLayout = (page: ReactElement) => {
   const { props } = page;
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <MainLayout {...props} />
-    </QueryClientProvider>
-  );
+  return <MainLayout {...props} />;
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {

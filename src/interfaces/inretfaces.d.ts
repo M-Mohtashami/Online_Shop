@@ -183,6 +183,7 @@ type AddNewProductType = {
 
 interface FilteredDataType {
   subcategories: SubCategoryType[];
+  categories: CategoryType[];
 }
 
 interface CartItemType {

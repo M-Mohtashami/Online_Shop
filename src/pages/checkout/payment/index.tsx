@@ -21,7 +21,11 @@ const Payment: NextPageWithLayout = () => {
   );
   const dispatch = useDispatch();
 
-  const { mutate: sendOrder, isLoading } = useSendOrder({
+  const {
+    mutate: sendOrder,
+    isLoading,
+    isSuccess,
+  } = useSendOrder({
     onSuccess: (data) => {
       console.log(data);
       localStorage.removeItem('order');
@@ -30,10 +34,11 @@ const Payment: NextPageWithLayout = () => {
   });
 
   useEffect(() => {
-    if (router.query.status === 'success' && order && !isLoading) {
+    if (router.query.status === 'success' && order) {
       sendOrder(order);
+      isSuccess && localStorage.removeItem('order');
     }
-  });
+  }, []);
   return (
     <>
       <div className="relative grid grid-cols-12">

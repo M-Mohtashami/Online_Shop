@@ -2,6 +2,7 @@ import { routes } from '@/config/routes';
 import { CATEGORY_ICON } from '@/config/variable';
 import { CategoryType } from '@/interfaces/inretfaces';
 import { classNames } from '@/utils';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -27,10 +28,12 @@ const CategorySection = ({ category, classes = '' }: Props) => {
             classes
           )}
         >
-          <img
+          <Image
             src={CATEGORY_ICON + category.icon}
             alt={category.slugname}
             className="w-16"
+            width={1080}
+            height={1080}
           />
         </div>
         <div className="text-links">

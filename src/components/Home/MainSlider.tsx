@@ -10,6 +10,7 @@ import { IMAGES } from '@/config/variable';
 import { Autoplay, EffectFade } from 'swiper';
 import Button from '../shared_components/Button';
 import { classNames } from '@/utils';
+import Image from 'next/image';
 
 type Props = {
   slides: ProductType[];
@@ -49,7 +50,6 @@ const MainSlider = ({ slides }: Props) => {
       >
         {slides.map((slide: ProductType, idx) => (
           <SwiperSlide key={slide._id}>
-            {/* <img src={IMAGES + slide.images[0]} className="object-contain" /> */}
             <div
               className={classNames(
                 'w-full h-full bg-gradient-to-r ',
@@ -111,7 +111,12 @@ const MainSlider = ({ slides }: Props) => {
             {slides.map((slide: ProductType) => (
               <SwiperSlide key={slide._id}>
                 <div className="w-80 h-96 bg-white flex items-center justify-center">
-                  <img src={IMAGES + slide.images[0]} className="w-full" />
+                  <Image
+                    src={IMAGES + slide.images[0]}
+                    alt={slide.slugname}
+                    width={1080}
+                    height={720}
+                  />
                 </div>
               </SwiperSlide>
             ))}

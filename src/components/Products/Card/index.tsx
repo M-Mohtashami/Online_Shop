@@ -3,6 +3,7 @@ import { routes } from '@/config/routes';
 import { IMAGES } from '@/config/variable';
 import { CartItemType, ProductType, RootState } from '@/interfaces/inretfaces';
 import { addProduct } from '@/redux/slice';
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -49,10 +50,11 @@ const Card = ({ product, isLast, newLimit }: Props) => {
         }}
       >
         <div className="flex p-6 items-center justify-center">
-          <img
+          <Image
             src={IMAGES + product.images[0]}
             alt={product.name}
-            className=""
+            width={1080}
+            height={1080}
           />
         </div>
         <div className="px-5 space-y-5">

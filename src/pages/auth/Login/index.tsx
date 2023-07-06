@@ -57,16 +57,11 @@ const Login: NextPageWithLayout = () => {
         cookie.set('user_role', user.role);
         localStorage.setItem('user_info', JSON.stringify(user));
         toast.success('ورود موفقیت آمیز بود');
-<<<<<<< HEAD
-        if (cart && cart.length > 0 && data.data.user.role !== 'ADMIN') {
-          router.push(routes.public.Cart);
-=======
         if (router.query.checkout === 'pending' && user.role !== 'ADMIN') {
           router.push({
             pathname: routes.public.Cart,
             query: router.query,
           });
->>>>>>> develop
         } else {
           router.push(routes.private.Admin);
         }

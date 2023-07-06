@@ -2,43 +2,53 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { routes } from './config/routes';
 
+
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('access_token');
+  const token = request.cookies.get('access_token')?.value;
   const user = request.cookies.get('user_role')?.value;
 
-  // console.log(token);
-  if (request.nextUrl.pathname === routes.protected.Logout) {
-    if (token) {
-      return NextResponse.next();
-    }
-  }
+  // console.log(
+  //   'pppppppppppppppaaaaaaaaaaaaaaaaaattttttttttttttttttthhhhhhhhhhhhhhhhh',
+  //   request.nextUrl.pathname
+  // );
+  // if (request.nextUrl.pathname === routes.protected.Logout) {
+  //   if (token) {
+  //     return NextResponse.next();
+  //   }
+  // }
+  // if (request.nextUrl.pathname === '/auth') {
+  //   return NextResponse.redirect(new URL(routes.protected.Login, request.url));
+  // }
   if (request.nextUrl.pathname.startsWith('/auth')) {
     if (token && user === 'ADMIN')
-      return NextResponse.redirect(new URL('/admin', request.url));
-    if (token && user !== 'ADMIN') {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-    if (request.nextUrl.pathname === '/auth')
+      return NextResponse.redirect(new URL(routes.private.Admin, request.url));
+
+    if (token && request.nextUrl.href.includes('checkout=pending'))
       return NextResponse.redirect(
-        new URL(routes.protected.Login, request.url)
+        new URL(routes.public.Checkout, request.url)
       );
+    if (token)
+      return NextResponse.redirect(new URL(routes.public.Home, request.url));
   }
 
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    // This logic is only applied to /dashboard
+    //
     if (!token) {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-    if (user === 'USER') {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-  }
-  if (request.nextUrl.pathname.startsWith('/checkout')) {
-    // This logic is only applied to /dashboard
-    if (!token)
       return NextResponse.redirect(
         new URL(routes.protected.Login, request.url)
       );
+    }
+    if (token && user !== 'ADMIN') {
+      return NextResponse.redirect(new URL(routes.public.Home, request.url));
+    }
+  }
+  if (request.nextUrl.pathname.startsWith('/checkout')) {
+    // وقتی که کاربر لاگین نکرده باشد به صفحه لاگین هدایت می شود
+    if (!token) {
+      return NextResponse.redirect(
+        new URL(routes.protected.Login + '?checkout=pending', request.url)
+      );
+    }
   }
   NextResponse.next();
 }

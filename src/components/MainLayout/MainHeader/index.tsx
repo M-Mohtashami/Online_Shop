@@ -4,7 +4,7 @@ import { HiMenu } from 'react-icons/hi';
 import { RiMenu3Line } from 'react-icons/ri';
 import Link from 'next/link';
 import { classNames } from '@/utils';
-import { icons } from '@/config/variable';
+import { CATEGORY_ICON, icons } from '@/config/variable';
 import {
   CartStateType,
   CategoryType,
@@ -14,6 +14,9 @@ import {
 import { useSelector } from 'react-redux';
 import { routes } from '@/config/routes';
 import Cookies from 'universal-cookie';
+import { logoutServices } from '@/api/services/logoutServices';
+import { useRouter } from 'next/router';
+import { useGetAllProducts } from '@/hooks/product/useGetAllProducts';
 
 type Props = {
   categories: {
@@ -44,13 +47,23 @@ const MainHeader = ({ categories, subcategories }: Props) => {
   const categoriesData = categories?.data.categories;
   const subcategoriesData = subcategories?.data.subcategories;
 
+  const router = useRouter();
   const { cart } = useSelector((state: RootState) => state.cart);
   const role = cookie.get('user_role');
-  console.log(role);
 
+  const [searchInput, setSearchInput] = useState(false);
+  const [searchContent, setSearchContent] = useState('');
   const [cartAmount, setCartAmount] = useState<number>();
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const timeOutRef = useRef<number | undefined | NodeJS.Timeout>(undefined);
+
+  // const {
+  //   data: searchData,
+  //   isLoading,
+  //   isSuccess,
+  //   refetch,
+  // } = useGetAllProducts({}, searchContent);
+  // console.log(searchData);
 
   const handleEnter = (isOpen: boolean) => {
     clearTimeout(timeOutRef.current);
@@ -66,6 +79,9 @@ const MainHeader = ({ categories, subcategories }: Props) => {
   useEffect(() => {
     setCartAmount(cart.length);
   });
+  // useEffect(() => {
+  //   refetch();
+  // }, [searchContent]);
   return (
     <Popover className="fixed top-0 z-50 w-full bg-white border-b shadow-sm font-light">
       <div className="flex justify-between items-center px-4 py-2 sm:px-6 md:justify-start md:space-x-10">
@@ -132,8 +148,15 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                                     category: category._id,
                                   },
                                 }}
-                                className="border-b border-gray-500"
+                                className="flex items-end gap-3 border-b border-gray-500"
                               >
+                                <div className="category-background w-10 h-10 flex items-center justify-center bg-links/50">
+                                  <img
+                                    src={CATEGORY_ICON + category.icon}
+                                    alt={category.name}
+                                    className="w-6 h-6"
+                                  />
+                                </div>
                                 <h3 className="text-sm font-normal tracking-wide text-gray-900 uppercase border-b border-gray-300 pb-2">
                                   {category.name}
                                 </h3>
@@ -241,16 +264,40 @@ const MainHeader = ({ categories, subcategories }: Props) => {
             </Popover> */}
           </Popover.Group>
           <div className="flex items-center md:ml-4">
-            <Link
-              href="#"
-              className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
-            >
-              {icons.search('')}
-            </Link>
+            <div className="relative flex items-center justify-end">
+              <div className="relative ml-8">
+                <input
+                  type="text"
+                  placeholder="جستجو..."
+                  className={classNames(
+                    'w-72 h-full bg-gray-100 p-1 pr-5 rounded-full border border-gray-300 transition transform origin-left ease-in-out duration-500 ',
+                    searchInput ? 'scale-100' : 'scale-0'
+                  )}
+                />
+                <button
+                  onClick={() => setSearchInput((prev) => !prev)}
+                  className="absolute left-0 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
+                >
+                  {icons.search('')}
+                </button>
+              </div>
+              {/* {searchInput && searchData?.data.products.length > 0 ? (
+                <div className="absolute top-8 w-72 h-full bg-white p-3 rounded-md border border-gray-300 transition transform origin-top ease-in-out duration-500 "></div>
+              ) : (
+                ''
+              )} */}
+            </div>
             {role && role !== 'ADMIN' ? (
               <Link
+                onClick={() => {
+                  logoutServices();
+                  cookie.remove('access_token');
+                  cookie.remove('refresh_token');
+                  cookie.remove('user_role');
+                  localStorage.removeItem('user_info');
+                }}
                 href={{
-                  pathname: routes.protected.Logout,
+                  pathname: routes.public.Home,
                 }}
                 className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
               >
@@ -310,8 +357,15 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                         category: category._id,
                       },
                     }}
-                    className="border-b border-gray-500"
+                    className="flex items-end gap-3 border-b border-gray-500"
                   >
+                    <div className="category-background w-10 h-10 flex items-center justify-center bg-links/50">
+                      <img
+                        src={CATEGORY_ICON + category.icon}
+                        alt={category.name}
+                        className="w-6 h-6"
+                      />
+                    </div>
                     <h3 className="text-base font-medium tracking-wide text-gray-900 uppercase border-b border-gray-300 pb-2">
                       {category.name}
                     </h3>
@@ -354,8 +408,15 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                 </Link>
                 {role && role !== 'ADMIN' ? (
                   <Link
+                    onClick={() => {
+                      logoutServices();
+                      cookie.remove('access_token');
+                      cookie.remove('refresh_token');
+                      cookie.remove('user_role');
+                      localStorage.removeItem('user_info');
+                    }}
                     href={{
-                      pathname: routes.protected.Logout,
+                      pathname: routes.public.Home,
                     }}
                     className="ml-8 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
                   >

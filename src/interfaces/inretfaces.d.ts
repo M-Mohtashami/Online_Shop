@@ -38,6 +38,14 @@ type LoginValues = {
   username: string;
   password: string;
 };
+type RegisterValues = {
+  firstname: string;
+  lastname: string;
+  username: string;
+  password: string;
+  phoneNumber: string;
+  address: string;
+};
 // type CategoryType = {
 //   _id: string;
 //   name: string;
@@ -123,6 +131,17 @@ interface ProductProps {
   };
 }
 
+interface ProductRespone {
+  status: string;
+  page: number;
+  per_page: number;
+  total: number;
+  total_pages: number;
+  data: {
+    products: ProductType[];
+  };
+}
+
 interface AdminOrderType {
   _id: string;
   user: UserType;
@@ -175,6 +194,7 @@ type AddNewProductType = {
 
 interface FilteredDataType {
   subcategories: SubCategoryType[];
+  categories: CategoryType[];
 }
 
 interface CartItemType {

@@ -47,6 +47,10 @@ const Cart: NextPageWithLayout = () => {
                 onClick={() => {
                   router.push({
                     pathname: routes.public.Checkout,
+                    query: {
+                      ...router.query,
+                      checkout: 'pending',
+                    },
                   });
                 }}
               >

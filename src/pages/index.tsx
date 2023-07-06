@@ -85,7 +85,7 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
   return (
     <>
       <div className="mb-10">
-        <MainSlider slides={newests} />
+        <MainSlider slides={newests.slice(0, 4)} />
       </div>
       <div className="space-y-3 mt-12  bg-white p-4 rounded-md">
         <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 w-full flex items-center justify-center">
@@ -196,12 +196,17 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
       <div className="space-y-3 mt-32">
         <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 shadow-sm w-full flex items-center justify-between">
           <span>{'کالاهای محبوب :'}</span>
-          <button onClick={()=> router.push({
-            pathname:routes.public.Products,
-            query:{
-              sort:'-rating.rate'
+          <button
+            onClick={() =>
+              router.push({
+                pathname: routes.public.Products,
+                query: {
+                  sort: '-rating.rate',
+                },
+              })
             }
-          })} className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links">
+            className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links"
+          >
             {'بیشتر'}
           </button>
         </div>
@@ -237,12 +242,17 @@ const Home: NextPageWithLayout = ({ products, categories }: Props) => {
       <div className="space-y-3 mt-32">
         <div className="text-primary text-xl px-6 border-b border-gray-300 pb-3 shadow-sm w-full flex items-center justify-between">
           <span>{'مقرون به صرفه :'}</span>
-          <button onClick={()=> router.push({
-            pathname:routes.public.Products,
-            query:{
-              sort:'price'
+          <button
+            onClick={() =>
+              router.push({
+                pathname: routes.public.Products,
+                query: {
+                  sort: 'price',
+                },
+              })
             }
-          })} className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links">
+            className="w-24 p-2 bg-primary text-white rounded-md hover:bg-links"
+          >
             {'بیشتر'}
           </button>
         </div>

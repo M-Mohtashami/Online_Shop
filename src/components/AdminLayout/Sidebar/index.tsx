@@ -43,7 +43,7 @@ const navigation = [
   },
   {
     name: 'خروج',
-    href: routes.protected.Logout,
+    href: 'logout',
     icon: BsArrowRight,
   },
 ];
@@ -132,16 +132,20 @@ const Sidebar = ({
                     {navigation.map((item) => (
                       <Link
                         key={item.name}
-                        href={item.href}
+                        href={
+                          item.href === 'logout'
+                            ? routes.public.Home
+                            : item.href
+                        }
                         onClick={() => {
                           setActiveTab(item.href);
 
-                          if (item.href === routes.protected.Logout) {
+                          if (item.href === 'logout') {
                             logoutServices();
                             cookie.remove('access_token');
                             cookie.remove('refresh_token');
+                            cookie.remove('user_role');
                             localStorage.removeItem('user_info');
-                            router.push('/');
                           }
                         }}
                         className={classNames(
@@ -195,9 +199,19 @@ const Sidebar = ({
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
-                    href={item.href}
+                    href={
+                      item.href === 'logout' ? routes.public.Home : item.href
+                    }
                     onClick={() => {
                       setActiveTab(item.href);
+
+                      if (item.href === 'logout') {
+                        logoutServices();
+                        cookie.remove('access_token');
+                        cookie.remove('refresh_token');
+                        cookie.remove('user_role');
+                        localStorage.removeItem('user_info');
+                      }
                     }}
                     className={classNames(
                       activeTab === item.href

@@ -4,34 +4,62 @@ import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
+import 'swiper/css/effect-fade';
 // import required modules
 import { IMAGES } from '@/config/variable';
-import { Autoplay } from 'swiper';
+import { Autoplay, EffectFade } from 'swiper';
 import Button from '../shared_components/Button';
+import { classNames } from '@/utils';
 
 type Props = {
   slides: ProductType[];
 };
 
+const colors = [
+  {
+    bg: 'bg-[#645CBB]',
+    from: 'from-[#A084DC]',
+  },
+  {
+    bg: 'bg-[#4A55A2]',
+    from: 'from-[#7895CB]',
+  },
+  {
+    bg: 'bg-[#6527BE]',
+    from: 'from-[#9681EB]',
+  },
+  {
+    bg: 'bg-[#FF2171]',
+    from: 'from-[#FF90BB]',
+  },
+];
+
 const MainSlider = ({ slides }: Props) => {
   return (
-    <div className="relative w-full h-[30rem]">
+    <div className="relative w-full h-[30rem] rounded-lg shadow-md overflow-hidden">
       <Swiper
         slidesPerView={1}
-        spaceBetween={30}
+        effect="fade"
+        fadeEffect={{ crossFade: true }}
         loop={true}
         speed={1500}
         autoplay={{ delay: 5000 }}
-        modules={[Autoplay]}
+        modules={[Autoplay, EffectFade]}
         className="main-slider"
       >
-        {slides.map((slide: ProductType) => (
+        {slides.map((slide: ProductType, idx) => (
           <SwiperSlide key={slide._id}>
-            <img src={IMAGES + slide.images[0]} className="object-contain" />
+            {/* <img src={IMAGES + slide.images[0]} className="object-contain" /> */}
+            <div
+              className={classNames(
+                'w-full h-full bg-gradient-to-r ',
+                colors[idx].bg,
+                colors[idx].from
+              )}
+            ></div>
           </SwiperSlide>
         ))}
       </Swiper>
-      <div className="absolute top-0 z-20 w-full h-full bg-primary/50"></div>
       <div className="absolute top-0 left-0 z-30 w-full h-full flex items-center justify-around gap-6 ">
         <div className="p-4 max-w-lg h-96 overflow-hidden">
           <Swiper

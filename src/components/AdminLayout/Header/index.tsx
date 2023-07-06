@@ -4,6 +4,10 @@ import Link from 'next/link';
 import { icons } from '@/config/variable';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { routes } from '@/config/routes';
+import Cookies from 'universal-cookie';
+import { logoutServices } from '@/api/services/logoutServices';
+
+const cookie = new Cookies();
 
 const Header = ({ sidebarOpen }: { sidebarOpen: (val: boolean) => void }) => {
   return (
@@ -33,7 +37,14 @@ const Header = ({ sidebarOpen }: { sidebarOpen: (val: boolean) => void }) => {
               {'دسته‌بندی جدید'}
             </Link>
             <Link
-              href={routes.protected.Logout}
+              onClick={() => {
+                logoutServices();
+                cookie.remove('access_token');
+                cookie.remove('refresh_token');
+                cookie.remove('user_role');
+                localStorage.removeItem('user_info');
+              }}
+              href={routes.public.Home}
               className="ml-4 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
             >
               <FaSignOutAlt className="rotate-180" />

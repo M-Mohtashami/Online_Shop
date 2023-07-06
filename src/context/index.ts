@@ -36,6 +36,7 @@ const initProduct = {
 
 const initFilter = {
   subcategories: [],
+  categories: [],
 };
 
 export const ProductDataContext = createContext<ProductProps>(initProduct);

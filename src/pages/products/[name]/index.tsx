@@ -37,7 +37,7 @@ import 'swiper/css/thumbs';
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs';
 import Card from '@/components/Products/Card';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProduct } from '@/redux/slice';
+import { addProduct, updateProduct } from '@/redux/slice';
 
 const swiperParams = {
   slidesPerView: 1,
@@ -116,6 +116,12 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
     setInCart(findProduct);
   }, [cart]);
 
+  useEffect(() => {
+    if (inCart) {
+      setQuantity(inCart.count.toString());
+    }
+  }, [inCart]);
+
   return (
     <>
       <div className="grid grid-cols-12 gap-5 mt-20 mb-20">
@@ -127,7 +133,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
                 thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
             }}
             modules={[FreeMode, Thumbs]}
-            className="mySwiper2"
+            className="mySwiper2 bg-white"
           >
             {productData.images.map((image) => (
               <SwiperSlide key={image}>
@@ -216,21 +222,11 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
                     min={1}
                     value={quantity}
                     onChange={(e) => {
-                      if (inCart) {
-                        setQuantity(
-                          +e.target.value + inCart.count < productData.quantity
-                            ? e.target.value
-                            : Math.abs(
-                                productData.quantity - inCart.count
-                              ).toString()
-                        );
-                      } else {
-                        setQuantity(
-                          +e.target.value < productData.quantity
-                            ? e.target.value
-                            : productData.quantity.toString()
-                        );
-                      }
+                      setQuantity(
+                        +e.target.value < productData.quantity
+                          ? e.target.value
+                          : productData.quantity.toString()
+                      );
                     }}
                     className="w-16 p-2 bg-gray-100 rounded-sm text-md shadow-sm text-center focus:border focus:border-primary"
                   />
@@ -243,17 +239,26 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
                 iconClassName="w-5"
                 className="max-w-sm bg-primary text-white hover:bg-white hover:border hover:border-primary hover:text-primary"
                 onClick={() => {
-                  dispatch(
-                    addProduct({
-                      product: productData,
-                      count: +quantity,
-                      productPrice: productData.price * +quantity,
-                    })
-                  );
-                  setQuantity('1');
+                  if (inCart) {
+                    dispatch(
+                      updateProduct({
+                        product: productData,
+                        count: +quantity,
+                        productPrice: productData.price * +quantity,
+                      })
+                    );
+                  } else {
+                    dispatch(
+                      addProduct({
+                        product: productData,
+                        count: +quantity,
+                        productPrice: productData.price * +quantity,
+                      })
+                    );
+                  }
                 }}
               >
-                {'افزودن به سبد خرید'}
+                {inCart ? 'بروزرسانی سبد خرید' : 'افزودن به سبد خرید'}
               </Button>
             </div>
           </div>

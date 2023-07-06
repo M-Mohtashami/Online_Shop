@@ -4,6 +4,7 @@ import getAllProductsSevices from '@/api/services/product/getAllProductsServices
 import Card from '@/components/Products/Card';
 import { FilterContext } from '@/context';
 import {
+  CategoryType,
   NextPageWithLayout,
   ProductType,
   SubCategoryType,
@@ -25,11 +26,22 @@ type Props = {
       products: ProductType[];
     };
   };
+  categories: {
+    status: string;
+    page: number;
+    per_page: number;
+    total: number;
+    total_pages: number;
+    data: {
+      categories: CategoryType[];
+    };
+  };
   filteredSubCategory: SubCategoryType[];
 };
 
 const Products: NextPageWithLayout = ({
   products,
+  categories,
   filteredSubCategory,
 }: Props) => {
   console.log(filteredSubCategory);
@@ -37,6 +49,7 @@ const Products: NextPageWithLayout = ({
   const { page, per_page, total, total_pages, data } = products;
   const [nextPage, setNextPage] = useState(1);
   const router = useRouter();
+  const { data: categoriesData } = categories;
   useEffect(() => {
     router.replace(
       {
@@ -53,7 +66,12 @@ const Products: NextPageWithLayout = ({
 
   return (
     <>
-      <FilterContext.Provider value={{ subcategories: filteredSubCategory }}>
+      <FilterContext.Provider
+        value={{
+          subcategories: filteredSubCategory,
+          categories: categoriesData.categories,
+        }}
+      >
         <ProductLayout>
           <div className="grid grid-cols-12 gap-6  p-4 lg:col-span-3 place-items-center bg-white">
             {data.products.map((product: ProductType, index) => (

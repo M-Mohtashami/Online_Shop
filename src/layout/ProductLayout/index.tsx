@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { Fragment, useContext, useState } from 'react';
 import * as Slider from '@radix-ui/react-slider';
+import CategorySection from '@/components/Home/CategorySection';
 
 const sortOptions = [
   { name: 'محبوب ترین', href: '-rating.rate' },
@@ -36,10 +37,9 @@ const filters = [
 ];
 
 const ProductLayout = ({ children }: LayoutProps) => {
-  console.log(children);
   const router = useRouter();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const { subcategories } = useContext(FilterContext);
+  const { subcategories, categories } = useContext(FilterContext);
   return (
     <div className="w-full h-full flex">
       {/* <SideFilter /> */}
@@ -246,8 +246,26 @@ const ProductLayout = ({ children }: LayoutProps) => {
             </Transition.Child>
           </Dialog>
         </Transition.Root>
-
-        <main className="max-w-7xl mx-auto px-4 mt-20 sm:px-6 lg:px-8 ">
+        <div className="max-w-6xl w-full mx-auto overflow-x-auto mt-4 ">
+          <div className="text-primary text-lg text-center px-6 border-b border-gray-300 pb-3 w-full flex items-center justify-center">
+            <span>{'سایر دسته‌بندی ها'}</span>
+          </div>
+          <div className="flex items-center justify-center gap-12 mt-4">
+            {categories.map((category) => {
+              if (category._id !== router.query.category) {
+                return (
+                  <div
+                    key={category._id}
+                    className="bg-white p-2 rounded-md border border-gray-200 shadow-sm hover:shadow-md"
+                  >
+                    <CategorySection category={category} classes="bg-red-200" />
+                  </div>
+                );
+              }
+            })}
+          </div>
+        </div>
+        <main className="max-w-7xl mx-auto px-4 mt-8 sm:px-6 lg:px-8 ">
           <div className="relative z-10 flex items-baseline justify-between pt-4 pb-6  border-b border-gray-200 bg-links/10">
             <h1 className="text-4xl font-extrabold tracking-tight text-gray-900"></h1>
 

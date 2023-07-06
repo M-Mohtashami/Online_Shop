@@ -131,6 +131,17 @@ interface ProductProps {
   };
 }
 
+interface ProductRespone {
+  status: string;
+  page: number;
+  per_page: number;
+  total: number;
+  total_pages: number;
+  data: {
+    products: ProductType[];
+  };
+}
+
 interface AdminOrderType {
   _id: string;
   user: UserType;

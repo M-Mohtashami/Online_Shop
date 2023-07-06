@@ -7,28 +7,25 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token')?.value;
   const user = request.cookies.get('user_role')?.value;
 
-  // console.log(
-  //   'pppppppppppppppaaaaaaaaaaaaaaaaaattttttttttttttttttthhhhhhhhhhhhhhhhh',
-  //   request.nextUrl.pathname
-  // );
-  // if (request.nextUrl.pathname === routes.protected.Logout) {
-  //   if (token) {
-  //     return NextResponse.next();
-  //   }
-  // }
-  // if (request.nextUrl.pathname === '/auth') {
-  //   return NextResponse.redirect(new URL(routes.protected.Login, request.url));
-  // }
-  if (request.nextUrl.pathname.startsWith('/auth')) {
-    if (token && user === 'ADMIN')
-      return NextResponse.redirect(new URL(routes.private.Admin, request.url));
+  console.log(
+    'pppppppppppppppaaaaaaaaaaaaaaaaaattttttttttttttttttthhhhhhhhhhhhhhhhh',
+    user
+  );
 
-    if (token && request.nextUrl.href.includes('checkout=pending'))
-      return NextResponse.redirect(
-        new URL(routes.public.Checkout, request.url)
-      );
-    if (token)
-      return NextResponse.redirect(new URL(routes.public.Home, request.url));
+  if (request.nextUrl.pathname.startsWith('/auth')) {
+    if (token) {
+      if (user === 'ADMIN') {
+        return NextResponse.redirect(
+          new URL(routes.private.Admin, request.url)
+        );
+      } else if (request.nextUrl.href.includes('checkout=pending')) {
+        return NextResponse.redirect(
+          new URL(routes.public.Checkout, request.url)
+        );
+      } else {
+        return NextResponse.redirect(new URL(routes.public.Home, request.url));
+      }
+    }
   }
 
   if (request.nextUrl.pathname.startsWith('/admin')) {
@@ -37,9 +34,10 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(
         new URL(routes.protected.Login, request.url)
       );
-    }
-    if (token && user !== 'ADMIN') {
-      return NextResponse.redirect(new URL(routes.public.Home, request.url));
+    } else {
+      if (user !== 'ADMIN') {
+        return NextResponse.redirect(new URL(routes.public.Home, request.url));
+      }
     }
   }
   if (request.nextUrl.pathname.startsWith('/checkout')) {

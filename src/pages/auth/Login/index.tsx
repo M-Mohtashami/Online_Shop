@@ -17,12 +17,10 @@ import getAllCategoryService from '@/api/services/category/getAllCategoryService
 import getAllSubCategoryService from '@/api/services/category/getAllSubCategoryService';
 import { GetServerSideProps } from 'next';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Cookies from 'universal-cookie';
+import Cookies from 'js-cookie';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
-
-const cookie = new Cookies();
 
 const schema = z.object({
   username: z.string().nonempty('لطفا نام کاربری را وارد کنید'),
@@ -52,18 +50,22 @@ const Login: NextPageWithLayout = () => {
       if (data.status === 'success') {
         const token = data.token;
         const user = data?.data.user;
-        cookie.set('access_token', token.accessToken);
-        cookie.set('refresh_token', token.refreshToken);
-        cookie.set('user_role', user.role);
+        Cookies.set('access_token', token.accessToken);
+        Cookies.set('refresh_token', token.refreshToken);
+        Cookies.set('user_role', user.role);
         localStorage.setItem('user_info', JSON.stringify(user));
         toast.success('ورود موفقیت آمیز بود');
-        if (router.query.checkout === 'pending' && user.role !== 'ADMIN') {
-          router.push({
-            pathname: routes.public.Cart,
-            query: router.query,
-          });
-        } else {
+        if (user.role === 'ADMIN') {
           router.push(routes.private.Admin);
+        } else {
+          if (router.query.checkout === 'pending') {
+            router.push({
+              pathname: routes.public.Cart,
+              query: router.query,
+            });
+          } else {
+            router.push(routes.public.Home);
+          }
         }
       } else if (data.status === 'fail') {
         setError('root', { message: 'نام کاربری یا رمزعبور اشتباه است' });

@@ -4,7 +4,7 @@ import { HiMenu } from 'react-icons/hi';
 import { RiMenu3Line } from 'react-icons/ri';
 import Link from 'next/link';
 import { classNames } from '@/utils';
-import { icons } from '@/config/variable';
+import { CATEGORY_ICON, icons } from '@/config/variable';
 import {
   CartStateType,
   CategoryType,
@@ -135,8 +135,15 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                                     category: category._id,
                                   },
                                 }}
-                                className="border-b border-gray-500"
+                                className="flex items-end gap-3 border-b border-gray-500"
                               >
+                                <div className="category-background w-10 h-10 flex items-center justify-center bg-links/50">
+                                  <img
+                                    src={CATEGORY_ICON + category.icon}
+                                    alt={category.name}
+                                    className="w-6 h-6"
+                                  />
+                                </div>
                                 <h3 className="text-sm font-normal tracking-wide text-gray-900 uppercase border-b border-gray-300 pb-2">
                                   {category.name}
                                 </h3>
@@ -320,8 +327,15 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                         category: category._id,
                       },
                     }}
-                    className="border-b border-gray-500"
+                    className="flex items-end gap-3 border-b border-gray-500"
                   >
+                    <div className="category-background w-10 h-10 flex items-center justify-center bg-links/50">
+                      <img
+                        src={CATEGORY_ICON + category.icon}
+                        alt={category.name}
+                        className="w-6 h-6"
+                      />
+                    </div>
                     <h3 className="text-base font-medium tracking-wide text-gray-900 uppercase border-b border-gray-300 pb-2">
                       {category.name}
                     </h3>

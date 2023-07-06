@@ -1,9 +1,8 @@
 import { routes } from '@/config/routes';
 import { baseURL } from '@/config/variable';
 import axios from 'axios';
-import Cookies from 'universal-cookie';
+import Cookies from 'js-cookie';
 
-const cookie = new Cookies();
 const instance = axios.create({
   baseURL: baseURL,
 });
@@ -13,7 +12,7 @@ export default instance;
 instance.interceptors.request.use((config) => {
   console.log(config);
   if (config.url !== '/auth/token') {
-    const accessToken = cookie.get('access_token');
+    const accessToken = Cookies.get('access_token');
     config.headers.Authorization = 'Bearer ' + accessToken;
   }
   return config;
@@ -36,25 +35,25 @@ instance.interceptors.response.use(
         config.url !== '/auth/login' &&
         config.url !== '/auth/logout'
       ) {
-        const refreshToken = cookie.get('refresh_token');
+        const refreshToken = Cookies.get('refresh_token');
         instance.post('/auth/token', { refreshToken }).then((res) => {
           console.log(res);
-if (res.status === 200) {
-  const accessToken = res.data.token.accessToken;
-  cookie.set('access_token', accessToken);
-  // cookie.set("refreshToken", res.data.refreshToken);
-  config.headers.Authorization = 'Bearer ' + accessToken;
-  return instance(config);
-}else{
-  cookie.remove('access_token');
-  cookie.remove('refresh_token');
-  localStorage.removeItem('user_info');
-  location.href = routes.protected.Login;
-}
+          if (res.status === 200) {
+            const accessToken = res.data.token.accessToken;
+            Cookies.set('access_token', accessToken);
+            // cookie.set("refreshToken", res.data.refreshToken);
+            config.headers.Authorization = 'Bearer ' + accessToken;
+            return instance(config);
+          } else {
+            Cookies.remove('access_token');
+            Cookies.remove('refresh_token');
+            localStorage.removeItem('user_info');
+            location.href = routes.protected.Login;
+          }
         });
       } else if (config.url === '/auth/token' && config.url !== '/auth/login') {
-        cookie.remove('access_token');
-        cookie.remove('refresh_token');
+        Cookies.remove('access_token');
+        Cookies.remove('refresh_token');
         localStorage.removeItem('user_info');
         location.href = routes.protected.Login;
       }

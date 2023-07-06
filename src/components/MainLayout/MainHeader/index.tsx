@@ -13,10 +13,9 @@ import {
 } from '@/interfaces/inretfaces';
 import { useSelector } from 'react-redux';
 import { routes } from '@/config/routes';
-import Cookies from 'universal-cookie';
+import Cookies from 'js-cookie';
 import { logoutServices } from '@/api/services/logoutServices';
 import { useRouter } from 'next/router';
-import { useGetAllProducts } from '@/hooks/product/useGetAllProducts';
 
 type Props = {
   categories: {
@@ -42,14 +41,13 @@ type Props = {
 };
 
 const timeoutDuration = 200;
-const cookie = new Cookies();
 const MainHeader = ({ categories, subcategories }: Props) => {
   const categoriesData = categories?.data.categories;
   const subcategoriesData = subcategories?.data.subcategories;
 
   const router = useRouter();
   const { cart } = useSelector((state: RootState) => state.cart);
-  const role = cookie.get('user_role');
+  const role = Cookies.get('user_role');
 
   const [searchInput, setSearchInput] = useState(false);
   const [searchContent, setSearchContent] = useState('');
@@ -291,9 +289,9 @@ const MainHeader = ({ categories, subcategories }: Props) => {
               <Link
                 onClick={() => {
                   logoutServices();
-                  cookie.remove('access_token');
-                  cookie.remove('refresh_token');
-                  cookie.remove('user_role');
+                  Cookies.remove('access_token');
+                  Cookies.remove('refresh_token');
+                  Cookies.remove('user_role');
                   localStorage.removeItem('user_info');
                 }}
                 href={{
@@ -410,9 +408,9 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                   <Link
                     onClick={() => {
                       logoutServices();
-                      cookie.remove('access_token');
-                      cookie.remove('refresh_token');
-                      cookie.remove('user_role');
+                      Cookies.remove('access_token');
+                      Cookies.remove('refresh_token');
+                      Cookies.remove('user_role');
                       localStorage.removeItem('user_info');
                     }}
                     href={{

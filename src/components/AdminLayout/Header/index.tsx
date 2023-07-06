@@ -4,10 +4,8 @@ import Link from 'next/link';
 import { icons } from '@/config/variable';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { routes } from '@/config/routes';
-import Cookies from 'universal-cookie';
+import Cookies from 'js-cookie';
 import { logoutServices } from '@/api/services/logoutServices';
-
-const cookie = new Cookies();
 
 const Header = ({ sidebarOpen }: { sidebarOpen: (val: boolean) => void }) => {
   return (
@@ -39,9 +37,9 @@ const Header = ({ sidebarOpen }: { sidebarOpen: (val: boolean) => void }) => {
             <Link
               onClick={() => {
                 logoutServices();
-                cookie.remove('access_token');
-                cookie.remove('refresh_token');
-                cookie.remove('user_role');
+                Cookies.remove('access_token');
+                Cookies.remove('refresh_token');
+                Cookies.remove('user_role');
                 localStorage.removeItem('user_info');
               }}
               href={routes.public.Home}

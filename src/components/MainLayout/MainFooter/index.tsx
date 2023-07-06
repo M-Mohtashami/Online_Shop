@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { CategoryType, SubCategoryType } from '@/interfaces/inretfaces';
+import { routes } from '@/config/routes';
 
 type Props = {
   categories: {
@@ -113,7 +114,15 @@ const MainFooter = ({ categories, subcategories }: Props) => {
                     key={category._id}
                     className="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3"
                   >
-                    <Link href="#" className="border-b border-gray-500">
+                    <Link
+                      href={{
+                        pathname: routes.public.Category,
+                        query: {
+                          category: category._id,
+                        },
+                      }}
+                      className="border-b border-gray-500"
+                    >
                       <h3 className="text-sm font-normal tracking-wide text-gray-50 uppercase border-b border-gray-300 pb-2">
                         {category.name}
                       </h3>
@@ -125,7 +134,13 @@ const MainFooter = ({ categories, subcategories }: Props) => {
                           return (
                             <li key={item._id} className="flow-root">
                               <Link
-                                href="#"
+                                href={{
+                                  pathname: routes.public.Category,
+                                  query: {
+                                    category: category._id,
+                                    subcategory: item._id,
+                                  },
+                                }}
                                 className="-m-3 p-3 flex items-center rounded-md text-base font-thin text-gray-200 transition ease-in-out duration-150"
                               >
                                 <span className="w-full ml-4 p-1 rounded-md hover:bg-gray-50/20">

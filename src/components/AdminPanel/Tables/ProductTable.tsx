@@ -15,6 +15,7 @@ import {
 import Delete from '../Modals/Delete';
 import AddModal from '../Modals/AddModal';
 import { ProductDataContext } from '@/context';
+import Image from 'next/image';
 
 type Props = {
   products: {
@@ -232,10 +233,12 @@ const ProductTable = () => {
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                           <div className="flex items-center">
                             <div className="h-12 w-10 flex-shrink-0 rounded-md overflow-hidden">
-                              <img
+                              <Image
                                 className="w-full h-full"
                                 src={thumbnails + product.thumbnail}
-                                alt={product.slugname}
+                                alt={product.name}
+                                width={1080}
+                                height={1080}
                               />
                             </div>
                           </div>

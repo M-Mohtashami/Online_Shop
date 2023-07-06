@@ -38,6 +38,7 @@ import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs';
 import Card from '@/components/Products/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct, updateProduct } from '@/redux/slice';
+import Image from 'next/image';
 
 const swiperParams = {
   slidesPerView: 1,
@@ -138,7 +139,12 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
             {productData.images.map((image) => (
               <SwiperSlide key={image}>
                 <div className="py-6 px-8">
-                  <img src={IMAGES + image} />
+                  <Image
+                    src={IMAGES + image}
+                    alt={productData.name}
+                    width={1080}
+                    height={1080}
+                  />
                 </div>
               </SwiperSlide>
             ))}
@@ -154,7 +160,12 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
           >
             {productData.images.map((image) => (
               <SwiperSlide key={image} className="p-1 ">
-                <img src={IMAGES + image} />
+                <Image
+                  src={IMAGES + image}
+                  alt={productData.name}
+                  width={1080}
+                  height={1080}
+                />
               </SwiperSlide>
             ))}
           </Swiper>

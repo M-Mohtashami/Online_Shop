@@ -16,6 +16,7 @@ import { routes } from '@/config/routes';
 import Cookies from 'js-cookie';
 import { logoutServices } from '@/api/services/logoutServices';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 type Props = {
   categories: {
@@ -86,10 +87,12 @@ const MainHeader = ({ categories, subcategories }: Props) => {
         <div className=" ml-5">
           <Link href="/" className="flex">
             <span className="sr-only">Workflow</span>
-            <img
+            <Image
               className="h-8 w-auto sm:h-10"
               src="/assets/images/site_icon.png"
-              alt=""
+              alt="siteLogo"
+              width={1080}
+              height={1080}
             />
           </Link>
         </div>
@@ -149,10 +152,12 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                                 className="flex items-end gap-3 border-b border-gray-500"
                               >
                                 <div className="category-background w-10 h-10 flex items-center justify-center bg-links/50">
-                                  <img
+                                  <Image
                                     src={CATEGORY_ICON + category.icon}
                                     alt={category.name}
                                     className="w-6 h-6"
+                                    width={1080}
+                                    height={1080}
                                   />
                                 </div>
                                 <h3 className="text-sm font-normal tracking-wide text-gray-900 uppercase border-b border-gray-300 pb-2">
@@ -358,10 +363,12 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                     className="flex items-end gap-3 border-b border-gray-500"
                   >
                     <div className="category-background w-10 h-10 flex items-center justify-center bg-links/50">
-                      <img
+                      <Image
                         src={CATEGORY_ICON + category.icon}
                         alt={category.name}
                         className="w-6 h-6"
+                        width={1080}
+                        height={1080}
                       />
                     </div>
                     <h3 className="text-base font-medium tracking-wide text-gray-900 uppercase border-b border-gray-300 pb-2">
@@ -382,7 +389,7 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                                   subcategory: item._id,
                                 },
                               }}
-                              className="-m-3 p-3 flex items-center rounded-md text-sm font-medium text-gray-500 hover:bg-gray-50 transition ease-in-out duration-150"
+                              className="-m-3 p-3 flex items-center rounded-md text-base font-normal text-gray-500 hover:bg-gray-50 transition ease-in-out duration-150"
                             >
                               <span className="ml-4">{item.name}</span>
                             </Link>

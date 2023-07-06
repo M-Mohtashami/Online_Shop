@@ -24,6 +24,7 @@ import { TbEaseOutControlPoint } from 'react-icons/tb';
 import { on } from 'events';
 import { ProductDataContext } from '@/context';
 import { IMAGES } from '@/config/variable';
+import Image from 'next/image';
 
 type Props = {
   product: ProductType | undefined;
@@ -427,10 +428,12 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
                   key={upFile.lastModified}
                   className="relative h-16 overflow-hidden"
                 >
-                  <img
+                  <Image
                     src={upFile.preview}
-                    alt=""
+                    alt={product ? product.name : upFile.preview}
                     className="w-full h-full aspect-square"
+                    width={1080}
+                    height={720}
                   />
                   <div
                     onClick={() => {
@@ -450,10 +453,12 @@ const AddNewProduct = ({ action, product, closeModal }: Props) => {
             {product?.images.map((img) => {
               return (
                 <div key={img} className="relative h-16 overflow-hidden">
-                  <img
+                  <Image
                     src={IMAGES + img}
-                    alt=""
+                    alt={product.name}
                     className="w-full h-full aspect-square"
+                    width={1080}
+                    height={720}
                   />
                 </div>
               );

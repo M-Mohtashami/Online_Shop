@@ -7,6 +7,7 @@ import Button from '../shared_components/Button';
 import Link from 'next/link';
 import { routes } from '@/config/routes';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
 
 type Props = {
   item: CartItemType;
@@ -35,10 +36,12 @@ const CartItem = ({ item }: Props) => {
           },
         }}
       >
-        <img
+        <Image
           src={IMAGES + item.product.images[0]}
           alt={item.product.name}
           className="aspect-square"
+          width={1080}
+          height={1080}
         />
       </Link>
       <div className="w-full flex flex-col sm:flex-row sm:justify-between">

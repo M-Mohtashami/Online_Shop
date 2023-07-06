@@ -5,6 +5,7 @@ import { addProduct, deleteProduct, updateProduct } from '@/redux/slice';
 import Link from 'next/link';
 import { routes } from '@/config/routes';
 import { IMAGES } from '@/config/variable';
+import Image from 'next/image';
 
 type Props = {
   item: {
@@ -17,10 +18,12 @@ const OrderItem = ({ item }: Props) => {
   return (
     <div className="w-full p-6 bg-white border border-gray-300 rounded-md flex items-center justify-between gap-6">
       <div className="w-16">
-        <img
+        <Image
           src={IMAGES + item.product.images[0]}
           alt={item.product.name}
           className="aspect-square"
+          width={1080}
+          height={1080}
         />
       </div>
       <div className="w-full flex gap-6 justify-between">

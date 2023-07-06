@@ -133,7 +133,7 @@ const SingleProduct: NextPageWithLayout = ({ product, related }: Props) => {
                 thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
             }}
             modules={[FreeMode, Thumbs]}
-            className="mySwiper2"
+            className="mySwiper2 bg-white"
           >
             {productData.images.map((image) => (
               <SwiperSlide key={image}>

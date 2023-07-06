@@ -9,7 +9,6 @@ export function middleware(request: NextRequest) {
 
   console.log(
     'pppppppppppppppaaaaaaaaaaaaaaaaaattttttttttttttttttthhhhhhhhhhhhhhhhh',
-    token,
     user
   );
 

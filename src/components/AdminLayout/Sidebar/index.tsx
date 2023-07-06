@@ -14,7 +14,7 @@ import {
 import { BsArrowRight } from 'react-icons/bs';
 import Link from 'next/link';
 import { routes } from '@/config/routes';
-import Cookies from 'universal-cookie';
+import Cookies from 'js-cookie';
 import { logoutServices } from '@/api/services/logoutServices';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
@@ -47,7 +47,6 @@ const navigation = [
     icon: BsArrowRight,
   },
 ];
-const cookie = new Cookies();
 
 const Sidebar = ({
   sidebarOpen,
@@ -142,9 +141,9 @@ const Sidebar = ({
 
                           if (item.href === 'logout') {
                             logoutServices();
-                            cookie.remove('access_token');
-                            cookie.remove('refresh_token');
-                            cookie.remove('user_role');
+                            Cookies.remove('access_token');
+                            Cookies.remove('refresh_token');
+                            Cookies.remove('user_role');
                             localStorage.removeItem('user_info');
                           }
                         }}
@@ -207,9 +206,9 @@ const Sidebar = ({
 
                       if (item.href === 'logout') {
                         logoutServices();
-                        cookie.remove('access_token');
-                        cookie.remove('refresh_token');
-                        cookie.remove('user_role');
+                        Cookies.remove('access_token');
+                        Cookies.remove('refresh_token');
+                        Cookies.remove('user_role');
                         localStorage.removeItem('user_info');
                       }
                     }}

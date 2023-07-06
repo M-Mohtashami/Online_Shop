@@ -99,17 +99,20 @@ const MainFooter = ({ categories, subcategories }: Props) => {
         Footer
       </h2>
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-          <ul className="grid grid-cols-2 gap-8">
+        <div className="">
+          <ul className="grid grid-cols-12 gap-8">
             {/* footer links */}
 
             {/* header */}
-            {/* {categoriesData.map((category) => {
+            {categoriesData.map((category) => {
               return (
                 subcategoriesData.find(
                   (sub) => sub.category === category._id
                 ) && (
-                  <li key={category._id}>
+                  <li
+                    key={category._id}
+                    className="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3"
+                  >
                     <Link href="#" className="border-b border-gray-500">
                       <h3 className="text-sm font-normal tracking-wide text-gray-50 uppercase border-b border-gray-300 pb-2">
                         {category.name}
@@ -136,7 +139,7 @@ const MainFooter = ({ categories, subcategories }: Props) => {
                   </li>
                 )
               );
-            })} */}
+            })}
           </ul>
           {/* <div className="mt-8 xl:mt-0">
             <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
@@ -170,11 +173,11 @@ const MainFooter = ({ categories, subcategories }: Props) => {
             </form>
           </div> */}
         </div>
-        <div className="mt-4 border-t border-gray-300 pt-4 md:flex md:items-center md:justify-between">
+        <div className="mt-4 border-t text-center border-gray-300 pt-4 md:flex md:items-center md:justify-between">
           <p className="mt-8 text-base text-gray-200 md:mt-0 md:order-1">
-            &copy; All rights reserved.
+            &copy; تمام حقوق محفوظ است.
           </p>
-          <div className="flex space-x-6 md:order-2">
+          <div className="flex items-center justify-center mt-3 space-x-6 md:mt-0 md:order-2">
             {navigation.social.map((item) => (
               <Link
                 key={item.name}

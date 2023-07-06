@@ -12,13 +12,9 @@ import { routes } from '@/config/routes';
 import getAllCategoryService from '@/api/services/category/getAllCategoryService';
 import getAllSubCategoryService from '@/api/services/category/getAllSubCategoryService';
 import { GetServerSideProps } from 'next';
-import Cookies from 'universal-cookie';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
-
-const cookie = new Cookies();
 
 const schema = z.object({
   firstname: z.string().nonempty('لطفا نام را وارد کنید'),

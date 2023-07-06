@@ -198,19 +198,14 @@ const Sidebar = ({
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
-                    href={
-                      item.href === 'logout' ? routes.public.Home : item.href
-                    }
+                    href={{
+                      pathname:
+                        item.href === 'logout'
+                          ? routes.protected.Logout
+                          : item.href,
+                    }}
                     onClick={() => {
                       setActiveTab(item.href);
-
-                      if (item.href === 'logout') {
-                        logoutServices();
-                        Cookies.remove('access_token');
-                        Cookies.remove('refresh_token');
-                        Cookies.remove('user_role');
-                        localStorage.removeItem('user_info');
-                      }
                     }}
                     className={classNames(
                       activeTab === item.href

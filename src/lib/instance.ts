@@ -30,11 +30,7 @@ instance.interceptors.response.use(
     // console.log("config", config);
     if (error.response.status === 401 && !config.sent) {
       config.sent = true;
-      if (
-        config.url !== '/auth/token' &&
-        config.url !== '/auth/login' &&
-        config.url !== '/auth/logout'
-      ) {
+      if (config.url !== '/auth/token' && config.url !== '/auth/login') {
         const refreshToken = Cookies.get('refresh_token');
         instance.post('/auth/token', { refreshToken }).then((res) => {
           console.log(res);
@@ -47,6 +43,7 @@ instance.interceptors.response.use(
           } else {
             Cookies.remove('access_token');
             Cookies.remove('refresh_token');
+            Cookies.remove('user_role');
             localStorage.removeItem('user_info');
             location.href = routes.protected.Login;
           }
@@ -54,6 +51,7 @@ instance.interceptors.response.use(
       } else if (config.url === '/auth/token' && config.url !== '/auth/login') {
         Cookies.remove('access_token');
         Cookies.remove('refresh_token');
+        Cookies.remove('user_role');
         localStorage.removeItem('user_info');
         location.href = routes.protected.Login;
       }

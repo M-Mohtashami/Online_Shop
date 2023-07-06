@@ -35,14 +35,9 @@ const Header = ({ sidebarOpen }: { sidebarOpen: (val: boolean) => void }) => {
               {'دسته‌بندی جدید'}
             </Link>
             <Link
-              onClick={() => {
-                logoutServices();
-                Cookies.remove('access_token');
-                Cookies.remove('refresh_token');
-                Cookies.remove('user_role');
-                localStorage.removeItem('user_info');
+              href={{
+                pathname: routes.protected.Logout,
               }}
-              href={routes.public.Home}
               className="ml-4 inline-flex items-center justify-center p-2 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-primary hover:bg-links"
             >
               <FaSignOutAlt className="rotate-180" />

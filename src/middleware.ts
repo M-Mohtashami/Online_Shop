@@ -14,7 +14,9 @@ export function middleware(request: NextRequest) {
 
   if (request.nextUrl.pathname.startsWith('/auth')) {
     if (token) {
-      if (user === 'ADMIN') {
+      if (request.nextUrl.pathname === routes.protected.Logout) {
+        return NextResponse.next();
+      } else if (user === 'ADMIN') {
         return NextResponse.redirect(
           new URL(routes.private.Admin, request.url)
         );

@@ -7,10 +7,10 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token')?.value;
   const user = request.cookies.get('user_role')?.value;
 
-  console.log(
-    'pppppppppppppppaaaaaaaaaaaaaaaaaattttttttttttttttttthhhhhhhhhhhhhhhhh',
-    user
-  );
+  // console.log(
+  //   'pppppppppppppppaaaaaaaaaaaaaaaaaattttttttttttttttttthhhhhhhhhhhhhhhhh',
+  //   user
+  // );
 
   if (request.nextUrl.pathname.startsWith('/auth')) {
     if (token) {

@@ -45,7 +45,7 @@ instance.interceptors.response.use(
             Cookies.remove('refresh_token');
             Cookies.remove('user_role');
             localStorage.removeItem('user_info');
-            location.href = routes.protected.Login;
+            // location.href = routes.protected.Login;
           }
         });
       } else if (config.url === '/auth/token' && config.url !== '/auth/login') {
@@ -53,7 +53,7 @@ instance.interceptors.response.use(
         Cookies.remove('refresh_token');
         Cookies.remove('user_role');
         localStorage.removeItem('user_info');
-        location.href = routes.protected.Login;
+        // location.href = routes.protected.Login;
       }
     }
     return error.response;

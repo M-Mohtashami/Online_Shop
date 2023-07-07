@@ -46,7 +46,7 @@ const Login: NextPageWithLayout = () => {
   // const { cart } = useSelector((state: RootState) => state.cart);
   const { mutate: loginMutate, isSuccess } = useLogin({
     onSuccess(data: any) {
-      console.log(data);
+      // console.log(data);
       if (data.status === 'success') {
         const token = data.token;
         const user = data?.data.user;

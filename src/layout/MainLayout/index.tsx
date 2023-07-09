@@ -26,12 +26,12 @@ const MainLayout = ({ children }: Props) => {
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <div className="max-w-[1440px] w-full h-full flex flex-col justify-between font-iran-sans ">
+          <div className="w-full bg-gray-100  flex flex-col items-center justify-between font-iran-sans ">
             <MainHeader
               categories={props.categories}
               subcategories={props.subcategories}
             />
-            <main className="flex-1 p-6 w-full mt-16 bg-gray-100 ">
+            <main className="max-w-[1440px] flex-1 items-center justify-center p-6 w-full mt-16 ">
               {children}
             </main>
             <MainFooter

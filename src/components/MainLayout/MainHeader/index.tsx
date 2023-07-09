@@ -82,8 +82,8 @@ const MainHeader = ({ categories, subcategories }: Props) => {
   //   refetch();
   // }, [searchContent]);
   return (
-    <Popover className="fixed top-0 z-50 w-full bg-white border-b shadow-sm font-light">
-      <div className="flex justify-between items-center px-4 py-2 sm:px-6 md:justify-start md:space-x-10">
+    <Popover className=" fixed top-0 z-50 w-full flex justify-center bg-white border-b shadow-sm font-light">
+      <div className="max-w-[1440px] w-full flex justify-between items-center px-4 py-2 sm:px-6 md:justify-start md:space-x-10">
         <div className=" ml-5">
           <Link href="/" className="flex">
             <span className="sr-only">Workflow</span>

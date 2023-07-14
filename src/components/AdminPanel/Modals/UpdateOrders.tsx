@@ -166,7 +166,15 @@ export default function UpdateOrders({ order, closeModal, open }: Props) {
                       }}
                       className="w-52 mt-5 bg-primary hover:bg-links"
                     >
-                      {order?.deliveryStatus ? 'بستن' : 'تحویل شد'}
+                      {order?.deliveryStatus
+                        ? new Date(
+                            order ? order?.updatedAt : ''
+                          ).toLocaleDateString('fa-IR', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          })
+                        : 'تحویل شد'}
                     </Button>
                   </div>
                 </div>

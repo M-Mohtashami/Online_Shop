@@ -7,7 +7,7 @@ import { useState } from 'react';
 const AdminLayout = ({ children }: LayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
-    <div className="w-full h-full font-iran-sans">
+    <div className="w-full font-iran-sans bg-gray-100">
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div className="md:pr-64 flex flex-col">
         <Header sidebarOpen={(value: boolean) => setSidebarOpen(value)} />

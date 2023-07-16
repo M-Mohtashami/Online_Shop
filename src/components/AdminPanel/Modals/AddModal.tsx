@@ -54,7 +54,7 @@ const AddModal = ({ product, closeModal, open }: Props) => {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="relative inline-block border border-slate-300 align-bottom bg-white rounded-lg px-4 pt-5 pb-4 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6 overflow-hidden">
+            <div className="relative inline-block border border-slate-300 align-bottom bg-white rounded-lg px-4 pt-5 pb-4 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
               <div className="w-full flex items-center justify-center absolute top-0 left-0 h-12 bg-primary">
                 <h3 className="font-normal text-slate-100">
                   {` فرم ${action} کالا`}

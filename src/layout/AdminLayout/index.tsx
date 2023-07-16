@@ -1,11 +1,21 @@
 import Header from '@/components/AdminLayout/Header';
 import Sidebar from '@/components/AdminLayout/Sidebar';
 import { LayoutProps } from '@/interfaces/inretfaces';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useState } from 'react';
 
+const pageTitle: { [key: string]: string } = {
+  ['/admin']: 'داشبورد مدیریت',
+  ['/admin/products']: 'مدیریت محصولات',
+  ['/admin/orders']: 'مدیریت سفارشات',
+  ['/admin/categories']: 'مدیریت دسته‌بندی ها',
+  ['/admin/profile']: 'ویرایش اطلاعات',
+};
 const AdminLayout = ({ children }: LayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const router = useRouter();
+
   return (
     <div className="w-full font-iran-sans bg-gray-100">
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
@@ -16,7 +26,7 @@ const AdminLayout = ({ children }: LayoutProps) => {
           <div className="py-6">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
               <h1 className="text-2xl font-semibold text-gray-900">
-                {'داشبورد مدیریت'}
+                {pageTitle[router.pathname]}
               </h1>
             </div>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">

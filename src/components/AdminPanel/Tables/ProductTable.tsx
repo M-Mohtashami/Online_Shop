@@ -307,7 +307,7 @@ const ProductTable = () => {
         </div>
       </div>
       {/* pagination section */}
-      <div className="mt-4 flex items-center gap-2">
+      <div className="mt-4 flex items-center gap-2 py-2 px-4 bg-white rounded-full">
         <button
           className="border rounded p-1"
           onClick={(e) => {

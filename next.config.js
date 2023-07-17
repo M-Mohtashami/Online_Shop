@@ -8,7 +8,7 @@ module.exports = {
   images: {
     remotePatterns: [
       {
-        hostname: 'localhost',
+        hostname: 'online-shop.iran.liara.run',
       },
     ],
   },

@@ -33,8 +33,11 @@ export const icons: CustomIcons = {
   },
 };
 
-export const baseURL = 'http://localhost:8000/api';
+export const baseURL = 'https://online-shop.iran.liara.run/api';
 
-export const thumbnails = 'http://localhost:8000/images/products/thumbnails/';
-export const IMAGES = 'http://localhost:8000/images/products/images/';
-export const CATEGORY_ICON = 'http://localhost:8000/images/categories/icons/';
+export const thumbnails =
+  'https://online-shop.iran.liara.run/images/products/thumbnails/';
+export const IMAGES =
+  'https://online-shop.iran.liara.run/images/products/images/';
+export const CATEGORY_ICON =
+  'https://online-shop.iran.liara.run/images/categories/icons/';

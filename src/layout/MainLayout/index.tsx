@@ -20,7 +20,7 @@ const queryClient = new QueryClient();
 
 const MainLayout = ({ children }: Props) => {
   const { props } = children;
-  // console.log(children);
+  console.log(props);
 
   return (
     <QueryClientProvider client={queryClient}>

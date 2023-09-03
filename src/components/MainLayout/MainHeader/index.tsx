@@ -43,6 +43,8 @@ type Props = {
 
 const timeoutDuration = 200;
 const MainHeader = ({ categories, subcategories }: Props) => {
+  console.log(categories);
+
   const categoriesData = categories?.data.categories;
   const subcategoriesData = subcategories?.data.subcategories;
 
@@ -139,60 +141,65 @@ const MainHeader = ({ categories, subcategories }: Props) => {
                     <Popover.Panel className="hidden md:block absolute z-10 top-full inset-x-0 transform ">
                       <ul className="max-w-7xl bg-white border border-gray-200 rounded-md shadow-md mx-auto grid gap-y-3 px-4 py-2 sm:grid-cols-2 sm:gap-4 sm:px-3 sm:py-4 md:grid-cols-4 md:px-4 md:py-6 lg:py-8">
                         {/* header */}
-                        {categoriesData.map((category) => {
-                          return (
-                            <li key={category._id}>
-                              <Link
-                                href={{
-                                  pathname: routes.public.Category,
-                                  query: {
-                                    category: category._id,
-                                  },
-                                }}
-                                className="flex items-end gap-3 border-b border-gray-500"
-                              >
-                                <div className="category-background w-10 h-10 flex items-center justify-center bg-links/50">
-                                  <Image
-                                    src={CATEGORY_ICON + category.icon}
-                                    alt={category.name}
-                                    className="w-6 h-6"
-                                    width={1080}
-                                    height={1080}
-                                  />
-                                </div>
-                                <h3 className="text-sm font-normal tracking-wide text-gray-900 uppercase border-b border-gray-300 pb-2">
-                                  {category.name}
-                                </h3>
-                              </Link>
-                              <ul className="space-y-3 mt-2 pr-3">
-                                {subcategoriesData
-                                  .filter(
-                                    (subcat) => category._id === subcat.category
-                                  )
-                                  .map((item) => {
-                                    return (
-                                      <li key={item._id} className="flow-root">
-                                        <Link
-                                          href={{
-                                            pathname: routes.public.Category,
-                                            query: {
-                                              category: category._id,
-                                              subcategory: item._id,
-                                            },
-                                          }}
-                                          className="-m-3 p-3 flex items-center rounded-md text-base font-normal text-gray-500 transition ease-in-out duration-150"
+                        {categoriesData &&
+                          categoriesData.map((category) => {
+                            return (
+                              <li key={category._id}>
+                                <Link
+                                  href={{
+                                    pathname: routes.public.Category,
+                                    query: {
+                                      category: category._id,
+                                    },
+                                  }}
+                                  className="flex items-end gap-3 border-b border-gray-500"
+                                >
+                                  <div className="category-background w-10 h-10 flex items-center justify-center bg-links/50">
+                                    <Image
+                                      src={CATEGORY_ICON + category.icon}
+                                      alt={category.name}
+                                      className="w-6 h-6"
+                                      width={1080}
+                                      height={1080}
+                                    />
+                                  </div>
+                                  <h3 className="text-sm font-normal tracking-wide text-gray-900 uppercase border-b border-gray-300 pb-2">
+                                    {category.name}
+                                  </h3>
+                                </Link>
+                                <ul className="space-y-3 mt-2 pr-3">
+                                  {subcategoriesData
+                                    .filter(
+                                      (subcat) =>
+                                        category._id === subcat.category
+                                    )
+                                    .map((item) => {
+                                      return (
+                                        <li
+                                          key={item._id}
+                                          className="flow-root"
                                         >
-                                          <span className="w-full ml-4 p-1 rounded-md hover:bg-gray-50">
-                                            {item.name}
-                                          </span>
-                                        </Link>
-                                      </li>
-                                    );
-                                  })}
-                              </ul>
-                            </li>
-                          );
-                        })}
+                                          <Link
+                                            href={{
+                                              pathname: routes.public.Category,
+                                              query: {
+                                                category: category._id,
+                                                subcategory: item._id,
+                                              },
+                                            }}
+                                            className="-m-3 p-3 flex items-center rounded-md text-base font-normal text-gray-500 transition ease-in-out duration-150"
+                                          >
+                                            <span className="w-full ml-4 p-1 rounded-md hover:bg-gray-50">
+                                              {item.name}
+                                            </span>
+                                          </Link>
+                                        </li>
+                                      );
+                                    })}
+                                </ul>
+                              </li>
+                            );
+                          })}
                       </ul>
                     </Popover.Panel>
                   </Transition>
@@ -212,59 +219,6 @@ const MainHeader = ({ categories, subcategories }: Props) => {
             >
               {'تماس با ما'}
             </Link>
-
-            {/* <Popover className="relative">
-              {({ open }) => (
-                <>
-                  <Popover.Button
-                    className={classNames(
-                      open ? 'text-gray-900' : 'text-gray-500',
-                      'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                    )}
-                  >
-                    <span>More</span>
-                    <BsChevronDown
-                      className={classNames(
-                        open ? 'text-gray-600' : 'text-gray-400',
-                        'ml-2 h-5 w-5 group-hover:text-gray-500'
-                      )}
-                      aria-hidden="true"
-                    />
-                  </Popover.Button>
-
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-200"
-                    enterFrom="opacity-0 translate-y-1"
-                    enterTo="opacity-100 translate-y-0"
-                    leave="transition ease-in duration-150"
-                    leaveFrom="opacity-100 translate-y-0"
-                    leaveTo="opacity-0 translate-y-1"
-                  >
-                    <Popover.Panel className="absolute z-10 left-1/2 transform -translate-x-1/2 mt-3 px-2 w-screen max-w-xs sm:px-0">
-                      <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-                        <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-                          {resources.map((item) => (
-                            <Link
-                              key={item.name}
-                              href={item.href}
-                              className="-m-3 p-3 block rounded-md hover:bg-gray-50"
-                            >
-                              <p className="text-base font-medium text-gray-900">
-                                {item.name}
-                              </p>
-                              <p className="mt-1 text-sm text-gray-500">
-                                {item.description}
-                              </p>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    </Popover.Panel>
-                  </Transition>
-                </>
-              )}
-            </Popover> */}
           </Popover.Group>
           <div className="flex items-center md:ml-4">
             <div className="relative flex items-center justify-end">
@@ -350,7 +304,7 @@ const MainHeader = ({ categories, subcategories }: Props) => {
         <Popover.Panel className="absolute z-10 inset-x-0 transform shadow-lg bg-white">
           <ul className="max-w-7xl max-h-screen overflow-h-auto mx-auto grid gap-y-3 px-4 py-3 grid-cols-2 sm:gap-4 sm:px-3 sm:py-4 lg:grid-cols-4 lg:px-4 lg:py-6 xl:py-8">
             {/* header */}
-            {categoriesData.map((category) => {
+            {categoriesData?.map((category) => {
               return (
                 <li key={category._id}>
                   <Link

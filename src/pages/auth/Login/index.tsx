@@ -83,7 +83,7 @@ const Login: NextPageWithLayout = () => {
         <div className=" sm:mx-auto sm:w-full sm:max-w-md ">
           <div className="relative bg-white border border-gray-200 py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <div className="absolute -top-16 right-0 w-full flex justify-center">
-              <Image
+              <img
                 width={96}
                 height={96}
                 src="/assets/images/site_logo.png"
@@ -183,7 +183,7 @@ const Login: NextPageWithLayout = () => {
 
 export default Login;
 
-Login.getLayout = (page: ReactElement) => {
+Login.getLayout = (page: React.ReactElement) => {
   const { props } = page;
 
   return <MainLayout {...props} />;

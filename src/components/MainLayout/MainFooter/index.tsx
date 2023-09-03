@@ -105,88 +105,58 @@ const MainFooter = ({ categories, subcategories }: Props) => {
             {/* footer links */}
 
             {/* header */}
-            {categoriesData.map((category) => {
-              return (
-                subcategoriesData.find(
-                  (sub) => sub.category === category._id
-                ) && (
-                  <li
-                    key={category._id}
-                    className="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3"
-                  >
-                    <Link
-                      href={{
-                        pathname: routes.public.Category,
-                        query: {
-                          category: category._id,
-                        },
-                      }}
-                      className="border-b border-gray-500"
+            {categoriesData &&
+              categoriesData.map((category) => {
+                return (
+                  subcategoriesData.find(
+                    (sub) => sub.category === category._id
+                  ) && (
+                    <li
+                      key={category._id}
+                      className="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3"
                     >
-                      <h3 className="text-sm font-normal tracking-wide text-gray-50 uppercase border-b border-gray-300 pb-2">
-                        {category.name}
-                      </h3>
-                    </Link>
-                    <ul className="space-y-3 mt-2 pr-3">
-                      {subcategoriesData
-                        .filter((subcat) => category._id === subcat.category)
-                        .map((item) => {
-                          return (
-                            <li key={item._id} className="flow-root">
-                              <Link
-                                href={{
-                                  pathname: routes.public.Category,
-                                  query: {
-                                    category: category._id,
-                                    subcategory: item._id,
-                                  },
-                                }}
-                                className="-m-3 p-3 flex items-center rounded-md text-base font-thin text-gray-200 transition ease-in-out duration-150"
-                              >
-                                <span className="w-full ml-4 p-1 rounded-md hover:bg-gray-50/20">
-                                  {item.name}
-                                </span>
-                              </Link>
-                            </li>
-                          );
-                        })}
-                    </ul>
-                  </li>
-                )
-              );
-            })}
+                      <Link
+                        href={{
+                          pathname: routes.public.Category,
+                          query: {
+                            category: category._id,
+                          },
+                        }}
+                        className="border-b border-gray-500"
+                      >
+                        <h3 className="text-sm font-normal tracking-wide text-gray-50 uppercase border-b border-gray-300 pb-2">
+                          {category.name}
+                        </h3>
+                      </Link>
+                      <ul className="space-y-3 mt-2 pr-3">
+                        {subcategoriesData
+                          .filter((subcat) => category._id === subcat.category)
+                          .map((item) => {
+                            return (
+                              <li key={item._id} className="flow-root">
+                                <Link
+                                  href={{
+                                    pathname: routes.public.Category,
+                                    query: {
+                                      category: category._id,
+                                      subcategory: item._id,
+                                    },
+                                  }}
+                                  className="-m-3 p-3 flex items-center rounded-md text-base font-thin text-gray-200 transition ease-in-out duration-150"
+                                >
+                                  <span className="w-full ml-4 p-1 rounded-md hover:bg-gray-50/20">
+                                    {item.name}
+                                  </span>
+                                </Link>
+                              </li>
+                            );
+                          })}
+                      </ul>
+                    </li>
+                  )
+                );
+              })}
           </ul>
-          {/* <div className="mt-8 xl:mt-0">
-            <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-              Subscribe to our newsletter
-            </h3>
-            <p className="mt-4 text-base text-gray-300">
-              The latest news, articles, and resources, sent to your inbox
-              weekly.
-            </p>
-            <form className="mt-4 sm:flex sm:max-w-md">
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
-              <input
-                type="email"
-                name="email-address"
-                id="email-address"
-                autoComplete="email"
-                required
-                className="appearance-none min-w-0 w-full bg-white border border-transparent rounded-md py-2 px-4 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white focus:border-white focus:placeholder-gray-400"
-                placeholder="Enter your email"
-              />
-              <div className="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
-                <button
-                  type="submit"
-                  className="w-full bg-indigo-500 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500"
-                >
-                  Subscribe
-                </button>
-              </div>
-            </form>
-          </div> */}
         </div>
         <div className="mt-4 border-t text-center border-gray-300 pt-4 md:flex md:items-center md:justify-between">
           <p className="mt-8 text-base text-gray-200 md:mt-0 md:order-1">
